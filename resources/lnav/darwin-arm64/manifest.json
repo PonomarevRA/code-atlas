@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "platform": "darwin-arm64",
+  "version": "0.14.1",
+  "executable": "lnav",
+  "certified": true,
+  "secureModeConverterPatch": true,
+  "withoutLibcurl": true,
+  "sourceSha256": "870c896a6973e1e973007be1d66bba3aef23b2aa68411fb5cc85bb7dd21a7fb0",
+  "binaryVersion": "lnav 0.14.1-atlas-parser-only",
+  "cargoExtensions": false,
+  "optimization": "-O2",
+  "minimumMacOS": "13.0",
+  "machoBuildVersions": {
+    "lnav": {
+      "platform": "1",
+      "minos": "13.0",
+      "sdk": "15.4"
+    },
+    "lib/libarchive.13.dylib": {
+      "platform": "1",
+      "minos": "13.0",
+      "sdk": "15.4"
+    },
+    "lib/libpcre2-8.0.dylib": {
+      "platform": "1",
+      "minos": "13.0",
+      "sdk": "15.4"
+    },
+    "lib/libunistring.5.dylib": {
+      "platform": "1",
+      "minos": "13.0",
+      "sdk": "15.4"
+    }
+  },
+  "converterSourceSha256": "2e14cae0e67801f06e68133f7b2231d0ad0e0b6314f1f04be619dcf09e225be7",
+  "files": {
+    "lib/libarchive.13.dylib": "ad00bd2b6ac06625a40f757662c925ba56a23d63f01246316a017ff522af35b7",
+    "lib/libpcre2-8.0.dylib": "8d46e60a5eb38d7c7ad195820f6e8150427e327471fa1b6ca946a91c9547d7de",
+    "lib/libunistring.5.dylib": "dbcf25622a72a735cf55afd851d082021cd0b29aea4df1970dac52f59df31a16",
+    "licenses/libarchive.13.dylib/0-NOTICE-dependency-sources.json": "1434f4f2c459e49897036167752d195674fcf2060693809551bcb841c0d67b56",
+    "licenses/libarchive.13.dylib/1-COPYING": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229",
+    "licenses/libarchive.13.dylib/2-COPYING": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "licenses/libarchive.13.dylib/3-COPYING.LIB": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+    "licenses/libarchive.13.dylib/4-COPYING": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507",
+    "licenses/libarchive.13.dylib/5-LICENCE.md": "197d8a73ffee0d6b09adba2f9c677b5f5aede24edf89258a68e48248d010d811",
+    "licenses/libarchive.13.dylib/6-COPYING": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507",
+    "licenses/libarchive.13.dylib/7-LICENCE.md": "197d8a73ffee0d6b09adba2f9c677b5f5aede24edf89258a68e48248d010d811",
+    "licenses/libpcre2-8.0.dylib/0-NOTICE-dependency-sources.json": "1434f4f2c459e49897036167752d195674fcf2060693809551bcb841c0d67b56",
+    "licenses/libpcre2-8.0.dylib/1-COPYING": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229",
+    "licenses/libpcre2-8.0.dylib/2-COPYING": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "licenses/libpcre2-8.0.dylib/3-COPYING.LIB": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+    "licenses/libpcre2-8.0.dylib/4-COPYING": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507",
+    "licenses/libpcre2-8.0.dylib/5-LICENCE.md": "197d8a73ffee0d6b09adba2f9c677b5f5aede24edf89258a68e48248d010d811",
+    "licenses/libpcre2-8.0.dylib/6-COPYING": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507",
+    "licenses/libpcre2-8.0.dylib/7-LICENCE.md": "197d8a73ffee0d6b09adba2f9c677b5f5aede24edf89258a68e48248d010d811",
+    "licenses/libunistring.5.dylib/0-NOTICE-dependency-sources.json": "1434f4f2c459e49897036167752d195674fcf2060693809551bcb841c0d67b56",
+    "licenses/libunistring.5.dylib/1-COPYING": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229",
+    "licenses/libunistring.5.dylib/2-COPYING": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "licenses/libunistring.5.dylib/3-COPYING.LIB": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+    "licenses/libunistring.5.dylib/4-COPYING": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507",
+    "licenses/libunistring.5.dylib/5-LICENCE.md": "197d8a73ffee0d6b09adba2f9c677b5f5aede24edf89258a68e48248d010d811",
+    "licenses/libunistring.5.dylib/6-COPYING": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507",
+    "licenses/libunistring.5.dylib/7-LICENCE.md": "197d8a73ffee0d6b09adba2f9c677b5f5aede24edf89258a68e48248d010d811",
+    "licenses/lnav-source/LICENSE": "7113b8b5d289fa2626798689991204e5cb2167b5d269eb148b96c642f9e26e6b",
+    "lnav": "728f8fecf372270a8ec55c705ab44c69425ac00b54b11b2a1f1a24f75ba4dfec"
+  }
+}

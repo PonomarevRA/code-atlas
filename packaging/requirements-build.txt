@@ -1,0 +1,6 @@
+# Build dependencies only; runtime dependencies come from requirements.lock.
+PyInstaller==6.22.3
+Cython==3.1.6
+setuptools==84.0.0
+Pillow==12.3.0
+-r requirements-desktop.txt

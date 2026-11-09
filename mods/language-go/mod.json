@@ -1,0 +1,35 @@
+{
+  "apiVersion": 1,
+  "id": "language-go",
+  "name": "go project structure",
+  "version": "1.0.0",
+  "description": "Declarative build-marker discovery. Logical folders are navigation areas, not claimed build modules.",
+  "analysis": {
+    "apiVersion": 1,
+    "projectRules": [
+      {
+        "id": "go-projects",
+        "language": "go",
+        "extensions": [
+          ".go"
+        ],
+        "manifestNames": [
+          "go.mod"
+        ],
+        "manifestSuffixes": [],
+        "sourceRootMarkers": [],
+        "logicalFolders": false
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Go: структура проекта",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

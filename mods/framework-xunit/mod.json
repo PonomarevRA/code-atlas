@@ -1,0 +1,58 @@
+{
+  "apiVersion": 1,
+  "id": "framework-xunit",
+  "name": "xunit source facts",
+  "version": "1.0.0",
+  "description": "Lexical test/library declarations. No test execution or dataset evaluation.",
+  "requires": [
+    "language-csharp"
+  ],
+  "analysis": {
+    "apiVersion": 1,
+    "testFrameworks": [
+      {
+        "id": "xunit",
+        "language": "csharp",
+        "annotationRules": [
+          {
+            "name": "Xunit.FactAttribute",
+            "role": "test",
+            "disabledArgument": "Skip"
+          },
+          {
+            "name": "Xunit.TheoryAttribute",
+            "role": "test",
+            "disabledArgument": "Skip"
+          },
+          {
+            "name": "Xunit.InlineDataAttribute",
+            "role": "parameter-source"
+          },
+          {
+            "name": "Xunit.MemberDataAttribute",
+            "role": "parameter-source"
+          },
+          {
+            "name": "Xunit.ClassDataAttribute",
+            "role": "parameter-source"
+          },
+          {
+            "name": "Xunit.TraitAttribute",
+            "role": "metadata"
+          }
+        ],
+        "supportsComposed": false
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "xUnit: Fact, Theory и данные",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

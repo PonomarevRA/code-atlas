@@ -1,0 +1,48 @@
+{
+  "apiVersion": 1,
+  "id": "readable-cards",
+  "name": "Читаемые карточки · пример мода",
+  "version": "1.0.0",
+  "description": "Мягкие карточки, метка MOD, исходник по двойному клику и группировка по типу или каталогу. По умолчанию выключен.",
+  "theme": {
+    "fill": "#f5f8ff",
+    "headerFill": "#e3edff",
+    "stroke": "#537ca7",
+    "radius": 12,
+    "borderWidth": 1.5
+  },
+  "behavior": {
+    "doubleClick": "source"
+  },
+  "frontend": "mod.js",
+  "grouping": [
+    {
+      "id": "by-kind",
+      "label": "Мод · по типу узлов",
+      "mode": "field",
+      "field": "kind"
+    },
+    {
+      "id": "by-directory",
+      "label": "Мод · по каталогам",
+      "mode": "directory",
+      "depth": 2
+    },
+    {
+      "id": "custom-python",
+      "label": "Мод · свой Python-алгоритм",
+      "mode": "python",
+      "worker": "grouping.py"
+    }
+  ],
+  "wiki": {
+    "section": "Development-Guide",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Читаемые карточки: тема и группировки",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

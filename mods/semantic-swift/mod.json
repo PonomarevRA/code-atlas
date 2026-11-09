@@ -1,0 +1,37 @@
+{
+  "apiVersion": 1,
+  "id": "semantic-swift",
+  "name": "Swift semantic analysis",
+  "version": "1.0.0",
+  "description": "Optional installed SourceKit-LSP with existing static compilation database and SDK; no SwiftPM/BSP/builds.",
+  "autoActivate": {
+    "extensions": [
+      ".swift"
+    ],
+    "manifestNames": []
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "semanticProviders": [
+      {
+        "id": "swift",
+        "language": "swift",
+        "strategy": "sourcekit-local-v1",
+        "capabilities": [
+          "definition",
+          "calls"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Swift: привязки SourceKit-LSP",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "target": "darwin-arm64",
+  "compiler": "Apple clang -arch arm64 -O2",
+  "sdk": "/Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk",
+  "dependencies": [
+    {
+      "name": "libunistring-1.3",
+      "url": "https://ftp.gnu.org/gnu/libunistring/libunistring-1.3.tar.gz",
+      "sha256": "8ea8ccf86c09dd801c8cac19878e804e54f707cf69884371130d20bde68386b7",
+      "checksumSource": "https://lists.nongnu.org/archive/html/info-gnu/2024-10/msg00000.html",
+      "flags": []
+    },
+    {
+      "name": "pcre2-10.49",
+      "url": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.49/pcre2-10.49.tar.gz",
+      "sha256": "929f0b20e62879252a15886b06c89f1edef61a363cbd5826fb041080a5e557ae",
+      "checksumSource": "https://api.github.com/repos/PCRE2Project/pcre2/releases/tags/pcre2-10.49",
+      "flags": [
+        "--enable-pcre2-8",
+        "--disable-pcre2-16",
+        "--disable-pcre2-32",
+        "--enable-jit",
+        "--disable-pcre2grep-libz",
+        "--disable-pcre2grep-libbz2"
+      ]
+    },
+    {
+      "name": "libarchive-3.8.10",
+      "url": "https://github.com/libarchive/libarchive/releases/download/v3.8.10/libarchive-3.8.10.tar.gz",
+      "sha256": "a1bffbe5152cfe869751179e7b16648c87c461cb8c46eee75062efbe164cc57c",
+      "checksumSource": "https://api.github.com/repos/libarchive/libarchive/releases/tags/v3.8.10",
+      "flags": [
+        "--without-openssl",
+        "--without-nettle",
+        "--without-mbedtls",
+        "--without-libb2",
+        "--without-lz4",
+        "--without-zstd",
+        "--without-lzma",
+        "--without-xml2",
+        "--without-expat",
+        "--disable-bsdtar",
+        "--disable-bsdcat",
+        "--disable-bsdcpio",
+        "--disable-bsdunzip"
+      ]
+    }
+  ],
+  "minimumMacOS": "13.0",
+  "buildRecipe": "build_lnav_arm64.py"
+}

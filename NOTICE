@@ -1,0 +1,15 @@
+Code Atlas source is distributed under the MIT License in LICENSE.
+Vendored third-party components retain their own licenses and copyright notices.
+The MIT license for Atlas does not relicense those components.
+
+Retained notices and provenance:
+- web/vendor/ag-design/: APCA-LICENSE.md, COLORPARSLEY-LICENSE.md and manifest.json.
+- resources/lnav/: each platform's licenses/ tree and supplied source/dependency metadata.
+- packaging/assets/NotoSans-LICENSE.txt: font license.
+
+Python packages installed from requirements.lock carry their own distributions'
+licenses. A source installer downloads these dependencies separately.
+The public source package excludes the optional AG Privacy SDK, browser collector
+and legacy npm archives. Keep bundled notices with any separately supplied components.
+Review applicable third-party distribution requirements when packaging binaries;
+the presence of a privacy audit is not a licensing compatibility certification.

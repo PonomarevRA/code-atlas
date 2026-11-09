@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "ag-design/integration-v1",
+  "consumerId": "code-atlas",
+  "consumerName": "Code Atlas",
+  "packages": {
+    "@ag-design/components": "0.43.1-community.2"
+  },
+  "components": [
+    {
+      "id": "button",
+      "locations": [
+        "web/workspace-layout.js"
+      ],
+      "note": "Shared native DOM buttons for map history and search; existing SVG decorations retained."
+    },
+    {
+      "id": "field",
+      "locations": [
+        "web/design-adapter.css"
+      ],
+      "note": "Shared control height, typography and radii; Atlas palette and form owners preserved."
+    },
+    {
+      "id": "sidebar",
+      "locations": [
+        "web/activity-sidebar.js"
+      ],
+      "note": "Reference implementation; specialized two-sided activity rails retain existing behavior."
+    },
+    {
+      "id": "window-toolbar",
+      "locations": [
+        "web/workspace-layout.js"
+      ],
+      "note": "Composition adapter 0.2.0: contextual header and inner-edge resize. Browser/contract tested; native visual acceptance is separate."
+    },
+    {
+      "id": "resizable-panel",
+      "locations": [
+        "web/workspace-layout.js"
+      ],
+      "note": "Composition adapter 0.2.0: contextual header and inner-edge resize. Browser/contract tested; native visual acceptance is separate."
+    }
+  ],
+  "palettePolicy": "Сохранять семантическую палитру сервиса; общая геометрия через --ag-*.",
+  "nativePolicy": "Настоящая нативная шапка и сохранение левого icon rail; fallback до capability handshake.",
+  "windowShell": {
+    "version": "0.43.1-community.2",
+    "title": "selected section or entity",
+    "native": "capability-gated macOS toolbar; browser fallback on other platforms",
+    "panels": "inner-edge pointer and keyboard resize, preserved collapsed rail",
+    "validation": "docs/design/window-shell-v2.md"
+  },
+  "loadingFeedback": {
+    "integrationKind": "host-native-composition",
+    "location": "web/loading-status.js",
+    "basis": "Native HTML indeterminate progress plus one visible status; existing Atlas tokens and application-owned work state",
+    "locales": [
+      "ru",
+      "en"
+    ],
+    "motion": "User pause hides the native graphic; reduced-motion keeps the text without the graphic",
+    "candidate": {
+      "id": "loading-indicator",
+      "version": "0.10.4",
+      "readyForConsumer": false,
+      "used": false,
+      "reason": "Current AG factory qualification lacks real AT evidence; no factory reuse or usage claim."
+    },
+    "validation": "outputs/loading-indicator-20261028/"
+  },
+  "publicSource": {
+    "repository": "https://github.com/PonomarevRA/ag-design",
+    "commit": "83254844d022bb6660911a8d72a0cad1dcbf42b8"
+  }
+}

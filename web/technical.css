@@ -1,0 +1,70 @@
+.technical-links{flex-wrap:wrap;gap:12px 24px;margin:18px 0}
+.technical section{margin:32px 0;scroll-margin-top:20px}
+.technical h2{font-size:24px}
+.setup-notice{padding:14px 18px;border-left:3px solid var(--atlas-cardBorder, #a7c9b7);background:var(--atlas-surfaceAlt, #edf4ee);line-height:1.6}
+.skill-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.skill-cards article{padding:20px;border:1px solid var(--atlas-border, #dce5dc);border-radius:10px;background:var(--atlas-surface, white)}
+.skill-cards p,.setup-steps{line-height:1.6}
+.setup-steps li{margin:10px 0}
+.technical-agent-setup{padding:18px;border:1px solid var(--atlas-border, #dce5dc);border-radius:10px;background:var(--atlas-surface, white)}
+.technical-agent-setup textarea{width:100%;max-width:100%;padding:12px;border:1px solid var(--atlas-border, #c8d8ce);border-radius:5px;background:var(--atlas-surface, #f5f8f4);font:12px/1.6 ui-monospace,monospace;resize:vertical}
+.technical-agent-setup .actions{margin:16px 0;gap:12px 20px}
+@media(max-width:700px){.skill-cards{grid-template-columns:1fr}}
+/* Existing host palette and one-column operational flow; confirmation uses the native top layer. */
+.map-cleanup-controls{margin:20px 0;display:grid;gap:10px;min-width:0}
+.map-cleanup-controls p{margin:0;overflow-wrap:anywhere;line-height:1.5}
+.map-cleanup-choice{display:flex;align-items:center;gap:8px;margin:0;min-height:32px}
+.map-cleanup-choice input{width:24px;height:24px;padding:0;flex:0 0 24px;accent-color:var(--atlas-accent,#286754)}
+.map-cleanup-dialog{box-sizing:border-box;width:min(640px,calc(100% - 32px));max-width:calc(100% - 32px);max-height:calc(100dvh - 32px);padding:24px;color:var(--atlas-text,#233a34);background:var(--atlas-surface,#fff);border:1px solid var(--atlas-border,#c8d8ce);border-radius:10px;overflow:auto}
+.map-cleanup-dialog::backdrop{background:rgb(0 0 0 / .45)}
+.map-cleanup-dialog p,.map-cleanup-dialog li{line-height:1.6;overflow-wrap:anywhere}
+.map-cleanup-plan-list{padding-inline-start:24px}
+.map-cleanup-dialog .actions{margin-top:24px;gap:12px;align-items:stretch}
+.map-cleanup-dialog button{min-height:44px;white-space:normal;overflow-wrap:anywhere}
+.map-cleanup-danger{border:2px solid var(--atlas-error,#a8332e);font-weight:650}
+#atlas-storage :focus-visible{outline:3px solid var(--atlas-accent,#286754);outline-offset:3px}
+#atlas-storage .table-scroll{overflow-x:auto}
+#atlas-storage table{min-width:1120px;font-size:inherit}
+#atlas-storage th:nth-child(3),#atlas-storage td:nth-child(3),.map-cleanup-choice{white-space:nowrap}
+@media(max-width:700px){
+ .map-cleanup-dialog{padding:16px}
+ .map-cleanup-dialog .actions{flex-direction:column}
+ #atlas-storage table,#atlas-storage tbody,#atlas-storage tr{display:block}
+ #atlas-storage table{min-width:0}
+ #atlas-storage thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ #atlas-storage td{display:block;max-width:none;border:0;padding:6px 10px}
+ #atlas-storage tr{margin:16px 0;padding:12px 0;border-block-end:1px solid var(--atlas-border,#c8d8ce)}
+ #atlas-storage td:nth-child(n+3):nth-child(-n+7)::before{content:attr(data-label) ': ';font-weight:650}
+}
+
+.map-cleanup-reason{display:block;max-width:240px;overflow-wrap:anywhere;margin-block-start:6px}
+
+.map-cleanup-dialog[open]{display:flex;flex-direction:column}
+.map-cleanup-dialog-body{min-height:0;overflow:auto;overscroll-behavior:contain}
+.map-cleanup-dialog>h2,.map-cleanup-dialog>.actions,.map-cleanup-dialog>[role="status"]{flex-shrink:0}
+
+.map-cleanup-row-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;min-width:0}
+.map-cleanup-row-actions button{min-height:36px;white-space:normal;overflow-wrap:anywhere;max-width:100%}
+.map-cleanup-forget{border-color:var(--atlas-error,#a8332e)}
+
+.map-cleanup-controls>.actions{flex-wrap:wrap;min-width:0}
+.map-cleanup-controls>.actions>button{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+
+/* Temporary maps reuse the host table and stacked mobile rows. Long paths must
+   wrap inside a useful width instead of squeezing every column to one letter. */
+#atlas-temporary-checkouts table{min-width:1120px}
+#atlas-temporary-checkouts th{white-space:nowrap}
+#atlas-temporary-checkouts td.path{min-width:250px;max-width:380px}
+#atlas-temporary-checkouts td small{display:block;margin-top:6px;overflow-wrap:anywhere}
+#atlas-temporary-checkouts button{min-height:40px;white-space:nowrap}
+#atlas-temporary-checkouts :focus-visible{outline:3px solid var(--atlas-accent,#286754);outline-offset:3px}
+@media(max-width:700px){
+ #atlas-temporary-checkouts table,#atlas-temporary-checkouts tbody,#atlas-temporary-checkouts tr{display:block;min-width:0}
+ #atlas-temporary-checkouts thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ #atlas-temporary-checkouts tr{margin:16px 0;padding:12px 0;border-block-end:1px solid var(--atlas-border,#c8d8ce)}
+ #atlas-temporary-checkouts td{display:block;max-width:none;min-width:0;border:0;padding:6px 10px;overflow-wrap:anywhere}
+ #atlas-temporary-checkouts td.path{min-width:0;max-width:none}
+ #atlas-temporary-checkouts td[data-label]::before{content:attr(data-label) ': ';font-family:inherit;font-weight:650}
+}
+
+.technical code { overflow-wrap: anywhere; }

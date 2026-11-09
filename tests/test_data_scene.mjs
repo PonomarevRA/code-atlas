@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+const moduleText = readFileSync(new URL('../web/data-scene.js', import.meta.url), 'utf8');
+const { positions, curve } = await import('data:text/javascript;base64,' + Buffer.from(moduleText).toString('base64'));
+const points = positions([{id:'root'},{id:'a',owner:'root'},{id:'b',owner:'root'},{id:'c',owner:'a'}]);
+assert.equal(points.get('a').x, points.get('b').x);
+assert.ok(points.get('b').y > points.get('a').y);
+assert.ok(points.get('c').x > points.get('a').x);
+assert.equal(curve({x:0,y:10},{x:90,y:50}), 'M 0 10 C 30 10, 60 50, 90 50');
+const cycle = positions([{id:'a',owner:'b'},{id:'b',owner:'a'}]);
+assert.equal(cycle.size, 2);
+const projectText = readFileSync(new URL('../web/project-data-maps.js', import.meta.url), 'utf8');
+const { projectDataMaps } = await import('data:text/javascript;base64,' + Buffer.from(projectText).toString('base64'));
+const requests = []; let finishFirst;
+globalThis.fetch = async path => { requests.push(path); if(path.includes('/first/')) return new Promise(resolve => {finishFirst=resolve;}); return {ok:true,json:async()=>({files:[{path:'a.csv'}]})}; };
+const button = { hidden:false };
+const update = projectDataMaps(button);
+const pending = update({id:'first'});
+await update({id:'second'});
+finishFirst({ok:true,json:async()=>({files:[{path:'b.csv'}]})}); await pending;
+assert.equal(button.href, '/data.html?project=second');
+assert.equal(button.hidden, false);
+assert.deepEqual(requests, ['/api/projects/first/data-files','/api/projects/second/data-files']);
+await update(null); assert.equal(button.hidden,true);
+console.log('PASS: horizontal hierarchy, smooth edges, stale discovery isolation; no import calls');
+
+const projection = positions([{id:'key',column:0},{id:'v1',owner:'key',column:1},{id:'v2',owner:'key',column:1},
+  {id:'row',column:2},{id:'related',column:3}]);
+assert.equal(projection.get('v1').x,projection.get('v2').x);
+assert.ok(projection.get('row').x > projection.get('v1').x);
+assert.ok(projection.get('related').x > projection.get('row').x);
+console.log('PASS: selected key, value column, rows and related rows stay in explicit columns');

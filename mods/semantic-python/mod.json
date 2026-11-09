@@ -1,0 +1,36 @@
+{
+  "apiVersion": 1,
+  "id": "semantic-python",
+  "name": "Python source definitions",
+  "version": "1.0.0",
+  "description": "Optional existing Jedi/Parso in the selected Python environment; source-only static definitions.",
+  "autoActivate": {
+    "extensions": [
+      ".py"
+    ],
+    "manifestNames": []
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "semanticProviders": [
+      {
+        "id": "jedi",
+        "language": "python",
+        "strategy": "jedi-local-v1",
+        "capabilities": [
+          "definition"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Python: исходные определения Jedi",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

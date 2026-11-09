@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "2a534e52dbfd2d61d823b3862f3a24bd12b2a7f48a2ab052108230bc15cd4e18",
+  "binarySha256": "6cb60170c0a2b6085bc6371a55cb4c160bcef8a871e20315cfed5afd7368bb46",
+  "platform": "macos14+",
+  "architectures": [
+    "arm64",
+    "x86_64"
+  ],
+  "networkRequired": false
+}

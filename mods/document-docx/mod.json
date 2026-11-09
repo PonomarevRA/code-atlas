@@ -1,0 +1,34 @@
+{
+  "apiVersion": 1,
+  "id": "document-docx",
+  "name": "DOCX",
+  "version": "1.0.0",
+  "description": "Host-owned static document profile; import requires an explicit build request.",
+  "autoActivate": {
+    "extensions": [
+      ".docx"
+    ]
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "documentProviders": [
+      {
+        "id": "document-docx",
+        "strategy": "document-docx-v1",
+        "extensions": [
+          ".docx"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Data-and-Updates",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "DOCX: статический документ",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+# Local deterministic document/log readers; no OCR or model downloads.
+markdown-it-py==4.2.0
+python-docx==1.2.0
+openpyxl==3.1.5
+python-pptx==1.0.2
+pypdf==6.21.1
+pdfplumber==0.11.10
+defusedxml==0.7.1
+drain3==0.9.11
+psutil==7.2.2

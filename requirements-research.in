@@ -1,0 +1,3 @@
+# Optional in behavior: imported lazily only for explicitly enabled local workflow mods.
+langgraph==1.2.15
+langgraph-checkpoint-sqlite==3.1.2

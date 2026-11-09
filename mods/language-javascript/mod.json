@@ -1,0 +1,40 @@
+{
+  "apiVersion": 1,
+  "id": "language-javascript",
+  "name": "javascript project structure",
+  "version": "1.0.0",
+  "description": "Declarative build-marker discovery. Logical folders are navigation areas, not claimed build modules.",
+  "analysis": {
+    "apiVersion": 1,
+    "projectRules": [
+      {
+        "id": "javascript-projects",
+        "language": "javascript",
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".mjs",
+          ".cjs"
+        ],
+        "manifestNames": [
+          "package.json"
+        ],
+        "manifestSuffixes": [],
+        "sourceRootMarkers": [
+          "src"
+        ],
+        "logicalFolders": false
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "JavaScript: структура проекта",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

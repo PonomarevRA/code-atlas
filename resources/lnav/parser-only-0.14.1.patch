@@ -1,0 +1,312 @@
+--- a/configure
++++ b/configure
+@@ -11809,7 +11809,7 @@
+ 
+   if test x$_libcurl_with = xno || test x$libcurl_cv_lib_curl_usable != xyes ; then
+      # This is the IF-NO path
+-     as_fn_error $? "libcurl required to build" "$LINENO" 5
++     : # Atlas parser-only build permits --without-libcurl
+   else
+      # This is the IF-YES path
+      :
+@@ -13466,6 +13466,7 @@
+     $(git describe --abbrev=7 --dirty --always --tags --match="v${PACKAGE_VERSION}*" 2>/dev/null) | \
+     sed -e 's/^\([0-9a-f]\)/'${PACKAGE_VERSION}'-\1/g' -e 's/^v//' 2>/dev/null)
+ cd $saved_location
++version="${PACKAGE_VERSION}-atlas-parser-only"
+ if test $? -eq 0
+ then :
+   version=$(echo $version | tr -d '\n')
+--- a/configure.ac
++++ b/configure.ac
+@@ -94,7 +94,7 @@
+ AC_SEARCH_LIBS(dlopen, dl)
+ AC_SEARCH_LIBS(backtrace, execinfo)
+ AC_SEARCH_LIBS(uc_width, unistring, [], [AC_MSG_ERROR([libunistring required to build])])
+-LIBCURL_CHECK_CONFIG([], [7.23.0], [], [AC_MSG_ERROR([libcurl required to build])], [test x"${enable_static}" = x"yes"])
++LIBCURL_CHECK_CONFIG([], [7.23.0], [], [], [test x"${enable_static}" = x"yes"])
+ 
+ AC_CHECK_HEADERS(execinfo.h pty.h util.h zlib.h bzlib.h libutil.h sys/ttydefaults.h libproc.h uniwidth.h sys/sysctl.h windows.h)
+ 
+@@ -253,6 +253,7 @@
+     $(git describe --abbrev=7 --dirty --always --tags --match="v${PACKAGE_VERSION}*" 2>/dev/null) | \
+     sed -e 's/^\([[0-9a-f]]\)/'${PACKAGE_VERSION}'-\1/g' -e 's/^v//' 2>/dev/null)
+ cd $saved_location
++version="${PACKAGE_VERSION}-atlas-parser-only"
+ AS_IF([test $? -eq 0],
+     [version=$(echo $version | tr -d '\n')
+      version=${version:-${PACKAGE_VERSION}}
+--- a/src/file_converter_manager.cc
++++ b/src/file_converter_manager.cc
+@@ -61,6 +61,10 @@
+ Result<convert_result, std::string>
+ convert(const external_file_format& eff, const std::string& filename)
+ {
++    // Atlas parser-only pack: secure mode must never spawn converters.
++    if (getenv("LNAVSECURE") != nullptr) {
++        return Err(std::string("external converters disabled in secure mode"));
++    }
+     log_info("attempting to convert file -- %s", filename.c_str());
+ 
+     std::filesystem::create_directories(cache_dir());
+--- a/src/cmds.io.cc
++++ b/src/cmds.io.cc
+@@ -62,11 +62,13 @@
+ #include "vtab_module.hh"
+ #include "yajlpp/json_op.hh"
+ 
++#ifdef HAVE_LIBCURL
+ #if !CURL_AT_LEAST_VERSION(7, 80, 0)
+ extern "C"
+ {
+ const char* curl_url_strerror(CURLUcode error);
+ }
++#endif
+ #endif
+ 
+ static bool
+@@ -1365,6 +1367,7 @@
+                 }
+ #endif
+             } else if ((url_index = fn.find("://")) != std::string::npos) {
++#ifdef HAVE_LIBCURL
+                 const auto& cfg
+                     = injector::get<const lnav::url_handler::config&>();
+                 const auto HOST_REGEX
+@@ -1421,6 +1424,9 @@
+                 }
+ 
+                 retval = "info: watching -- " + fn;
++#else
++                return ec.make_error("URL handlers disabled in parser-only build");
++#endif
+             } else if (lnav::filesystem::is_glob(fn.c_str())) {
+                 loo.with_init_location(file_loc);
+                 fc.fc_file_names.insert2(fn, loo);
+--- a/src/command_executor.cc
++++ b/src/command_executor.cc
+@@ -769,6 +769,7 @@
+     if (iter != scripts.as_scripts.end()) {
+         paths_to_exec = iter->second;
+     }
++#ifdef HAVE_LIBCURL
+     if (lnav::filesystem::is_url(script_name)) {
+         auto_mem<CURLU> cu(curl_url_cleanup);
+         cu = curl_url();
+@@ -796,6 +797,7 @@
+             }
+         }
+     }
++#endif
+     if (script_name == "-" || script_name == "/dev/stdin") {
+         paths_to_exec.push_back({script_name, "", "", ""});
+     } else if (access(script_name.c_str(), R_OK) == 0) {
+--- a/src/crashd.client.cc
++++ b/src/crashd.client.cc
+@@ -55,6 +55,9 @@
+ Result<void, lnav::console::user_message>
+ upload(const std::filesystem::path& log_path, progress_callback cb)
+ {
++#ifndef HAVE_LIBCURL
++    return Err(lnav::console::user_message::error("Crash uploads disabled in parser-only build"));
++#else
+     const auto read_res = lnav::filesystem::read_file(log_path);
+     if (read_res.isErr()) {
+         return Err(lnav::console::user_message::error(
+@@ -127,6 +130,7 @@
+     log_info("crashd response: %s", response.c_str());
+ 
+     return Ok();
++#endif
+ }
+ 
+ }  // namespace lnav::crashd::client
+--- a/src/regex101.client.cc
++++ b/src/regex101.client.cc
+@@ -31,7 +31,10 @@
+ 
+ #include "regex101.client.hh"
+ 
++#include "config.h"
++#ifdef HAVE_LIBCURL
+ #include <curl/curl.h>
++#endif
+ 
+ #include "base/itertools.hh"
+ #include "config.h"
+@@ -101,6 +104,9 @@
+ Result<upsert_response, lnav::console::user_message>
+ upsert(entry& en)
+ {
++#ifndef HAVE_LIBCURL
++    return Err(lnav::console::user_message::error("Network disabled in parser-only build"));
++#else
+     auto entry_json = get_entry_handlers().to_string(en);
+ 
+     curl_request cr(REGEX101_BASE_URL.string());
+@@ -151,6 +157,7 @@
+                    "unable to create entry on regex101.com")
+                    .with_reason(errors[0].to_attr_line(
+                        lnav::console::user_message::render_flags::none)));
++#endif
+ }
+ 
+ struct retrieve_version {
+@@ -182,6 +189,9 @@
+ retrieve_result_t
+ retrieve(const std::string& permalink)
+ {
++#ifndef HAVE_LIBCURL
++    return lnav::console::user_message::error("Network disabled in parser-only build");
++#else
+     auto entry_url = REGEX101_BASE_URL / permalink;
+     curl_request entry_req(entry_url.string());
+ 
+@@ -281,6 +291,7 @@
+     retval.e_permalink_fragment = permalink;
+ 
+     return retval;
++#endif
+ }
+ 
+ struct delete_entity {
+@@ -295,6 +306,9 @@
+ Result<void, lnav::console::user_message>
+ delete_entry(const std::string& delete_code)
+ {
++#ifndef HAVE_LIBCURL
++    return Err(lnav::console::user_message::error("Network disabled in parser-only build"));
++#else
+     curl_request cr(REGEX101_BASE_URL.string());
+     delete_entity entity{delete_code};
+     auto entity_json = DELETE_ENTITY_HANDLERS.to_string(entity);
+@@ -333,6 +347,7 @@
+     }
+ 
+     return Ok();
++#endif
+ }
+ 
+ std::string
+--- a/src/string-extension-functions.cc
++++ b/src/string-extension-functions.cc
+@@ -716,16 +716,21 @@
+     return ta.writeAccess()->next(frag);
+ }
+ 
++#ifdef HAVE_LIBCURL
+ #if !CURL_AT_LEAST_VERSION(7, 80, 0)
+ extern "C"
+ {
+ const char* curl_url_strerror(CURLUcode error);
+ }
+ #endif
++#endif
+ 
+ json_string
+ sql_parse_url(std::string url)
+ {
++#ifndef HAVE_LIBCURL
++    throw std::runtime_error("URL helpers disabled in parser-only build");
++#else
+     static auto* CURL_HANDLE = get_curl_easy();
+ 
+     auto_mem<CURLU> cu(curl_url_cleanup);
+@@ -899,6 +904,7 @@
+     }
+ 
+     return json_string(gen);
++#endif
+ }
+ 
+ struct url_parts {
+@@ -940,6 +946,9 @@
+ auto_mem<char>
+ sql_unparse_url(string_fragment in)
+ {
++#ifndef HAVE_LIBCURL
++    throw std::runtime_error("URL helpers disabled in parser-only build");
++#else
+     static auto* CURL_HANDLE = get_curl_easy();
+     static const intern_string_t SRC = intern_string::lookup("arg");
+ 
+@@ -1004,6 +1013,7 @@
+ 
+     curl_url_get(cu, CURLUPART_URL, retval.out(), 0);
+     return retval;
++#endif
+ }
+ 
+ }  // namespace
+--- a/src/external_opener.cc
++++ b/src/external_opener.cc
+@@ -73,16 +73,21 @@
+     return std::nullopt;
+ }
+ 
++#ifdef HAVE_LIBCURL
+ #if !CURL_AT_LEAST_VERSION(7, 80, 0)
+ extern "C"
+ {
+ const char* curl_url_strerror(CURLUcode error);
+ }
+ #endif
++#endif
+ 
+ Result<void, std::string>
+ for_href(const std::string& href)
+ {
++#ifndef HAVE_LIBCURL
++    return Err(std::string("External openers disabled in parser-only build"));
++#else
+     static const auto IMPL = get_impl();
+ 
+     auto_mem<CURLU> cu(curl_url_cleanup);
+@@ -231,6 +236,7 @@
+     }
+ 
+     return Ok();
++#endif
+ }
+ 
+ }  // namespace lnav::external_opener
+--- a/src/field_overlay_source.cc
++++ b/src/field_overlay_source.cc
+@@ -60,6 +60,9 @@
+ field_overlay_source::build_field_lines(const listview_curses& lv,
+                                         vis_line_t row)
+ {
++#ifndef HAVE_LIBCURL
++    return;
++#else
+     auto* vtab_manager = injector::get<log_vtab_manager*>();
+     auto& lss = this->fos_lss;
+     auto& vc = view_colors::singleton();
+@@ -770,6 +773,7 @@
+                       VC_ROLE.value(role_t::VCR_VARIABLE),
+                       ", "));
+     }
++#endif
+ }
+ 
+ void
+--- a/src/text_anonymizer.cc
++++ b/src/text_anonymizer.cc
+@@ -141,6 +141,9 @@
+ std::string
+ text_anonymizer::next(string_fragment line)
+ {
++#ifndef HAVE_LIBCURL
++    throw std::runtime_error("Anonymizer unavailable in parser-only build");
++#else
+     data_scanner ds(line);
+     std::string retval;
+ 
+@@ -531,6 +534,7 @@
+     }
+ 
+     return retval;
++#endif
+ }
+ 
+ }  // namespace lnav

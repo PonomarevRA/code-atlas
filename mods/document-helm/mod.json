@@ -1,0 +1,38 @@
+{
+  "apiVersion": 1,
+  "id": "document-helm",
+  "name": "Helm source: структура документа",
+  "version": "1.0.0",
+  "description": "Статический captured документ; импорт выполняется только явным запросом.",
+  "autoActivate": {
+    "extensions": [
+      ".yaml",
+      ".yml",
+      ".tpl"
+    ]
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "documentProviders": [
+      {
+        "id": "helm",
+        "strategy": "document-helm-v1",
+        "extensions": [
+          ".yaml",
+          ".yml",
+          ".tpl"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Data-and-Updates",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Helm: исходная структура",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

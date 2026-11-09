@@ -1,0 +1,80 @@
+{
+  "apiVersion": 1,
+  "id": "framework-nunit",
+  "name": "nunit source facts",
+  "version": "1.0.0",
+  "description": "Lexical test/library declarations. No test execution or dataset evaluation.",
+  "requires": [
+    "language-csharp"
+  ],
+  "analysis": {
+    "apiVersion": 1,
+    "testFrameworks": [
+      {
+        "id": "nunit",
+        "language": "csharp",
+        "annotationRules": [
+          {
+            "name": "NUnit.Framework.TestAttribute",
+            "role": "test"
+          },
+          {
+            "name": "NUnit.Framework.TestCaseAttribute",
+            "role": "test"
+          },
+          {
+            "name": "NUnit.Framework.TestCaseSourceAttribute",
+            "role": "test"
+          },
+          {
+            "name": "NUnit.Framework.ValueSourceAttribute",
+            "role": "parameter-source"
+          },
+          {
+            "name": "NUnit.Framework.ValuesAttribute",
+            "role": "parameter-source"
+          },
+          {
+            "name": "NUnit.Framework.SetUpAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "NUnit.Framework.TearDownAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "NUnit.Framework.OneTimeSetUpAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "NUnit.Framework.OneTimeTearDownAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "NUnit.Framework.IgnoreAttribute",
+            "role": "disabled"
+          },
+          {
+            "name": "NUnit.Framework.ExplicitAttribute",
+            "role": "disabled"
+          },
+          {
+            "name": "NUnit.Framework.CategoryAttribute",
+            "role": "metadata"
+          }
+        ],
+        "supportsComposed": false
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "NUnit: тестовые атрибуты",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

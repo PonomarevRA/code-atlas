@@ -1,0 +1,2701 @@
+{
+  "version": "module-analysis-benchmark-v1",
+  "python": "3.13.2",
+  "cases": [
+    {
+      "fixture": "atlas-classes.json",
+      "fixtureHash": "762e566d23d0f8df86cf717f94782c512b1a7b625b5c7b7f349a0ca25bf32220",
+      "source": {
+        "kind": "python-ast-declarations",
+        "fileHashes": {
+          "atlas/mcp_transport.py": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962",
+          "atlas/agent_activity/service.py": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277",
+          "atlas/technical_logs/service.py": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "coverage": "Lexical class/member ownership only; top-level functions have no class owner; runtime binding/calls not captured."
+      },
+      "projectionHash": "a194fe94e8cfcdf6690cdc58e3efc802ed5d76bf9b9f33cdb948e5213147939f",
+      "coverage": {
+        "status": "partial",
+        "sourceAnalysisStatus": "partial",
+        "unknownOwnershipCount": 1,
+        "uncertainDependencyCount": 0,
+        "missingEndpointCount": 0,
+        "unknownReasons": [
+          "source-analysis-not-confirmed-complete",
+          "ownership-incomplete"
+        ]
+      },
+      "unitCount": 4,
+      "repeats": 3,
+      "deterministicAcrossRepeats": true,
+      "elapsedSeconds": {
+        "first": 0.026559542020549998,
+        "median": 0.0060066670121159405,
+        "min": 0.0053232920181471854,
+        "max": 0.026559542020549998
+      },
+      "peakPythonBytes": {
+        "median": 110499,
+        "max": 1168627
+      },
+      "environment": {
+        "networkx": "3.7"
+      },
+      "proposals": [
+        {
+          "algorithm": "current",
+          "status": "available",
+          "partition": [
+            [
+              "class:8b7a3ff4593e81fca2d490d2"
+            ],
+            [
+              "class:9f1ec9b19c79579ca643508b"
+            ],
+            [
+              "class:b92576cde1c1b54040a90db9"
+            ],
+            [
+              "class:d74705569ea040f71bac316d"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "a194fe94e8cfcdf6690cdc58e3efc802ed5d76bf9b9f33cdb948e5213147939f",
+            "snapshotId": "atlas-classes-frozen-20261030",
+            "status": "partial",
+            "coverage": {
+              "status": "partial",
+              "sourceAnalysisStatus": "partial",
+              "unknownOwnershipCount": 1,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": [
+                "source-analysis-not-confirmed-complete",
+                "ownership-incomplete"
+              ]
+            },
+            "groups": [
+              {
+                "members": [
+                  "class:8b7a3ff4593e81fca2d490d2"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 6,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:9f1ec9b19c79579ca643508b"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:b92576cde1c1b54040a90db9"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 14,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:d74705569ea040f71bac316d"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 9,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 0,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 4,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [],
+              "absenceOfCycles": null,
+              "directedModularity": null
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0003957090084441006
+        },
+        {
+          "algorithm": "louvain",
+          "status": "available",
+          "partition": [
+            [
+              "class:8b7a3ff4593e81fca2d490d2"
+            ],
+            [
+              "class:9f1ec9b19c79579ca643508b"
+            ],
+            [
+              "class:b92576cde1c1b54040a90db9"
+            ],
+            [
+              "class:d74705569ea040f71bac316d"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "a194fe94e8cfcdf6690cdc58e3efc802ed5d76bf9b9f33cdb948e5213147939f",
+            "snapshotId": "atlas-classes-frozen-20261030",
+            "status": "partial",
+            "coverage": {
+              "status": "partial",
+              "sourceAnalysisStatus": "partial",
+              "unknownOwnershipCount": 1,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": [
+                "source-analysis-not-confirmed-complete",
+                "ownership-incomplete"
+              ]
+            },
+            "groups": [
+              {
+                "members": [
+                  "class:8b7a3ff4593e81fca2d490d2"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 6,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:9f1ec9b19c79579ca643508b"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:b92576cde1c1b54040a90db9"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 14,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:d74705569ea040f71bac316d"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 9,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 0,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 4,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [],
+              "absenceOfCycles": null,
+              "directedModularity": null
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0003343750140629709
+        },
+        {
+          "algorithm": "leiden",
+          "status": "available",
+          "partition": [
+            [
+              "class:8b7a3ff4593e81fca2d490d2"
+            ],
+            [
+              "class:9f1ec9b19c79579ca643508b"
+            ],
+            [
+              "class:b92576cde1c1b54040a90db9"
+            ],
+            [
+              "class:d74705569ea040f71bac316d"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "a194fe94e8cfcdf6690cdc58e3efc802ed5d76bf9b9f33cdb948e5213147939f",
+            "snapshotId": "atlas-classes-frozen-20261030",
+            "status": "partial",
+            "coverage": {
+              "status": "partial",
+              "sourceAnalysisStatus": "partial",
+              "unknownOwnershipCount": 1,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": [
+                "source-analysis-not-confirmed-complete",
+                "ownership-incomplete"
+              ]
+            },
+            "groups": [
+              {
+                "members": [
+                  "class:8b7a3ff4593e81fca2d490d2"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 6,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:9f1ec9b19c79579ca643508b"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:b92576cde1c1b54040a90db9"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 14,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:d74705569ea040f71bac316d"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 9,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 0,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 4,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [],
+              "absenceOfCycles": null,
+              "directedModularity": null
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0003207499976269901
+        },
+        {
+          "algorithm": "sarf-simple-directed",
+          "status": "available",
+          "partition": [
+            [
+              "class:8b7a3ff4593e81fca2d490d2"
+            ],
+            [
+              "class:9f1ec9b19c79579ca643508b"
+            ],
+            [
+              "class:b92576cde1c1b54040a90db9"
+            ],
+            [
+              "class:d74705569ea040f71bac316d"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "a194fe94e8cfcdf6690cdc58e3efc802ed5d76bf9b9f33cdb948e5213147939f",
+            "snapshotId": "atlas-classes-frozen-20261030",
+            "status": "partial",
+            "coverage": {
+              "status": "partial",
+              "sourceAnalysisStatus": "partial",
+              "unknownOwnershipCount": 1,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": [
+                "source-analysis-not-confirmed-complete",
+                "ownership-incomplete"
+              ]
+            },
+            "groups": [
+              {
+                "members": [
+                  "class:8b7a3ff4593e81fca2d490d2"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 6,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:9f1ec9b19c79579ca643508b"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:b92576cde1c1b54040a90db9"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 14,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "class:d74705569ea040f71bac316d"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 9,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 0,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 4,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [],
+              "absenceOfCycles": null,
+              "directedModularity": null
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "variant": "simple-directed-greedy",
+          "source": "https://arxiv.org/abs/1306.2096",
+          "effectiveParameters": {
+            "resolution": 1.0,
+            "isolatePolicy": "preserve-separate"
+          },
+          "limitations": [
+            "No member-level dedication facts; simple formula D=1/fanin(target).",
+            "Isolates retained; not a reproduction of paper experiments.",
+            "SArF optimizes dedication Q; assessment Q uses observed raw counts."
+          ],
+          "elapsedSeconds": 0.0003225419786758721
+        }
+      ]
+    },
+    {
+      "fixture": "atlas-imports.json",
+      "fixtureHash": "5269f83de008a1b4322a6e5b4dfad1d767989fa52439dc2005d1be9472664191",
+      "source": {
+        "kind": "python-ast-imports",
+        "capturedDate": "2026-10-30",
+        "fileHashes": {
+          "atlas/agent_activity/__init__.py": "291fc9898f61d9416f26c6afe92dd73cfbd7b91c7e7fdcdab96229bf9959058d",
+          "atlas/agent_activity/api.py": "3dac2d02e5e6b3327547d5f9ce131d2333e36a5fa886afb9042eefbb325f0b3d",
+          "atlas/agent_activity/disk.py": "8650d9fe78323845478e256a48ec5ef08760dc83d07b44ec96ccd3512898b2fc",
+          "atlas/agent_activity/events.py": "1fa13425f765275cf96706dced345f17321813192d6fb0b162d717860829f332",
+          "atlas/agent_activity/http_api.py": "59bc121b8edf65fe3c0daa149950dfdba67d373d99ff687ebdaacecaba2159d6",
+          "atlas/agent_activity/http_query.py": "d448fb75680b3026ca0dfb604451c1a2c48deb72e5bbc243a787fcff2aed028d",
+          "atlas/agent_activity/observer.py": "45bcf7ccb257fc8bd0cf9d854ed10a93eeb71a03f0c24317bb58ef9319ae384b",
+          "atlas/agent_activity/service.py": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277",
+          "atlas/agent_activity/settings.py": "fd602aa095beb8121a0f4405c8ee7abae2fdadb6afa14c1c6531e419c6c1bfcc",
+          "atlas/agent_activity/summaries.py": "ace334c52c91009e7ab317396865a915c30e5179e794554d814e8597c3116c56",
+          "atlas/code_organization.py": "a2fba40bed17ff947877426b3b562521eabb4685cb1482cf0029db815eace5a1",
+          "atlas/grouping_providers.py": "6f94c496b665e4bd9c40ec51bbaa8210090c5df2377f429830fddced0f75f6a8",
+          "atlas/integrations/graphify/__init__.py": "2fb96dc7ebf8c193bf5a676f0a48924d3a1dfc114bac96a24972f4b8dd730cf9",
+          "atlas/integrations/graphify/adapter.py": "014666f3aee119d4c4f8dbf914d82aca8e1d3a3ed67577210797c956f018e60f",
+          "atlas/integrations/graphify/chunking.py": "8d02fffea18eda931c02db5de5a19fea6a8d7c24b004a248e3443695a4dfa817",
+          "atlas/integrations/graphify/runtime.py": "210f78936d6df6916161c1dc2e90ed3fc4884d7ec71c9b98cdb4f788e4d5515f",
+          "atlas/mcp_transport.py": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962",
+          "atlas/organization_policy.py": "391b4d6a0f4c0b4160a7b4e00a6493247a9381d0be331752b4c5e59932f16ef1",
+          "atlas/semantic_providers/__init__.py": "5b95ca9e1b7924c1b25253b4a1b3534de7fc8de292aa9f4e6572f86044396481",
+          "atlas/semantic_providers/gopls.py": "63af1e1f70bf03e36ddfc338fdf9b786380b40ed12d94a024bc9b8bfab432c2c",
+          "atlas/semantic_providers/jdt.py": "0985c8cfcffc00ca900a184d385013661cca36a9b8b94ef953a2f5199c671283",
+          "atlas/semantic_providers/kotlin.py": "edd2999c3cc459196a2888a5519365cd5bf6e822bf304d865a68862ce524469a",
+          "atlas/semantic_providers/lsp_base.py": "d671b2f2303bcde1c6433313cfb969e744b7d8a31517b0dfb0cf2b3f3bc7d7dc",
+          "atlas/semantic_providers/php.py": "25897282e5df05fc93ed00a2f1293643820f75d8895c0cf49e36c64a429431d5",
+          "atlas/semantic_providers/python.py": "6b1551fdc339c5085ea6e18811d5c97de08e680810cdd05183536886e0208d62",
+          "atlas/semantic_providers/python_worker.py": "92a1b2d3949f9900af0485c7f54b66de024e62dfe0316ad609c8616680dead7a",
+          "atlas/semantic_providers/roslyn.py": "4e37cead0c3fbd6bc10bd7cafd9c5f7fafca9efd5e082eb06cc8fc7d1625aa33",
+          "atlas/semantic_providers/roslyn_context.py": "16d25614c13fa260a6f774af901edbb88e09b1992825a92c07f39bde99c57487",
+          "atlas/semantic_providers/rust_analyzer.py": "a34db5ea82820096d9bb2fd0f979628580d432c892a7ed35ea79e4c6f34234c2",
+          "atlas/semantic_providers/sourcekit.py": "dc93114e3a22af8833f281c768b471904fa73ffccc900d52c420403ce4f35ff0",
+          "atlas/semantic_providers/typescript.py": "6e3cc1fa83031ce427cbcacbd1ef3154bbaef9f5a985875c22a898ce31a2f859",
+          "atlas/technical_logs/__init__.py": "be84ee8c9cda7861f5547504e1bc394a377138064f610940207f33704ab5ab0f",
+          "atlas/technical_logs/disk.py": "fb8d3faaf602c3fbba4bc3582ae6b79f0e87a5b9c5f6995df6648ded00560bec",
+          "atlas/technical_logs/events.py": "39bdfeec6a199d2412ce84205a0a66deac79a35012be24ea00c254bf80d9bab8",
+          "atlas/technical_logs/http_api.py": "50741c9ebfcb641e7510b2d0743d0877e4e8ba44be992b03c46cdf30ba4d76a1",
+          "atlas/technical_logs/http_query.py": "2a479f5aff2773e4e7c4561ac860f741ed29281218669f7b59ccc252d10e78d8",
+          "atlas/technical_logs/metrics.py": "d1117ea79aadfdf0cafc909d00178efcad392ef3f5b5cdd7e448313bdef4ff0b",
+          "atlas/technical_logs/service.py": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf",
+          "atlas/technical_logs/settings.py": "ee5a21a62ef10011710f96a76f80e18c5ddd0d66bf225377ef35889dc217d4f8"
+        },
+        "coverage": "Selected module imports only; calls/dynamic imports/external dependencies not included."
+      },
+      "projectionHash": "55c2f6a13e2858f38fc3d04034bf7e8e8eb6aa83031b452e445efc952fedae92",
+      "coverage": {
+        "status": "partial",
+        "sourceAnalysisStatus": "partial",
+        "unknownOwnershipCount": 0,
+        "uncertainDependencyCount": 0,
+        "missingEndpointCount": 0,
+        "unknownReasons": [
+          "source-analysis-not-confirmed-complete"
+        ]
+      },
+      "unitCount": 5,
+      "repeats": 3,
+      "deterministicAcrossRepeats": true,
+      "elapsedSeconds": {
+        "first": 0.007354875007877126,
+        "median": 0.007559583988040686,
+        "min": 0.007354875007877126,
+        "max": 0.007709916011663154
+      },
+      "peakPythonBytes": {
+        "median": 118307,
+        "max": 124595
+      },
+      "environment": {
+        "networkx": "3.7"
+      },
+      "proposals": [
+        {
+          "algorithm": "current",
+          "status": "available",
+          "partition": [
+            [
+              "folder:377a73a582c894b6c5c8df41"
+            ],
+            [
+              "folder:bf536e9cab4899475dbceeb1"
+            ],
+            [
+              "folder:d5fe48ab7981cc99ba70b183"
+            ],
+            [
+              "folder:d7c698329879048e464da0d8"
+            ],
+            [
+              "folder:ef183eaf814a39d145bfcf71"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "55c2f6a13e2858f38fc3d04034bf7e8e8eb6aa83031b452e445efc952fedae92",
+            "snapshotId": "atlas-imports-frozen-20261030",
+            "status": "partial",
+            "coverage": {
+              "status": "partial",
+              "sourceAnalysisStatus": "partial",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": [
+                "source-analysis-not-confirmed-complete"
+              ]
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:377a73a582c894b6c5c8df41"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 8,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:bf536e9cab4899475dbceeb1"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:d5fe48ab7981cc99ba70b183"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:d7c698329879048e464da0d8"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 10,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ef183eaf814a39d145bfcf71"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 13,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 26,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 26,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 5,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [],
+              "absenceOfCycles": null,
+              "directedModularity": null
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0004856659797951579
+        },
+        {
+          "algorithm": "louvain",
+          "status": "available",
+          "partition": [
+            [
+              "folder:377a73a582c894b6c5c8df41"
+            ],
+            [
+              "folder:bf536e9cab4899475dbceeb1"
+            ],
+            [
+              "folder:d5fe48ab7981cc99ba70b183"
+            ],
+            [
+              "folder:d7c698329879048e464da0d8"
+            ],
+            [
+              "folder:ef183eaf814a39d145bfcf71"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "55c2f6a13e2858f38fc3d04034bf7e8e8eb6aa83031b452e445efc952fedae92",
+            "snapshotId": "atlas-imports-frozen-20261030",
+            "status": "partial",
+            "coverage": {
+              "status": "partial",
+              "sourceAnalysisStatus": "partial",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": [
+                "source-analysis-not-confirmed-complete"
+              ]
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:377a73a582c894b6c5c8df41"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 8,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:bf536e9cab4899475dbceeb1"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:d5fe48ab7981cc99ba70b183"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:d7c698329879048e464da0d8"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 10,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ef183eaf814a39d145bfcf71"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 13,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 26,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 26,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 5,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [],
+              "absenceOfCycles": null,
+              "directedModularity": null
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.00040454199188388884
+        },
+        {
+          "algorithm": "leiden",
+          "status": "available",
+          "partition": [
+            [
+              "folder:377a73a582c894b6c5c8df41"
+            ],
+            [
+              "folder:bf536e9cab4899475dbceeb1"
+            ],
+            [
+              "folder:d5fe48ab7981cc99ba70b183"
+            ],
+            [
+              "folder:d7c698329879048e464da0d8"
+            ],
+            [
+              "folder:ef183eaf814a39d145bfcf71"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "55c2f6a13e2858f38fc3d04034bf7e8e8eb6aa83031b452e445efc952fedae92",
+            "snapshotId": "atlas-imports-frozen-20261030",
+            "status": "partial",
+            "coverage": {
+              "status": "partial",
+              "sourceAnalysisStatus": "partial",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": [
+                "source-analysis-not-confirmed-complete"
+              ]
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:377a73a582c894b6c5c8df41"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 8,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:bf536e9cab4899475dbceeb1"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:d5fe48ab7981cc99ba70b183"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:d7c698329879048e464da0d8"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 10,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ef183eaf814a39d145bfcf71"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 13,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 26,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 26,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 5,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [],
+              "absenceOfCycles": null,
+              "directedModularity": null
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0003903330070897937
+        },
+        {
+          "algorithm": "sarf-simple-directed",
+          "status": "available",
+          "partition": [
+            [
+              "folder:377a73a582c894b6c5c8df41"
+            ],
+            [
+              "folder:bf536e9cab4899475dbceeb1"
+            ],
+            [
+              "folder:d5fe48ab7981cc99ba70b183"
+            ],
+            [
+              "folder:d7c698329879048e464da0d8"
+            ],
+            [
+              "folder:ef183eaf814a39d145bfcf71"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "55c2f6a13e2858f38fc3d04034bf7e8e8eb6aa83031b452e445efc952fedae92",
+            "snapshotId": "atlas-imports-frozen-20261030",
+            "status": "partial",
+            "coverage": {
+              "status": "partial",
+              "sourceAnalysisStatus": "partial",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": [
+                "source-analysis-not-confirmed-complete"
+              ]
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:377a73a582c894b6c5c8df41"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 8,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:bf536e9cab4899475dbceeb1"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:d5fe48ab7981cc99ba70b183"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 4,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:d7c698329879048e464da0d8"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 10,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ef183eaf814a39d145bfcf71"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 13,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 26,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 26,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 5,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [],
+              "absenceOfCycles": null,
+              "directedModularity": null
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "variant": "simple-directed-greedy",
+          "source": "https://arxiv.org/abs/1306.2096",
+          "effectiveParameters": {
+            "resolution": 1.0,
+            "isolatePolicy": "preserve-separate"
+          },
+          "limitations": [
+            "No member-level dedication facts; simple formula D=1/fanin(target).",
+            "Isolates retained; not a reproduction of paper experiments.",
+            "SArF optimizes dedication Q; assessment Q uses observed raw counts."
+          ],
+          "elapsedSeconds": 0.0003873750101774931
+        }
+      ]
+    },
+    {
+      "fixture": "dense-bridge.json",
+      "fixtureHash": "21ed06e2dd671386e5e463a6a6c73fcc3be8cee6b96718234bad39a7d20add02",
+      "source": {
+        "kind": "hand-constructed",
+        "meaning": "structural regression, not functional ground truth"
+      },
+      "projectionHash": "777d2b118eaa6fef19c87ea1e91223178461de44cf4c272248fa1db90e8019ca",
+      "coverage": {
+        "status": "complete",
+        "sourceAnalysisStatus": "complete",
+        "unknownOwnershipCount": 0,
+        "uncertainDependencyCount": 0,
+        "missingEndpointCount": 0,
+        "unknownReasons": []
+      },
+      "unitCount": 6,
+      "repeats": 3,
+      "deterministicAcrossRepeats": true,
+      "elapsedSeconds": {
+        "first": 0.011716416978742927,
+        "median": 0.007612167013576254,
+        "min": 0.00726241699885577,
+        "max": 0.011716416978742927
+      },
+      "peakPythonBytes": {
+        "median": 109714,
+        "max": 157050
+      },
+      "environment": {
+        "networkx": "3.7"
+      },
+      "proposals": [
+        {
+          "algorithm": "current",
+          "status": "available",
+          "partition": [
+            [
+              "folder:20c400557af0eddc0be4d9e0"
+            ],
+            [
+              "folder:2bc983a5942276eb00a75e21"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559"
+            ],
+            [
+              "folder:ba2df4903a2c14e86dc3bcca"
+            ],
+            [
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "777d2b118eaa6fef19c87ea1e91223178461de44cf4c272248fa1db90e8019ca",
+            "snapshotId": "synthetic-dense-bridge",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:20c400557af0eddc0be4d9e0"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 2,
+                "outgoingWeight": 2,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:2bc983a5942276eb00a75e21"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 2,
+                "outgoingWeight": 2,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 2,
+                "outgoingWeight": 3,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 2,
+                "outgoingWeight": 2,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ba2df4903a2c14e86dc3bcca"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 3,
+                "outgoingWeight": 2,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 2,
+                "outgoingWeight": 2,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 0,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 13,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 6,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [
+                [
+                  "folder:20c400557af0eddc0be4d9e0",
+                  "folder:2bc983a5942276eb00a75e21",
+                  "folder:ba2df4903a2c14e86dc3bcca"
+                ],
+                [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": -0.16568047337278108
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0010002920171245933
+        },
+        {
+          "algorithm": "louvain",
+          "status": "available",
+          "partition": [
+            [
+              "folder:20c400557af0eddc0be4d9e0",
+              "folder:2bc983a5942276eb00a75e21",
+              "folder:ba2df4903a2c14e86dc3bcca"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921",
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "undirected-summed-directions",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "777d2b118eaa6fef19c87ea1e91223178461de44cf4c272248fa1db90e8019ca",
+            "snapshotId": "synthetic-dense-bridge",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:20c400557af0eddc0be4d9e0",
+                  "folder:2bc983a5942276eb00a75e21",
+                  "folder:ba2df4903a2c14e86dc3bcca"
+                ],
+                "unitCount": 3,
+                "sourceNodeCount": 3,
+                "incomingWeight": 1,
+                "outgoingWeight": 0,
+                "cohesionDensity": 1.0,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 3,
+                "sourceNodeCount": 3,
+                "incomingWeight": 0,
+                "outgoingWeight": 1,
+                "cohesionDensity": 1.0,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 12,
+              "internalBetweenUnitDependencyWeight": 12,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 1,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 2,
+              "minGroupUnits": 3,
+              "maxGroupUnits": 3,
+              "observedCycleComponents": [
+                [
+                  "folder:20c400557af0eddc0be4d9e0",
+                  "folder:2bc983a5942276eb00a75e21",
+                  "folder:ba2df4903a2c14e86dc3bcca"
+                ],
+                [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": 0.42603550295857995
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.001273041998501867
+        },
+        {
+          "algorithm": "leiden",
+          "status": "available",
+          "partition": [
+            [
+              "folder:20c400557af0eddc0be4d9e0",
+              "folder:2bc983a5942276eb00a75e21",
+              "folder:ba2df4903a2c14e86dc3bcca"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921",
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "undirected-summed-directions",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "777d2b118eaa6fef19c87ea1e91223178461de44cf4c272248fa1db90e8019ca",
+            "snapshotId": "synthetic-dense-bridge",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:20c400557af0eddc0be4d9e0",
+                  "folder:2bc983a5942276eb00a75e21",
+                  "folder:ba2df4903a2c14e86dc3bcca"
+                ],
+                "unitCount": 3,
+                "sourceNodeCount": 3,
+                "incomingWeight": 1,
+                "outgoingWeight": 0,
+                "cohesionDensity": 1.0,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 3,
+                "sourceNodeCount": 3,
+                "incomingWeight": 0,
+                "outgoingWeight": 1,
+                "cohesionDensity": 1.0,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 12,
+              "internalBetweenUnitDependencyWeight": 12,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 1,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 2,
+              "minGroupUnits": 3,
+              "maxGroupUnits": 3,
+              "observedCycleComponents": [
+                [
+                  "folder:20c400557af0eddc0be4d9e0",
+                  "folder:2bc983a5942276eb00a75e21",
+                  "folder:ba2df4903a2c14e86dc3bcca"
+                ],
+                [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": 0.42603550295857995
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0015609170077368617
+        },
+        {
+          "algorithm": "sarf-simple-directed",
+          "status": "available",
+          "partition": [
+            [
+              "folder:20c400557af0eddc0be4d9e0",
+              "folder:2bc983a5942276eb00a75e21",
+              "folder:ba2df4903a2c14e86dc3bcca"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921",
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "directed-simple-dedication",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "777d2b118eaa6fef19c87ea1e91223178461de44cf4c272248fa1db90e8019ca",
+            "snapshotId": "synthetic-dense-bridge",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:20c400557af0eddc0be4d9e0",
+                  "folder:2bc983a5942276eb00a75e21",
+                  "folder:ba2df4903a2c14e86dc3bcca"
+                ],
+                "unitCount": 3,
+                "sourceNodeCount": 3,
+                "incomingWeight": 1,
+                "outgoingWeight": 0,
+                "cohesionDensity": 1.0,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 3,
+                "sourceNodeCount": 3,
+                "incomingWeight": 0,
+                "outgoingWeight": 1,
+                "cohesionDensity": 1.0,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 12,
+              "internalBetweenUnitDependencyWeight": 12,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 1,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 2,
+              "minGroupUnits": 3,
+              "maxGroupUnits": 3,
+              "observedCycleComponents": [
+                [
+                  "folder:20c400557af0eddc0be4d9e0",
+                  "folder:2bc983a5942276eb00a75e21",
+                  "folder:ba2df4903a2c14e86dc3bcca"
+                ],
+                [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": 0.42603550295857995
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "variant": "simple-directed-greedy",
+          "source": "https://arxiv.org/abs/1306.2096",
+          "effectiveParameters": {
+            "resolution": 1.0,
+            "isolatePolicy": "preserve-separate"
+          },
+          "limitations": [
+            "No member-level dedication facts; simple formula D=1/fanin(target).",
+            "Isolates retained; not a reproduction of paper experiments.",
+            "SArF optimizes dedication Q; assessment Q uses observed raw counts."
+          ],
+          "elapsedSeconds": 0.000915374985197559
+        }
+      ]
+    },
+    {
+      "fixture": "directed-hub.json",
+      "fixtureHash": "cfc470c37a51c526f0761ddc3303aa72495b6f20aa72aa3b163f66259d071fef",
+      "source": {
+        "kind": "hand-constructed",
+        "meaning": "structural regression, not functional ground truth"
+      },
+      "projectionHash": "99c32ea71eb7fd6190e23fa7496f60149fc309e669205017f3a2387963f3ccb6",
+      "coverage": {
+        "status": "complete",
+        "sourceAnalysisStatus": "complete",
+        "unknownOwnershipCount": 0,
+        "uncertainDependencyCount": 0,
+        "missingEndpointCount": 0,
+        "unknownReasons": []
+      },
+      "unitCount": 5,
+      "repeats": 3,
+      "deterministicAcrossRepeats": true,
+      "elapsedSeconds": {
+        "first": 0.0063324589864350855,
+        "median": 0.0063324589864350855,
+        "min": 0.006174040987389162,
+        "max": 0.006333625002298504
+      },
+      "peakPythonBytes": {
+        "median": 106459,
+        "max": 107979
+      },
+      "environment": {
+        "networkx": "3.7"
+      },
+      "proposals": [
+        {
+          "algorithm": "current",
+          "status": "available",
+          "partition": [
+            [
+              "folder:793f3b636e39c0b42b914bc5"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559"
+            ],
+            [
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ],
+            [
+              "folder:fe8c29cc50ff8a82d9675b6d"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "99c32ea71eb7fd6190e23fa7496f60149fc309e669205017f3a2387963f3ccb6",
+            "snapshotId": "synthetic-directed-hub",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:793f3b636e39c0b42b914bc5"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 3,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 1,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 1,
+                "outgoingWeight": 2,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 1,
+                "outgoingWeight": 2,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:fe8c29cc50ff8a82d9675b6d"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 0,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 5,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 5,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [
+                [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": -0.16
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.000661625002976507
+        },
+        {
+          "algorithm": "louvain",
+          "status": "available",
+          "partition": [
+            [
+              "folder:793f3b636e39c0b42b914bc5",
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ],
+            [
+              "folder:fe8c29cc50ff8a82d9675b6d"
+            ]
+          ],
+          "preprocessing": "undirected-summed-directions",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "99c32ea71eb7fd6190e23fa7496f60149fc309e669205017f3a2387963f3ccb6",
+            "snapshotId": "synthetic-directed-hub",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:793f3b636e39c0b42b914bc5",
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 2,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 0,
+                "outgoingWeight": 2,
+                "cohesionDensity": 1.0,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:fe8c29cc50ff8a82d9675b6d"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 3,
+              "internalBetweenUnitDependencyWeight": 3,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 2,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 3,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 2,
+              "observedCycleComponents": [
+                [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": 0.16000000000000003
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0011079999967478216
+        },
+        {
+          "algorithm": "leiden",
+          "status": "available",
+          "partition": [
+            [
+              "folder:793f3b636e39c0b42b914bc5",
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ],
+            [
+              "folder:fe8c29cc50ff8a82d9675b6d"
+            ]
+          ],
+          "preprocessing": "undirected-summed-directions",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "99c32ea71eb7fd6190e23fa7496f60149fc309e669205017f3a2387963f3ccb6",
+            "snapshotId": "synthetic-directed-hub",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:793f3b636e39c0b42b914bc5",
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 2,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 0,
+                "outgoingWeight": 2,
+                "cohesionDensity": 1.0,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:fe8c29cc50ff8a82d9675b6d"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 3,
+              "internalBetweenUnitDependencyWeight": 3,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 2,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 3,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 2,
+              "observedCycleComponents": [
+                [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": 0.16000000000000003
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0014709579991176724
+        },
+        {
+          "algorithm": "sarf-simple-directed",
+          "status": "available",
+          "partition": [
+            [
+              "folder:793f3b636e39c0b42b914bc5",
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ],
+            [
+              "folder:fe8c29cc50ff8a82d9675b6d"
+            ]
+          ],
+          "preprocessing": "directed-simple-dedication",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "99c32ea71eb7fd6190e23fa7496f60149fc309e669205017f3a2387963f3ccb6",
+            "snapshotId": "synthetic-directed-hub",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:793f3b636e39c0b42b914bc5",
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 2,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 0,
+                "outgoingWeight": 2,
+                "cohesionDensity": 1.0,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:fe8c29cc50ff8a82d9675b6d"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 3,
+              "internalBetweenUnitDependencyWeight": 3,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 2,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 3,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 2,
+              "observedCycleComponents": [
+                [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": 0.16000000000000003
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "variant": "simple-directed-greedy",
+          "source": "https://arxiv.org/abs/1306.2096",
+          "effectiveParameters": {
+            "resolution": 1.0,
+            "isolatePolicy": "preserve-separate"
+          },
+          "limitations": [
+            "No member-level dedication facts; simple formula D=1/fanin(target).",
+            "Isolates retained; not a reproduction of paper experiments.",
+            "SArF optimizes dedication Q; assessment Q uses observed raw counts."
+          ],
+          "elapsedSeconds": 0.0007649170001968741
+        }
+      ]
+    },
+    {
+      "fixture": "disconnected.json",
+      "fixtureHash": "c05fa0b1bb32b0ce4f8350d0bb5b7cf7a0768a8b81945ca188b5a835daed81a6",
+      "source": {
+        "kind": "hand-constructed",
+        "meaning": "structural regression, not functional ground truth"
+      },
+      "projectionHash": "06fb37c295a22123ad68f3372bf968195640afc49cc018cb37752e4fdf9ccd9e",
+      "coverage": {
+        "status": "complete",
+        "sourceAnalysisStatus": "complete",
+        "unknownOwnershipCount": 0,
+        "uncertainDependencyCount": 0,
+        "missingEndpointCount": 0,
+        "unknownReasons": []
+      },
+      "unitCount": 6,
+      "repeats": 3,
+      "deterministicAcrossRepeats": true,
+      "elapsedSeconds": {
+        "first": 0.006980625010328367,
+        "median": 0.006980625010328367,
+        "min": 0.006346542009850964,
+        "max": 0.007004874991253018
+      },
+      "peakPythonBytes": {
+        "median": 107135,
+        "max": 107895
+      },
+      "environment": {
+        "networkx": "3.7"
+      },
+      "proposals": [
+        {
+          "algorithm": "current",
+          "status": "available",
+          "partition": [
+            [
+              "folder:30f8b180d63559f2512b744f"
+            ],
+            [
+              "folder:3fa5834dc920d385ca9b099c"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:8c8656c5d114d7f8b2a412d2"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559"
+            ],
+            [
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "06fb37c295a22123ad68f3372bf968195640afc49cc018cb37752e4fdf9ccd9e",
+            "snapshotId": "synthetic-disconnected",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:30f8b180d63559f2512b744f"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:3fa5834dc920d385ca9b099c"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 1,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 1,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:8c8656c5d114d7f8b2a412d2"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 1,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 1,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 0,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 2,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 6,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [],
+              "absenceOfCycles": true,
+              "directedModularity": 0.0
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0007140420202631503
+        },
+        {
+          "algorithm": "louvain",
+          "status": "available",
+          "partition": [
+            [
+              "folder:30f8b180d63559f2512b744f"
+            ],
+            [
+              "folder:3fa5834dc920d385ca9b099c",
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:8c8656c5d114d7f8b2a412d2"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "undirected-summed-directions",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "06fb37c295a22123ad68f3372bf968195640afc49cc018cb37752e4fdf9ccd9e",
+            "snapshotId": "synthetic-disconnected",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:30f8b180d63559f2512b744f"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:3fa5834dc920d385ca9b099c",
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:8c8656c5d114d7f8b2a412d2"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 2,
+              "internalBetweenUnitDependencyWeight": 2,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 4,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 2,
+              "observedCycleComponents": [],
+              "absenceOfCycles": true,
+              "directedModularity": 0.5
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0012040419969707727
+        },
+        {
+          "algorithm": "leiden",
+          "status": "available",
+          "partition": [
+            [
+              "folder:30f8b180d63559f2512b744f"
+            ],
+            [
+              "folder:3fa5834dc920d385ca9b099c",
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:8c8656c5d114d7f8b2a412d2"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "undirected-summed-directions",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "06fb37c295a22123ad68f3372bf968195640afc49cc018cb37752e4fdf9ccd9e",
+            "snapshotId": "synthetic-disconnected",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:30f8b180d63559f2512b744f"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:3fa5834dc920d385ca9b099c",
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:8c8656c5d114d7f8b2a412d2"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 2,
+              "internalBetweenUnitDependencyWeight": 2,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 4,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 2,
+              "observedCycleComponents": [],
+              "absenceOfCycles": true,
+              "directedModularity": 0.5
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0014489169989246875
+        },
+        {
+          "algorithm": "sarf-simple-directed",
+          "status": "available",
+          "partition": [
+            [
+              "folder:30f8b180d63559f2512b744f"
+            ],
+            [
+              "folder:3fa5834dc920d385ca9b099c",
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:8c8656c5d114d7f8b2a412d2"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "directed-simple-dedication",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "06fb37c295a22123ad68f3372bf968195640afc49cc018cb37752e4fdf9ccd9e",
+            "snapshotId": "synthetic-disconnected",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:30f8b180d63559f2512b744f"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:3fa5834dc920d385ca9b099c",
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:8c8656c5d114d7f8b2a412d2"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 0,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 2,
+              "internalBetweenUnitDependencyWeight": 2,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 0,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 4,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 2,
+              "observedCycleComponents": [],
+              "absenceOfCycles": true,
+              "directedModularity": 0.5
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "variant": "simple-directed-greedy",
+          "source": "https://arxiv.org/abs/1306.2096",
+          "effectiveParameters": {
+            "resolution": 1.0,
+            "isolatePolicy": "preserve-separate"
+          },
+          "limitations": [
+            "No member-level dedication facts; simple formula D=1/fanin(target).",
+            "Isolates retained; not a reproduction of paper experiments.",
+            "SArF optimizes dedication Q; assessment Q uses observed raw counts."
+          ],
+          "elapsedSeconds": 0.0007804170018061996
+        }
+      ]
+    },
+    {
+      "fixture": "scc-and-chain.json",
+      "fixtureHash": "1a28e57730950c666f2f07a3bb2bc6a095870ebb8c917953a6769b3c87f4e1ee",
+      "source": {
+        "kind": "hand-constructed",
+        "meaning": "structural regression, not functional ground truth"
+      },
+      "projectionHash": "7bdc893de27daa09a2e1d2ffeeb43033319882398a33a2c458f23bc4090b70c9",
+      "coverage": {
+        "status": "complete",
+        "sourceAnalysisStatus": "complete",
+        "unknownOwnershipCount": 0,
+        "uncertainDependencyCount": 0,
+        "missingEndpointCount": 0,
+        "unknownReasons": []
+      },
+      "unitCount": 5,
+      "repeats": 3,
+      "deterministicAcrossRepeats": true,
+      "elapsedSeconds": {
+        "first": 0.0061337090155575424,
+        "median": 0.0061337090155575424,
+        "min": 0.005899709009099752,
+        "max": 0.006365375011228025
+      },
+      "peakPythonBytes": {
+        "median": 105802,
+        "max": 107050
+      },
+      "environment": {
+        "networkx": "3.7"
+      },
+      "proposals": [
+        {
+          "algorithm": "current",
+          "status": "available",
+          "partition": [
+            [
+              "folder:3fa5834dc920d385ca9b099c"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921"
+            ],
+            [
+              "folder:8c8656c5d114d7f8b2a412d2"
+            ],
+            [
+              "folder:ac8d8342bbb2362d13f0a559"
+            ],
+            [
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "identity-current-units",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "7bdc893de27daa09a2e1d2ffeeb43033319882398a33a2c458f23bc4090b70c9",
+            "snapshotId": "synthetic-scc-and-chain",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:3fa5834dc920d385ca9b099c"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 1,
+                "outgoingWeight": 1,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 1,
+                "outgoingWeight": 2,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:8c8656c5d114d7f8b2a412d2"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 1,
+                "outgoingWeight": 0,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:ac8d8342bbb2362d13f0a559"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 1,
+                "outgoingWeight": 1,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 1,
+                "sourceNodeCount": 1,
+                "incomingWeight": 1,
+                "outgoingWeight": 1,
+                "cohesionDensity": null,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 0,
+              "internalBetweenUnitDependencyWeight": 0,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 5,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 5,
+              "minGroupUnits": 1,
+              "maxGroupUnits": 1,
+              "observedCycleComponents": [
+                [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": -0.2
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.000723542005289346
+        },
+        {
+          "algorithm": "louvain",
+          "status": "available",
+          "partition": [
+            [
+              "folder:3fa5834dc920d385ca9b099c",
+              "folder:8c8656c5d114d7f8b2a412d2"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921",
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "undirected-summed-directions",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "7bdc893de27daa09a2e1d2ffeeb43033319882398a33a2c458f23bc4090b70c9",
+            "snapshotId": "synthetic-scc-and-chain",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:3fa5834dc920d385ca9b099c",
+                  "folder:8c8656c5d114d7f8b2a412d2"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 1,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 3,
+                "sourceNodeCount": 3,
+                "incomingWeight": 0,
+                "outgoingWeight": 1,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 4,
+              "internalBetweenUnitDependencyWeight": 4,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 1,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 2,
+              "minGroupUnits": 2,
+              "maxGroupUnits": 3,
+              "observedCycleComponents": [
+                [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": 0.24
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0010759999859146774
+        },
+        {
+          "algorithm": "leiden",
+          "status": "available",
+          "partition": [
+            [
+              "folder:3fa5834dc920d385ca9b099c",
+              "folder:8c8656c5d114d7f8b2a412d2"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921",
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "undirected-summed-directions",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "7bdc893de27daa09a2e1d2ffeeb43033319882398a33a2c458f23bc4090b70c9",
+            "snapshotId": "synthetic-scc-and-chain",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:3fa5834dc920d385ca9b099c",
+                  "folder:8c8656c5d114d7f8b2a412d2"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 1,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 3,
+                "sourceNodeCount": 3,
+                "incomingWeight": 0,
+                "outgoingWeight": 1,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 4,
+              "internalBetweenUnitDependencyWeight": 4,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 1,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 2,
+              "minGroupUnits": 2,
+              "maxGroupUnits": 3,
+              "observedCycleComponents": [
+                [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": 0.24
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "elapsedSeconds": 0.0013420420000329614
+        },
+        {
+          "algorithm": "sarf-simple-directed",
+          "status": "available",
+          "partition": [
+            [
+              "folder:3fa5834dc920d385ca9b099c",
+              "folder:8c8656c5d114d7f8b2a412d2"
+            ],
+            [
+              "folder:879923da020d1533f4d8e921",
+              "folder:ac8d8342bbb2362d13f0a559",
+              "folder:c100f95c1913f9c72fc1f4ef"
+            ]
+          ],
+          "preprocessing": "directed-simple-dedication",
+          "assessment": {
+            "version": "module-analysis-v1",
+            "projectionHash": "7bdc893de27daa09a2e1d2ffeeb43033319882398a33a2c458f23bc4090b70c9",
+            "snapshotId": "synthetic-scc-and-chain",
+            "status": "observed",
+            "coverage": {
+              "status": "complete",
+              "sourceAnalysisStatus": "complete",
+              "unknownOwnershipCount": 0,
+              "uncertainDependencyCount": 0,
+              "missingEndpointCount": 0,
+              "unknownReasons": []
+            },
+            "groups": [
+              {
+                "members": [
+                  "folder:3fa5834dc920d385ca9b099c",
+                  "folder:8c8656c5d114d7f8b2a412d2"
+                ],
+                "unitCount": 2,
+                "sourceNodeCount": 2,
+                "incomingWeight": 1,
+                "outgoingWeight": 0,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              },
+              {
+                "members": [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ],
+                "unitCount": 3,
+                "sourceNodeCount": 3,
+                "incomingWeight": 0,
+                "outgoingWeight": 1,
+                "cohesionDensity": 0.5,
+                "weaklyConnectedObserved": true
+              }
+            ],
+            "metrics": {
+              "internalDependencyWeight": 4,
+              "internalBetweenUnitDependencyWeight": 4,
+              "withinUnitDependencyWeight": 0,
+              "externalDependencyWeight": 1,
+              "scopeBoundaryDependencyFacts": 0,
+              "groupCount": 2,
+              "minGroupUnits": 2,
+              "maxGroupUnits": 3,
+              "observedCycleComponents": [
+                [
+                  "folder:879923da020d1533f4d8e921",
+                  "folder:ac8d8342bbb2362d13f0a559",
+                  "folder:c100f95c1913f9c72fc1f4ef"
+                ]
+              ],
+              "absenceOfCycles": false,
+              "directedModularity": 0.24
+            },
+            "interpretation": "Q/density are observed values, not bounds under partial coverage. Only absolute accepted dependency counts can be lower bounds for fixed scope/ownership. Q/density use inter-unit edges; within-unit dependencies are separate. Cycles refer to selected scope. No semantic or H/O/T grade."
+          },
+          "variant": "simple-directed-greedy",
+          "source": "https://arxiv.org/abs/1306.2096",
+          "effectiveParameters": {
+            "resolution": 1.0,
+            "isolatePolicy": "preserve-separate"
+          },
+          "limitations": [
+            "No member-level dedication facts; simple formula D=1/fanin(target).",
+            "Isolates retained; not a reproduction of paper experiments.",
+            "SArF optimizes dedication Q; assessment Q uses observed raw counts."
+          ],
+          "elapsedSeconds": 0.0007296249968931079
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Small frozen corpus; not a capacity or runtime UI qualification.",
+    "Timing is wall-clock perf_counter duration of projection/assessment/comparison, including Python tracing overhead; not CPU time.",
+    "No cache is exercised; first and subsequent calls are separately reported.",
+    "Peak Python allocations do not measure native allocations or process RSS.",
+    "SArF and Leiden objectives/preprocessing differ and are reported per proposal."
+  ]
+}

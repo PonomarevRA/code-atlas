@@ -1,0 +1,25 @@
+{
+  "schema": "agent-memory-object/v1",
+  "area": "code-analysis",
+  "kind": "fact",
+  "id": "code-analysis.fact.snapshot-evidence",
+  "title": "Interpret Atlas results as static snapshot evidence",
+  "summary": "Check the snapshot and verify important facts against the matching source file.",
+  "status": "active",
+  "recorded": "2026-11-09",
+  "updated": "2026-11-09",
+  "tags": [
+    "snapshots",
+    "evidence"
+  ],
+  "sources": [
+    {
+      "kind": "document",
+      "ref": "docs/architecture.md"
+    }
+  ],
+  "payload": {
+    "statement": "A Code Atlas map describes static evidence captured in a particular snapshot.",
+    "consequence": "Use the matching snapshot ID and verify important conclusions against source. Incomplete evidence leaves a dependency unresolved."
+  }
+}

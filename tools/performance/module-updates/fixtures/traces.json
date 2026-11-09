@@ -1,0 +1,4442 @@
+{
+  "version": "atlas-module-update-traces/v1",
+  "traces": [
+    {
+      "name": "weighted-bridge-split-merge",
+      "source": {
+        "kind": "declared-synthetic"
+      },
+      "deltaModes": [
+        "derived",
+        "derived",
+        "derived"
+      ],
+      "projections": [
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "bridge:0",
+          "sourceGraphHash": "69bb78e2519b415235dcf1ea75a4af0eeead5476e08a69ddef063885d318fa6c",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "d",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 2
+            }
+          ],
+          "projectionHash": "8f2a41cbc5ce14b3cffe600e0897f3599f6e73734033b99a8be0cf4e3c334be4"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "bridge:1",
+          "sourceGraphHash": "d5bb687a46beb0c1a3fed8e6ff7860957b4706913783212be05253ce23e43fcc",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            }
+          ],
+          "projectionHash": "98c1237822a02b1a6e11220a478c4d5ab9844f5bf3e1bcdf8fe7614f279387ca"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "bridge:2",
+          "sourceGraphHash": "85e4ccaa1e7171ab8866fd7702c18ea047cd3f96d4d71692df9d9b9e43a2a9d0",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 30
+            },
+            {
+              "source": "c",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 30
+            }
+          ],
+          "projectionHash": "2b29400ff0bfc919454afcd53bc79be84787c55a3216de51d532c96329360b1d"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "bridge:3",
+          "sourceGraphHash": "9492f072de68339e8442fef1d8e1b5bc4a04cb0b7aad878b8ff60fb69f797887",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            }
+          ],
+          "projectionHash": "bdaab2f5d186f7e432c3967b12f56fba71a0dbd57bc533a1e1c8d9a1afec300a"
+        }
+      ]
+    },
+    {
+      "name": "equal-mass-local-frontier",
+      "source": {
+        "kind": "declared-synthetic"
+      },
+      "deltaModes": [
+        "derived",
+        "derived"
+      ],
+      "projections": [
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "local:0",
+          "sourceGraphHash": "e180d67f11484699dd719f0b928c5430415781228ab048576b540edbb11f934c",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            }
+          ],
+          "projectionHash": "5722495f22fcbc83efb1401ac1a2eca1b7060e288d2b7a9b7e8069e895c5ace0"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "local:1",
+          "sourceGraphHash": "b81b2fccaa183240bc0a9b2cefc675367fd42a86cdb4675ca8a6ec6f8978b023",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 14
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            }
+          ],
+          "projectionHash": "6bf3f00eca945cf408c02042ccc2f75279a61fad63ed5ba46ab3d4ea24e1b409"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "local:2",
+          "sourceGraphHash": "1ea5510ede7a0758587336a18adc451c4ce9ffd25e64dc97a7b3a74e27cc7651",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            }
+          ],
+          "projectionHash": "e99b07465479bd6e69f745f7da0ce3a0ff46844d6e4ba804642ff869bffbddd4"
+        }
+      ]
+    },
+    {
+      "name": "global-null-model-and-unknown",
+      "source": {
+        "kind": "declared-synthetic"
+      },
+      "deltaModes": [
+        "derived",
+        "unknown",
+        "incomplete"
+      ],
+      "projections": [
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "global:0",
+          "sourceGraphHash": "c5baf6674ad2fb15bbfe42f4d3db2b6082dc1f583b0e826f6a69f77df9c6e1f5",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            }
+          ],
+          "projectionHash": "1bd257683eab1479cf5e2a8612cc1643440760c56374aac8434e27f4d46bf902"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "global:1",
+          "sourceGraphHash": "924bc745cd1fd488714c9b3ebf169841f27864ae5618036c899698f2eccddebd",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "a",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 15
+            }
+          ],
+          "projectionHash": "7f1bcf1c7b07309476bb1e5129eb3b30cb4cbf4457381734242903616b938616"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "global:2",
+          "sourceGraphHash": "0ff8fbd7681e12f529a5d296288a377f2edba1a600b3d0c36ef9549a2cc5cc37",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "a",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 1
+            }
+          ],
+          "projectionHash": "5d4c07541cb9b271dafe508ac5fbe00eafbc42dd1eb84ffe6a62b6e3a7668704"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "global:3",
+          "sourceGraphHash": "3e3d069b735b95142c882baa4ca1f096f0b2f45036b4731b0cc31d11c1862a22",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "a",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 18
+            }
+          ],
+          "projectionHash": "026c8d37d4b8dd3dcf27d359705cdcf1000ac2328a6c4a1154ff0410b82ebf41"
+        }
+      ]
+    },
+    {
+      "name": "identity-coverage-fallbacks",
+      "source": {
+        "kind": "declared-synthetic"
+      },
+      "deltaModes": [
+        "derived",
+        "derived",
+        "derived",
+        "derived"
+      ],
+      "projections": [
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "identity:0",
+          "sourceGraphHash": "adf35064ab75b49fb09047bc6f404405256ad293c86a504d36d61959358fdfad",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            }
+          ],
+          "projectionHash": "f7877127221f899457c9ce9a2054fae28d0170076d3ea212d1de74d15c6035d0"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "identity:1",
+          "sourceGraphHash": "26d2b49763a21ad1cc8253c14b82fac4db27ff63b1305154095b3d3fb5948da2",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 2
+            }
+          ],
+          "projectionHash": "c15dd5058fa0a1dd1c9cf1cca42c1c5eb2f63e70f6e8188a1b2a36e711b82943"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "identity:2",
+          "sourceGraphHash": "26d2b49763a21ad1cc8253c14b82fac4db27ff63b1305154095b3d3fb5948da2",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:replacement-a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 2
+            }
+          ],
+          "projectionHash": "b5057e92daf70ca60a9075a520e86cc81325671d3a22ff72249f6cd4261e98d2"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "identity:3",
+          "sourceGraphHash": "26d2b49763a21ad1cc8253c14b82fac4db27ff63b1305154095b3d3fb5948da2",
+          "scope": {
+            "folders": [
+              "explicit-scope"
+            ],
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:replacement-a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 2
+            }
+          ],
+          "projectionHash": "d13d58d50e9c2be480bc70c2885b9b55ad74024d9ca1b7c3ff6f5d72966fe8a7"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "identity:4",
+          "sourceGraphHash": "26d2b49763a21ad1cc8253c14b82fac4db27ff63b1305154095b3d3fb5948da2",
+          "scope": {
+            "folders": [
+              "explicit-scope"
+            ],
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "partial",
+            "unknownReasons": [
+              "declared-incomplete-trace"
+            ]
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:replacement-a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 2
+            }
+          ],
+          "projectionHash": "fc5dea28034b4670ced2803a4ee0c0bec8b65d7662c3e6d3fb575e3581b7f820"
+        }
+      ]
+    },
+    {
+      "name": "historical-source-base-simulated-edits",
+      "source": {
+        "kind": "source-derived-base/hypothetical-updates",
+        "baseFixture": "tools/performance/module-analysis/fixtures/atlas-imports.json",
+        "baseFixtureHash": "5269f83de008a1b4322a6e5b4dfad1d767989fa52439dc2005d1be9472664191",
+        "source": {
+          "kind": "python-ast-imports",
+          "capturedDate": "2026-10-30",
+          "fileHashes": {
+            "atlas/agent_activity/__init__.py": "291fc9898f61d9416f26c6afe92dd73cfbd7b91c7e7fdcdab96229bf9959058d",
+            "atlas/agent_activity/api.py": "3dac2d02e5e6b3327547d5f9ce131d2333e36a5fa886afb9042eefbb325f0b3d",
+            "atlas/agent_activity/disk.py": "8650d9fe78323845478e256a48ec5ef08760dc83d07b44ec96ccd3512898b2fc",
+            "atlas/agent_activity/events.py": "1fa13425f765275cf96706dced345f17321813192d6fb0b162d717860829f332",
+            "atlas/agent_activity/http_api.py": "59bc121b8edf65fe3c0daa149950dfdba67d373d99ff687ebdaacecaba2159d6",
+            "atlas/agent_activity/http_query.py": "d448fb75680b3026ca0dfb604451c1a2c48deb72e5bbc243a787fcff2aed028d",
+            "atlas/agent_activity/observer.py": "45bcf7ccb257fc8bd0cf9d854ed10a93eeb71a03f0c24317bb58ef9319ae384b",
+            "atlas/agent_activity/service.py": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277",
+            "atlas/agent_activity/settings.py": "fd602aa095beb8121a0f4405c8ee7abae2fdadb6afa14c1c6531e419c6c1bfcc",
+            "atlas/agent_activity/summaries.py": "ace334c52c91009e7ab317396865a915c30e5179e794554d814e8597c3116c56",
+            "atlas/code_organization.py": "a2fba40bed17ff947877426b3b562521eabb4685cb1482cf0029db815eace5a1",
+            "atlas/grouping_providers.py": "6f94c496b665e4bd9c40ec51bbaa8210090c5df2377f429830fddced0f75f6a8",
+            "atlas/integrations/graphify/__init__.py": "2fb96dc7ebf8c193bf5a676f0a48924d3a1dfc114bac96a24972f4b8dd730cf9",
+            "atlas/integrations/graphify/adapter.py": "014666f3aee119d4c4f8dbf914d82aca8e1d3a3ed67577210797c956f018e60f",
+            "atlas/integrations/graphify/chunking.py": "8d02fffea18eda931c02db5de5a19fea6a8d7c24b004a248e3443695a4dfa817",
+            "atlas/integrations/graphify/runtime.py": "210f78936d6df6916161c1dc2e90ed3fc4884d7ec71c9b98cdb4f788e4d5515f",
+            "atlas/mcp_transport.py": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962",
+            "atlas/organization_policy.py": "391b4d6a0f4c0b4160a7b4e00a6493247a9381d0be331752b4c5e59932f16ef1",
+            "atlas/semantic_providers/__init__.py": "5b95ca9e1b7924c1b25253b4a1b3534de7fc8de292aa9f4e6572f86044396481",
+            "atlas/semantic_providers/gopls.py": "63af1e1f70bf03e36ddfc338fdf9b786380b40ed12d94a024bc9b8bfab432c2c",
+            "atlas/semantic_providers/jdt.py": "0985c8cfcffc00ca900a184d385013661cca36a9b8b94ef953a2f5199c671283",
+            "atlas/semantic_providers/kotlin.py": "edd2999c3cc459196a2888a5519365cd5bf6e822bf304d865a68862ce524469a",
+            "atlas/semantic_providers/lsp_base.py": "d671b2f2303bcde1c6433313cfb969e744b7d8a31517b0dfb0cf2b3f3bc7d7dc",
+            "atlas/semantic_providers/php.py": "25897282e5df05fc93ed00a2f1293643820f75d8895c0cf49e36c64a429431d5",
+            "atlas/semantic_providers/python.py": "6b1551fdc339c5085ea6e18811d5c97de08e680810cdd05183536886e0208d62",
+            "atlas/semantic_providers/python_worker.py": "92a1b2d3949f9900af0485c7f54b66de024e62dfe0316ad609c8616680dead7a",
+            "atlas/semantic_providers/roslyn.py": "4e37cead0c3fbd6bc10bd7cafd9c5f7fafca9efd5e082eb06cc8fc7d1625aa33",
+            "atlas/semantic_providers/roslyn_context.py": "16d25614c13fa260a6f774af901edbb88e09b1992825a92c07f39bde99c57487",
+            "atlas/semantic_providers/rust_analyzer.py": "a34db5ea82820096d9bb2fd0f979628580d432c892a7ed35ea79e4c6f34234c2",
+            "atlas/semantic_providers/sourcekit.py": "dc93114e3a22af8833f281c768b471904fa73ffccc900d52c420403ce4f35ff0",
+            "atlas/semantic_providers/typescript.py": "6e3cc1fa83031ce427cbcacbd1ef3154bbaef9f5a985875c22a898ce31a2f859",
+            "atlas/technical_logs/__init__.py": "be84ee8c9cda7861f5547504e1bc394a377138064f610940207f33704ab5ab0f",
+            "atlas/technical_logs/disk.py": "fb8d3faaf602c3fbba4bc3582ae6b79f0e87a5b9c5f6995df6648ded00560bec",
+            "atlas/technical_logs/events.py": "39bdfeec6a199d2412ce84205a0a66deac79a35012be24ea00c254bf80d9bab8",
+            "atlas/technical_logs/http_api.py": "50741c9ebfcb641e7510b2d0743d0877e4e8ba44be992b03c46cdf30ba4d76a1",
+            "atlas/technical_logs/http_query.py": "2a479f5aff2773e4e7c4561ac860f741ed29281218669f7b59ccc252d10e78d8",
+            "atlas/technical_logs/metrics.py": "d1117ea79aadfdf0cafc909d00178efcad392ef3f5b5cdd7e448313bdef4ff0b",
+            "atlas/technical_logs/service.py": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf",
+            "atlas/technical_logs/settings.py": "ee5a21a62ef10011710f96a76f80e18c5ddd0d66bf225377ef35889dc217d4f8"
+          },
+          "coverage": "Selected module imports only; calls/dynamic imports/external dependencies not included."
+        },
+        "warning": "Only first snapshot is historical captured imports. Updates are declared simulations, not real revisions or runtime evidence. Base may contain only within-folder imports; absent inter-unit evidence is not complete absence of dependencies.",
+        "observedBaseInterUnitWeight": 0
+      },
+      "deltaModes": [
+        "derived",
+        "derived"
+      ],
+      "projections": [
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "historical-source-base",
+          "sourceGraphHash": "e8442617f28bc9ae5026cebed85c146e4dd9f87eba3ac6c122415e1ec6b6170b",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "units": [
+            {
+              "id": "folder:377a73a582c894b6c5c8df41",
+              "kind": "folder",
+              "label": "atlas/technical_logs",
+              "sourceIds": [
+                "atlas.technical_logs",
+                "atlas.technical_logs.disk",
+                "atlas.technical_logs.events",
+                "atlas.technical_logs.http_api",
+                "atlas.technical_logs.http_query",
+                "atlas.technical_logs.metrics",
+                "atlas.technical_logs.service",
+                "atlas.technical_logs.settings"
+              ],
+              "files": [
+                "atlas/technical_logs/__init__.py",
+                "atlas/technical_logs/disk.py",
+                "atlas/technical_logs/events.py",
+                "atlas/technical_logs/http_api.py",
+                "atlas/technical_logs/http_query.py",
+                "atlas/technical_logs/metrics.py",
+                "atlas/technical_logs/service.py",
+                "atlas/technical_logs/settings.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:bf536e9cab4899475dbceeb1",
+              "kind": "folder",
+              "label": "atlas",
+              "sourceIds": [
+                "atlas.code_organization",
+                "atlas.grouping_providers",
+                "atlas.mcp_transport",
+                "atlas.organization_policy"
+              ],
+              "files": [
+                "atlas/code_organization.py",
+                "atlas/grouping_providers.py",
+                "atlas/mcp_transport.py",
+                "atlas/organization_policy.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:d5fe48ab7981cc99ba70b183",
+              "kind": "folder",
+              "label": "atlas/integrations/graphify",
+              "sourceIds": [
+                "atlas.integrations.graphify",
+                "atlas.integrations.graphify.adapter",
+                "atlas.integrations.graphify.chunking",
+                "atlas.integrations.graphify.runtime"
+              ],
+              "files": [
+                "atlas/integrations/graphify/__init__.py",
+                "atlas/integrations/graphify/adapter.py",
+                "atlas/integrations/graphify/chunking.py",
+                "atlas/integrations/graphify/runtime.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:d7c698329879048e464da0d8",
+              "kind": "folder",
+              "label": "atlas/agent_activity",
+              "sourceIds": [
+                "atlas.agent_activity",
+                "atlas.agent_activity.api",
+                "atlas.agent_activity.disk",
+                "atlas.agent_activity.events",
+                "atlas.agent_activity.http_api",
+                "atlas.agent_activity.http_query",
+                "atlas.agent_activity.observer",
+                "atlas.agent_activity.service",
+                "atlas.agent_activity.settings",
+                "atlas.agent_activity.summaries"
+              ],
+              "files": [
+                "atlas/agent_activity/__init__.py",
+                "atlas/agent_activity/api.py",
+                "atlas/agent_activity/disk.py",
+                "atlas/agent_activity/events.py",
+                "atlas/agent_activity/http_api.py",
+                "atlas/agent_activity/http_query.py",
+                "atlas/agent_activity/observer.py",
+                "atlas/agent_activity/service.py",
+                "atlas/agent_activity/settings.py",
+                "atlas/agent_activity/summaries.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:ef183eaf814a39d145bfcf71",
+              "kind": "folder",
+              "label": "atlas/semantic_providers",
+              "sourceIds": [
+                "atlas.semantic_providers",
+                "atlas.semantic_providers.gopls",
+                "atlas.semantic_providers.jdt",
+                "atlas.semantic_providers.kotlin",
+                "atlas.semantic_providers.lsp_base",
+                "atlas.semantic_providers.php",
+                "atlas.semantic_providers.python",
+                "atlas.semantic_providers.python_worker",
+                "atlas.semantic_providers.roslyn",
+                "atlas.semantic_providers.roslyn_context",
+                "atlas.semantic_providers.rust_analyzer",
+                "atlas.semantic_providers.sourcekit",
+                "atlas.semantic_providers.typescript"
+              ],
+              "files": [
+                "atlas/semantic_providers/__init__.py",
+                "atlas/semantic_providers/gopls.py",
+                "atlas/semantic_providers/jdt.py",
+                "atlas/semantic_providers/kotlin.py",
+                "atlas/semantic_providers/lsp_base.py",
+                "atlas/semantic_providers/php.py",
+                "atlas/semantic_providers/python.py",
+                "atlas/semantic_providers/python_worker.py",
+                "atlas/semantic_providers/roslyn.py",
+                "atlas/semantic_providers/roslyn_context.py",
+                "atlas/semantic_providers/rust_analyzer.py",
+                "atlas/semantic_providers/sourcekit.py",
+                "atlas/semantic_providers/typescript.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "folder:377a73a582c894b6c5c8df41",
+              "target": "folder:377a73a582c894b6c5c8df41",
+              "relation": "imports",
+              "count": 8,
+              "rawEdges": [
+                {
+                  "source": "atlas.technical_logs.disk",
+                  "target": "atlas.technical_logs.events",
+                  "edgeHash": "3abf8efaf14cea5dc57f5bf8cf81f47bf61edf9e13360712616170859c3b5342"
+                },
+                {
+                  "source": "atlas.technical_logs.service",
+                  "target": "atlas.technical_logs.events",
+                  "edgeHash": "53d40acb9404dd4a35da3f126272ab8e40d97e9a1112c01000c323c5142e8feb"
+                },
+                {
+                  "source": "atlas.technical_logs.metrics",
+                  "target": "atlas.technical_logs.http_query",
+                  "edgeHash": "97985a27cb7ff99ecb949a3f578b5f49e1bb68ad5c637ff69f17c0ce773de79d"
+                },
+                {
+                  "source": "atlas.technical_logs.metrics",
+                  "target": "atlas.technical_logs.http_api",
+                  "edgeHash": "9828235a08ce56ba6b832355cc10b157e70b4e4134474b288c219538a2821bcc"
+                },
+                {
+                  "source": "atlas.technical_logs.service",
+                  "target": "atlas.technical_logs.settings",
+                  "edgeHash": "a3a12039d67aec4cedb04612e7f0d209a80d15fd53348df2cb1b7ba24361e8ce"
+                },
+                {
+                  "source": "atlas.technical_logs.service",
+                  "target": "atlas.technical_logs.disk",
+                  "edgeHash": "a7d5175cec416d53bb80aa53c2c79619d3e0cceaeedf01d571af5c4389fad6be"
+                },
+                {
+                  "source": "atlas.technical_logs.metrics",
+                  "target": "atlas.technical_logs.events",
+                  "edgeHash": "b7fc36493147abfeecb08b0876dc62f2e472fd51c9d42d0d177dbfc235ad11b7"
+                },
+                {
+                  "source": "atlas.technical_logs.http_api",
+                  "target": "atlas.technical_logs.http_query",
+                  "edgeHash": "cb44fba35a96ccda37c5c84769e3efd96177b1e4fbd6265e51520f940dfa6d4e"
+                }
+              ]
+            },
+            {
+              "source": "folder:bf536e9cab4899475dbceeb1",
+              "target": "folder:bf536e9cab4899475dbceeb1",
+              "relation": "imports",
+              "count": 1,
+              "rawEdges": [
+                {
+                  "source": "atlas.code_organization",
+                  "target": "atlas.organization_policy",
+                  "edgeHash": "98525215e3dc1dcf97844a6e96054351f4a785f600bad27b532dbecae494158f"
+                }
+              ]
+            },
+            {
+              "source": "folder:d5fe48ab7981cc99ba70b183",
+              "target": "folder:d5fe48ab7981cc99ba70b183",
+              "relation": "imports",
+              "count": 2,
+              "rawEdges": [
+                {
+                  "source": "atlas.integrations.graphify.adapter",
+                  "target": "atlas.integrations.graphify.runtime",
+                  "edgeHash": "68b9ad34a7a36d68ba98e3047ac64e8a9017e8ad4d703051dab1216716220ca4"
+                },
+                {
+                  "source": "atlas.integrations.graphify.adapter",
+                  "target": "atlas.integrations.graphify.chunking",
+                  "edgeHash": "b9b57b7bd6f52f6094783998f7dce1e44b73eea189ac406f5cfb3cbbcaf93037"
+                }
+              ]
+            },
+            {
+              "source": "folder:d7c698329879048e464da0d8",
+              "target": "folder:d7c698329879048e464da0d8",
+              "relation": "imports",
+              "count": 8,
+              "rawEdges": [
+                {
+                  "source": "atlas.agent_activity.api",
+                  "target": "atlas.agent_activity.http_api",
+                  "edgeHash": "00a9dc58fce90e4918b2d08cbbe77b5e978bbcd85e4795483c6db7a9080126fb"
+                },
+                {
+                  "source": "atlas.agent_activity.service",
+                  "target": "atlas.agent_activity.settings",
+                  "edgeHash": "290c93ab33717f3916c1fcd8b0de27cd90f3cc68b324e64eb7b07d76a79ce781"
+                },
+                {
+                  "source": "atlas.agent_activity.http_api",
+                  "target": "atlas.agent_activity.http_query",
+                  "edgeHash": "614e791e263307f4732de2ffc9e882c1b990a51d2ff5dd535921af26bdbe9121"
+                },
+                {
+                  "source": "atlas.agent_activity.disk",
+                  "target": "atlas.agent_activity.events",
+                  "edgeHash": "754438dd9d7cfb8becb4329970f994843a10db4c5974bb0fdb2cf27e097a58ba"
+                },
+                {
+                  "source": "atlas.agent_activity.service",
+                  "target": "atlas.agent_activity.disk",
+                  "edgeHash": "946401e08e35f16a251e6d6b018a8fc3ca623ad27c25f09f59eb8f7818a1e65e"
+                },
+                {
+                  "source": "atlas.agent_activity.summaries",
+                  "target": "atlas.agent_activity.events",
+                  "edgeHash": "af94a03f6ac08a14cfc65a968bb9a6ba385a966cbe410a54e65e4ed298be7419"
+                },
+                {
+                  "source": "atlas.agent_activity.observer",
+                  "target": "atlas.agent_activity.summaries",
+                  "edgeHash": "e8b336b1bfed411ab6a002efadc29ec708894d394e8850572b220e0324c1c7b9"
+                },
+                {
+                  "source": "atlas.agent_activity.observer",
+                  "target": "atlas.agent_activity.events",
+                  "edgeHash": "f9964143eda805628fed271ce8ffd7b2711b866f4c140fa093dd8e91b0af7681"
+                }
+              ]
+            },
+            {
+              "source": "folder:ef183eaf814a39d145bfcf71",
+              "target": "folder:ef183eaf814a39d145bfcf71",
+              "relation": "imports",
+              "count": 7,
+              "rawEdges": [
+                {
+                  "source": "atlas.semantic_providers.gopls",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "04a4d1939b1d0829a1bd221d0ba7468af4ef6db48f586c1fd2c1d62cc877e575"
+                },
+                {
+                  "source": "atlas.semantic_providers.sourcekit",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "2a56d059f75f5601a3504a73b5a96fb1751ba5df06dee26c5d4df8cb35ac5011"
+                },
+                {
+                  "source": "atlas.semantic_providers.rust_analyzer",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "418391d82ca3235f0dd32de884c7f5bb607d4893fefd5c641f578cfa8dfa710e"
+                },
+                {
+                  "source": "atlas.semantic_providers.php",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "44258d1129bb1837d51e574d9473361a171b97e8bc985b3d63adba2176f1b465"
+                },
+                {
+                  "source": "atlas.semantic_providers.jdt",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "609eca23755413ce20e267e8a32d67cac95ff70ec7b3a54c713a01d2fc694d6d"
+                },
+                {
+                  "source": "atlas.semantic_providers.roslyn",
+                  "target": "atlas.semantic_providers.roslyn_context",
+                  "edgeHash": "7f5cff4d609014679940931a8b8da466b532f02dd7a22791bc53df9501ead957"
+                },
+                {
+                  "source": "atlas.semantic_providers.kotlin",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "ce634535201e69cdcdd8ccd0a6d6922dd7d544704f6b98121878467f91f10996"
+                }
+              ]
+            }
+          ],
+          "ownership": {
+            "atlas.agent_activity": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.api": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.disk": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.events": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.http_api": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.http_query": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.observer": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.service": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.settings": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.summaries": "folder:d7c698329879048e464da0d8",
+            "atlas.code_organization": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.grouping_providers": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.integrations.graphify": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.integrations.graphify.adapter": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.integrations.graphify.chunking": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.integrations.graphify.runtime": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.mcp_transport": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.organization_policy": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.semantic_providers": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.gopls": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.jdt": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.kotlin": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.lsp_base": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.php": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.python": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.python_worker": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.roslyn": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.roslyn_context": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.rust_analyzer": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.sourcekit": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.typescript": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.technical_logs": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.disk": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.events": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.http_api": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.http_query": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.metrics": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.service": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.settings": "folder:377a73a582c894b6c5c8df41"
+          },
+          "unknownOwnership": [],
+          "unknownOwnershipTruncated": false,
+          "outsideScopeIds": [],
+          "outsideScopeCount": 0,
+          "outsideScopeIdsTruncated": false,
+          "coverage": {
+            "status": "partial",
+            "sourceAnalysisStatus": "partial",
+            "unknownOwnershipCount": 0,
+            "uncertainDependencyCount": 0,
+            "missingEndpointCount": 0,
+            "unknownReasons": [
+              "source-analysis-not-confirmed-complete"
+            ]
+          },
+          "relationEvidence": "Captured static facts; shared confidence/source-hash gate rejects explicit uncertainty but does not establish semantic binding.",
+          "counts": {
+            "rawNodes": 39,
+            "projectedNodes": 39,
+            "units": 5,
+            "dependencyFacts": 26,
+            "externalDependencies": 0,
+            "ignoredNonDependencyEdges": 0
+          },
+          "limitations": [
+            "Static dependencies do not establish semantic cohesion.",
+            "Containment is not a dependency."
+          ],
+          "projectionHash": "4802c81fde852a3fe4e22c5d58a0ec5d76eb66dede3e6d02beb57545e0140269"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "hypothetical-count-edit:1",
+          "sourceGraphHash": "7cd8f0c34692eb6eed18db25f9a74e0e810400593192b0cecbce4b3e136d491f",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "units": [
+            {
+              "id": "folder:377a73a582c894b6c5c8df41",
+              "kind": "folder",
+              "label": "atlas/technical_logs",
+              "sourceIds": [
+                "atlas.technical_logs",
+                "atlas.technical_logs.disk",
+                "atlas.technical_logs.events",
+                "atlas.technical_logs.http_api",
+                "atlas.technical_logs.http_query",
+                "atlas.technical_logs.metrics",
+                "atlas.technical_logs.service",
+                "atlas.technical_logs.settings"
+              ],
+              "files": [
+                "atlas/technical_logs/__init__.py",
+                "atlas/technical_logs/disk.py",
+                "atlas/technical_logs/events.py",
+                "atlas/technical_logs/http_api.py",
+                "atlas/technical_logs/http_query.py",
+                "atlas/technical_logs/metrics.py",
+                "atlas/technical_logs/service.py",
+                "atlas/technical_logs/settings.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:bf536e9cab4899475dbceeb1",
+              "kind": "folder",
+              "label": "atlas",
+              "sourceIds": [
+                "atlas.code_organization",
+                "atlas.grouping_providers",
+                "atlas.mcp_transport",
+                "atlas.organization_policy"
+              ],
+              "files": [
+                "atlas/code_organization.py",
+                "atlas/grouping_providers.py",
+                "atlas/mcp_transport.py",
+                "atlas/organization_policy.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:d5fe48ab7981cc99ba70b183",
+              "kind": "folder",
+              "label": "atlas/integrations/graphify",
+              "sourceIds": [
+                "atlas.integrations.graphify",
+                "atlas.integrations.graphify.adapter",
+                "atlas.integrations.graphify.chunking",
+                "atlas.integrations.graphify.runtime"
+              ],
+              "files": [
+                "atlas/integrations/graphify/__init__.py",
+                "atlas/integrations/graphify/adapter.py",
+                "atlas/integrations/graphify/chunking.py",
+                "atlas/integrations/graphify/runtime.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:d7c698329879048e464da0d8",
+              "kind": "folder",
+              "label": "atlas/agent_activity",
+              "sourceIds": [
+                "atlas.agent_activity",
+                "atlas.agent_activity.api",
+                "atlas.agent_activity.disk",
+                "atlas.agent_activity.events",
+                "atlas.agent_activity.http_api",
+                "atlas.agent_activity.http_query",
+                "atlas.agent_activity.observer",
+                "atlas.agent_activity.service",
+                "atlas.agent_activity.settings",
+                "atlas.agent_activity.summaries"
+              ],
+              "files": [
+                "atlas/agent_activity/__init__.py",
+                "atlas/agent_activity/api.py",
+                "atlas/agent_activity/disk.py",
+                "atlas/agent_activity/events.py",
+                "atlas/agent_activity/http_api.py",
+                "atlas/agent_activity/http_query.py",
+                "atlas/agent_activity/observer.py",
+                "atlas/agent_activity/service.py",
+                "atlas/agent_activity/settings.py",
+                "atlas/agent_activity/summaries.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:ef183eaf814a39d145bfcf71",
+              "kind": "folder",
+              "label": "atlas/semantic_providers",
+              "sourceIds": [
+                "atlas.semantic_providers",
+                "atlas.semantic_providers.gopls",
+                "atlas.semantic_providers.jdt",
+                "atlas.semantic_providers.kotlin",
+                "atlas.semantic_providers.lsp_base",
+                "atlas.semantic_providers.php",
+                "atlas.semantic_providers.python",
+                "atlas.semantic_providers.python_worker",
+                "atlas.semantic_providers.roslyn",
+                "atlas.semantic_providers.roslyn_context",
+                "atlas.semantic_providers.rust_analyzer",
+                "atlas.semantic_providers.sourcekit",
+                "atlas.semantic_providers.typescript"
+              ],
+              "files": [
+                "atlas/semantic_providers/__init__.py",
+                "atlas/semantic_providers/gopls.py",
+                "atlas/semantic_providers/jdt.py",
+                "atlas/semantic_providers/kotlin.py",
+                "atlas/semantic_providers/lsp_base.py",
+                "atlas/semantic_providers/php.py",
+                "atlas/semantic_providers/python.py",
+                "atlas/semantic_providers/python_worker.py",
+                "atlas/semantic_providers/roslyn.py",
+                "atlas/semantic_providers/roslyn_context.py",
+                "atlas/semantic_providers/rust_analyzer.py",
+                "atlas/semantic_providers/sourcekit.py",
+                "atlas/semantic_providers/typescript.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "folder:377a73a582c894b6c5c8df41",
+              "target": "folder:377a73a582c894b6c5c8df41",
+              "relation": "imports",
+              "count": 8,
+              "rawEdges": [
+                {
+                  "source": "atlas.technical_logs.disk",
+                  "target": "atlas.technical_logs.events",
+                  "edgeHash": "3abf8efaf14cea5dc57f5bf8cf81f47bf61edf9e13360712616170859c3b5342"
+                },
+                {
+                  "source": "atlas.technical_logs.service",
+                  "target": "atlas.technical_logs.events",
+                  "edgeHash": "53d40acb9404dd4a35da3f126272ab8e40d97e9a1112c01000c323c5142e8feb"
+                },
+                {
+                  "source": "atlas.technical_logs.metrics",
+                  "target": "atlas.technical_logs.http_query",
+                  "edgeHash": "97985a27cb7ff99ecb949a3f578b5f49e1bb68ad5c637ff69f17c0ce773de79d"
+                },
+                {
+                  "source": "atlas.technical_logs.metrics",
+                  "target": "atlas.technical_logs.http_api",
+                  "edgeHash": "9828235a08ce56ba6b832355cc10b157e70b4e4134474b288c219538a2821bcc"
+                },
+                {
+                  "source": "atlas.technical_logs.service",
+                  "target": "atlas.technical_logs.settings",
+                  "edgeHash": "a3a12039d67aec4cedb04612e7f0d209a80d15fd53348df2cb1b7ba24361e8ce"
+                },
+                {
+                  "source": "atlas.technical_logs.service",
+                  "target": "atlas.technical_logs.disk",
+                  "edgeHash": "a7d5175cec416d53bb80aa53c2c79619d3e0cceaeedf01d571af5c4389fad6be"
+                },
+                {
+                  "source": "atlas.technical_logs.metrics",
+                  "target": "atlas.technical_logs.events",
+                  "edgeHash": "b7fc36493147abfeecb08b0876dc62f2e472fd51c9d42d0d177dbfc235ad11b7"
+                },
+                {
+                  "source": "atlas.technical_logs.http_api",
+                  "target": "atlas.technical_logs.http_query",
+                  "edgeHash": "cb44fba35a96ccda37c5c84769e3efd96177b1e4fbd6265e51520f940dfa6d4e"
+                }
+              ]
+            },
+            {
+              "source": "folder:bf536e9cab4899475dbceeb1",
+              "target": "folder:bf536e9cab4899475dbceeb1",
+              "relation": "imports",
+              "count": 1,
+              "rawEdges": [
+                {
+                  "source": "atlas.code_organization",
+                  "target": "atlas.organization_policy",
+                  "edgeHash": "98525215e3dc1dcf97844a6e96054351f4a785f600bad27b532dbecae494158f"
+                }
+              ]
+            },
+            {
+              "source": "folder:d5fe48ab7981cc99ba70b183",
+              "target": "folder:d5fe48ab7981cc99ba70b183",
+              "relation": "imports",
+              "count": 2,
+              "rawEdges": [
+                {
+                  "source": "atlas.integrations.graphify.adapter",
+                  "target": "atlas.integrations.graphify.runtime",
+                  "edgeHash": "68b9ad34a7a36d68ba98e3047ac64e8a9017e8ad4d703051dab1216716220ca4"
+                },
+                {
+                  "source": "atlas.integrations.graphify.adapter",
+                  "target": "atlas.integrations.graphify.chunking",
+                  "edgeHash": "b9b57b7bd6f52f6094783998f7dce1e44b73eea189ac406f5cfb3cbbcaf93037"
+                }
+              ]
+            },
+            {
+              "source": "folder:d7c698329879048e464da0d8",
+              "target": "folder:d7c698329879048e464da0d8",
+              "relation": "imports",
+              "count": 8,
+              "rawEdges": [
+                {
+                  "source": "atlas.agent_activity.api",
+                  "target": "atlas.agent_activity.http_api",
+                  "edgeHash": "00a9dc58fce90e4918b2d08cbbe77b5e978bbcd85e4795483c6db7a9080126fb"
+                },
+                {
+                  "source": "atlas.agent_activity.service",
+                  "target": "atlas.agent_activity.settings",
+                  "edgeHash": "290c93ab33717f3916c1fcd8b0de27cd90f3cc68b324e64eb7b07d76a79ce781"
+                },
+                {
+                  "source": "atlas.agent_activity.http_api",
+                  "target": "atlas.agent_activity.http_query",
+                  "edgeHash": "614e791e263307f4732de2ffc9e882c1b990a51d2ff5dd535921af26bdbe9121"
+                },
+                {
+                  "source": "atlas.agent_activity.disk",
+                  "target": "atlas.agent_activity.events",
+                  "edgeHash": "754438dd9d7cfb8becb4329970f994843a10db4c5974bb0fdb2cf27e097a58ba"
+                },
+                {
+                  "source": "atlas.agent_activity.service",
+                  "target": "atlas.agent_activity.disk",
+                  "edgeHash": "946401e08e35f16a251e6d6b018a8fc3ca623ad27c25f09f59eb8f7818a1e65e"
+                },
+                {
+                  "source": "atlas.agent_activity.summaries",
+                  "target": "atlas.agent_activity.events",
+                  "edgeHash": "af94a03f6ac08a14cfc65a968bb9a6ba385a966cbe410a54e65e4ed298be7419"
+                },
+                {
+                  "source": "atlas.agent_activity.observer",
+                  "target": "atlas.agent_activity.summaries",
+                  "edgeHash": "e8b336b1bfed411ab6a002efadc29ec708894d394e8850572b220e0324c1c7b9"
+                },
+                {
+                  "source": "atlas.agent_activity.observer",
+                  "target": "atlas.agent_activity.events",
+                  "edgeHash": "f9964143eda805628fed271ce8ffd7b2711b866f4c140fa093dd8e91b0af7681"
+                }
+              ]
+            },
+            {
+              "source": "folder:ef183eaf814a39d145bfcf71",
+              "target": "folder:ef183eaf814a39d145bfcf71",
+              "relation": "imports",
+              "count": 7,
+              "rawEdges": [
+                {
+                  "source": "atlas.semantic_providers.gopls",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "04a4d1939b1d0829a1bd221d0ba7468af4ef6db48f586c1fd2c1d62cc877e575"
+                },
+                {
+                  "source": "atlas.semantic_providers.sourcekit",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "2a56d059f75f5601a3504a73b5a96fb1751ba5df06dee26c5d4df8cb35ac5011"
+                },
+                {
+                  "source": "atlas.semantic_providers.rust_analyzer",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "418391d82ca3235f0dd32de884c7f5bb607d4893fefd5c641f578cfa8dfa710e"
+                },
+                {
+                  "source": "atlas.semantic_providers.php",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "44258d1129bb1837d51e574d9473361a171b97e8bc985b3d63adba2176f1b465"
+                },
+                {
+                  "source": "atlas.semantic_providers.jdt",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "609eca23755413ce20e267e8a32d67cac95ff70ec7b3a54c713a01d2fc694d6d"
+                },
+                {
+                  "source": "atlas.semantic_providers.roslyn",
+                  "target": "atlas.semantic_providers.roslyn_context",
+                  "edgeHash": "7f5cff4d609014679940931a8b8da466b532f02dd7a22791bc53df9501ead957"
+                },
+                {
+                  "source": "atlas.semantic_providers.kotlin",
+                  "target": "atlas.semantic_providers.lsp_base",
+                  "edgeHash": "ce634535201e69cdcdd8ccd0a6d6922dd7d544704f6b98121878467f91f10996"
+                }
+              ]
+            },
+            {
+              "source": "folder:377a73a582c894b6c5c8df41",
+              "target": "folder:ef183eaf814a39d145bfcf71",
+              "relation": "imports",
+              "count": 2
+            }
+          ],
+          "ownership": {
+            "atlas.agent_activity": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.api": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.disk": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.events": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.http_api": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.http_query": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.observer": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.service": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.settings": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.summaries": "folder:d7c698329879048e464da0d8",
+            "atlas.code_organization": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.grouping_providers": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.integrations.graphify": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.integrations.graphify.adapter": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.integrations.graphify.chunking": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.integrations.graphify.runtime": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.mcp_transport": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.organization_policy": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.semantic_providers": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.gopls": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.jdt": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.kotlin": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.lsp_base": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.php": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.python": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.python_worker": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.roslyn": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.roslyn_context": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.rust_analyzer": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.sourcekit": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.typescript": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.technical_logs": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.disk": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.events": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.http_api": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.http_query": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.metrics": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.service": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.settings": "folder:377a73a582c894b6c5c8df41"
+          },
+          "unknownOwnership": [],
+          "unknownOwnershipTruncated": false,
+          "outsideScopeIds": [],
+          "outsideScopeCount": 0,
+          "outsideScopeIdsTruncated": false,
+          "coverage": {
+            "status": "partial",
+            "sourceAnalysisStatus": "partial",
+            "unknownOwnershipCount": 0,
+            "uncertainDependencyCount": 0,
+            "missingEndpointCount": 0,
+            "unknownReasons": [
+              "source-analysis-not-confirmed-complete"
+            ]
+          },
+          "relationEvidence": "Captured static facts; shared confidence/source-hash gate rejects explicit uncertainty but does not establish semantic binding.",
+          "counts": {
+            "rawNodes": 39,
+            "projectedNodes": 39,
+            "units": 5,
+            "dependencyFacts": 26,
+            "externalDependencies": 0,
+            "ignoredNonDependencyEdges": 0
+          },
+          "limitations": [
+            "Static dependencies do not establish semantic cohesion.",
+            "Containment is not a dependency."
+          ],
+          "simulation": {
+            "kind": "declared-hypothetical-count-edit",
+            "capturedSourceGraphHash": "e8442617f28bc9ae5026cebed85c146e4dd9f87eba3ac6c122415e1ec6b6170b"
+          },
+          "projectionHash": "47b0c37996a7656d474611daae46254da3044180c30dd1960eb6ef1fc54aca3c"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "hypothetical-count-edit:2",
+          "sourceGraphHash": "3fe2c5e67075a481a81e501113bfc4fa83394b3656ba23b1b05ae470956cd32e",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "units": [
+            {
+              "id": "folder:377a73a582c894b6c5c8df41",
+              "kind": "folder",
+              "label": "atlas/technical_logs",
+              "sourceIds": [
+                "atlas.technical_logs",
+                "atlas.technical_logs.disk",
+                "atlas.technical_logs.events",
+                "atlas.technical_logs.http_api",
+                "atlas.technical_logs.http_query",
+                "atlas.technical_logs.metrics",
+                "atlas.technical_logs.service",
+                "atlas.technical_logs.settings"
+              ],
+              "files": [
+                "atlas/technical_logs/__init__.py",
+                "atlas/technical_logs/disk.py",
+                "atlas/technical_logs/events.py",
+                "atlas/technical_logs/http_api.py",
+                "atlas/technical_logs/http_query.py",
+                "atlas/technical_logs/metrics.py",
+                "atlas/technical_logs/service.py",
+                "atlas/technical_logs/settings.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:bf536e9cab4899475dbceeb1",
+              "kind": "folder",
+              "label": "atlas",
+              "sourceIds": [
+                "atlas.code_organization",
+                "atlas.grouping_providers",
+                "atlas.mcp_transport",
+                "atlas.organization_policy"
+              ],
+              "files": [
+                "atlas/code_organization.py",
+                "atlas/grouping_providers.py",
+                "atlas/mcp_transport.py",
+                "atlas/organization_policy.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:d5fe48ab7981cc99ba70b183",
+              "kind": "folder",
+              "label": "atlas/integrations/graphify",
+              "sourceIds": [
+                "atlas.integrations.graphify",
+                "atlas.integrations.graphify.adapter",
+                "atlas.integrations.graphify.chunking",
+                "atlas.integrations.graphify.runtime"
+              ],
+              "files": [
+                "atlas/integrations/graphify/__init__.py",
+                "atlas/integrations/graphify/adapter.py",
+                "atlas/integrations/graphify/chunking.py",
+                "atlas/integrations/graphify/runtime.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:d7c698329879048e464da0d8",
+              "kind": "folder",
+              "label": "atlas/agent_activity",
+              "sourceIds": [
+                "atlas.agent_activity",
+                "atlas.agent_activity.api",
+                "atlas.agent_activity.disk",
+                "atlas.agent_activity.events",
+                "atlas.agent_activity.http_api",
+                "atlas.agent_activity.http_query",
+                "atlas.agent_activity.observer",
+                "atlas.agent_activity.service",
+                "atlas.agent_activity.settings",
+                "atlas.agent_activity.summaries"
+              ],
+              "files": [
+                "atlas/agent_activity/__init__.py",
+                "atlas/agent_activity/api.py",
+                "atlas/agent_activity/disk.py",
+                "atlas/agent_activity/events.py",
+                "atlas/agent_activity/http_api.py",
+                "atlas/agent_activity/http_query.py",
+                "atlas/agent_activity/observer.py",
+                "atlas/agent_activity/service.py",
+                "atlas/agent_activity/settings.py",
+                "atlas/agent_activity/summaries.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            },
+            {
+              "id": "folder:ef183eaf814a39d145bfcf71",
+              "kind": "folder",
+              "label": "atlas/semantic_providers",
+              "sourceIds": [
+                "atlas.semantic_providers",
+                "atlas.semantic_providers.gopls",
+                "atlas.semantic_providers.jdt",
+                "atlas.semantic_providers.kotlin",
+                "atlas.semantic_providers.lsp_base",
+                "atlas.semantic_providers.php",
+                "atlas.semantic_providers.python",
+                "atlas.semantic_providers.python_worker",
+                "atlas.semantic_providers.roslyn",
+                "atlas.semantic_providers.roslyn_context",
+                "atlas.semantic_providers.rust_analyzer",
+                "atlas.semantic_providers.sourcekit",
+                "atlas.semantic_providers.typescript"
+              ],
+              "files": [
+                "atlas/semantic_providers/__init__.py",
+                "atlas/semantic_providers/gopls.py",
+                "atlas/semantic_providers/jdt.py",
+                "atlas/semantic_providers/kotlin.py",
+                "atlas/semantic_providers/lsp_base.py",
+                "atlas/semantic_providers/php.py",
+                "atlas/semantic_providers/python.py",
+                "atlas/semantic_providers/python_worker.py",
+                "atlas/semantic_providers/roslyn.py",
+                "atlas/semantic_providers/roslyn_context.py",
+                "atlas/semantic_providers/rust_analyzer.py",
+                "atlas/semantic_providers/sourcekit.py",
+                "atlas/semantic_providers/typescript.py"
+              ],
+              "ownershipSources": [
+                "captured-file-path"
+              ]
+            }
+          ],
+          "edges": [],
+          "ownership": {
+            "atlas.agent_activity": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.api": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.disk": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.events": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.http_api": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.http_query": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.observer": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.service": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.settings": "folder:d7c698329879048e464da0d8",
+            "atlas.agent_activity.summaries": "folder:d7c698329879048e464da0d8",
+            "atlas.code_organization": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.grouping_providers": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.integrations.graphify": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.integrations.graphify.adapter": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.integrations.graphify.chunking": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.integrations.graphify.runtime": "folder:d5fe48ab7981cc99ba70b183",
+            "atlas.mcp_transport": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.organization_policy": "folder:bf536e9cab4899475dbceeb1",
+            "atlas.semantic_providers": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.gopls": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.jdt": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.kotlin": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.lsp_base": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.php": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.python": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.python_worker": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.roslyn": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.roslyn_context": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.rust_analyzer": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.sourcekit": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.semantic_providers.typescript": "folder:ef183eaf814a39d145bfcf71",
+            "atlas.technical_logs": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.disk": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.events": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.http_api": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.http_query": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.metrics": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.service": "folder:377a73a582c894b6c5c8df41",
+            "atlas.technical_logs.settings": "folder:377a73a582c894b6c5c8df41"
+          },
+          "unknownOwnership": [],
+          "unknownOwnershipTruncated": false,
+          "outsideScopeIds": [],
+          "outsideScopeCount": 0,
+          "outsideScopeIdsTruncated": false,
+          "coverage": {
+            "status": "partial",
+            "sourceAnalysisStatus": "partial",
+            "unknownOwnershipCount": 0,
+            "uncertainDependencyCount": 0,
+            "missingEndpointCount": 0,
+            "unknownReasons": [
+              "source-analysis-not-confirmed-complete"
+            ]
+          },
+          "relationEvidence": "Captured static facts; shared confidence/source-hash gate rejects explicit uncertainty but does not establish semantic binding.",
+          "counts": {
+            "rawNodes": 39,
+            "projectedNodes": 39,
+            "units": 5,
+            "dependencyFacts": 26,
+            "externalDependencies": 0,
+            "ignoredNonDependencyEdges": 0
+          },
+          "limitations": [
+            "Static dependencies do not establish semantic cohesion.",
+            "Containment is not a dependency."
+          ],
+          "simulation": {
+            "kind": "declared-hypothetical-count-edit",
+            "capturedSourceGraphHash": "e8442617f28bc9ae5026cebed85c146e4dd9f87eba3ac6c122415e1ec6b6170b"
+          },
+          "projectionHash": "865259bfccae2f6a647418afc1ad32603b8fed64547c7df7c1a0ea49f8329a52"
+        }
+      ]
+    },
+    {
+      "name": "seeded-directed-rewiring-7",
+      "source": {
+        "kind": "declared-synthetic",
+        "generationSeed": 7,
+        "policy": "Four sequential independent weighted digraph draws; all seeds7,42,91 retained, not chosen by outcome."
+      },
+      "deltaModes": [
+        "derived",
+        "derived",
+        "derived"
+      ],
+      "projections": [
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:7:0",
+          "sourceGraphHash": "88de412c60477b0b95c40714517108d20803e34222b53320327c14ea65ff22d7",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "a",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "a",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "a",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "b",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "b",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "c",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "c",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "c",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "d",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "e",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "f",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "g",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "g",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "g",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "g",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            }
+          ],
+          "projectionHash": "4e6387bfa3d12fc60071533f79cd0e6a6c4d75e910dab563abb6feef88644cc1"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:7:1",
+          "sourceGraphHash": "09c880caed6baf2b1c7dd6ff7134d966ca8866bd968dcc128751fca65c04bbac",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "d",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "e",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "e",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "f",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "f",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "g",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "g",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 4
+            }
+          ],
+          "projectionHash": "ddd4d60c749806f4d9bba2e72bf06ec607e73a03d2b60cc7448e71fd1227d10c"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:7:2",
+          "sourceGraphHash": "afa18ac775d4f45328caff8c31a446c5df7092dc7710639abd3468dc42145633",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "a",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "a",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "b",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "c",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "c",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "d",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "d",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "e",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "e",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "g",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 9
+            }
+          ],
+          "projectionHash": "6b912cec5173ccb154ef6392a0af5f14f3bb3fc81dfc5c8890b3a7aec169ddb8"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:7:3",
+          "sourceGraphHash": "e15771c3c848fb4e204f43a06c67aeb5370d6d04f213b1284176e297883672d8",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "a",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "b",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "c",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "d",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "e",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "f",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "f",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "g",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "g",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 7
+            }
+          ],
+          "projectionHash": "e5c8e7b031ceb2ef8d60f4ae602f475e1d2edcba975423f7c064b92d1dcc3ac4"
+        }
+      ]
+    },
+    {
+      "name": "seeded-directed-rewiring-42",
+      "source": {
+        "kind": "declared-synthetic",
+        "generationSeed": 42,
+        "policy": "Four sequential independent weighted digraph draws; all seeds7,42,91 retained, not chosen by outcome."
+      },
+      "deltaModes": [
+        "derived",
+        "derived",
+        "derived"
+      ],
+      "projections": [
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:42:0",
+          "sourceGraphHash": "4164943d2301eae6622d74992b1a8f8628ae19f7570e11b0f45f0637f5b1279e",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "a",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "b",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "b",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "c",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "c",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "d",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "d",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 4
+            }
+          ],
+          "projectionHash": "475fddc3db352b8f138b7d992000b8759d7413a35cef612f4f9d701b4ec6040f"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:42:1",
+          "sourceGraphHash": "5cc36f4d612400c3943746ebb488d6510943c4945f85cb4025184552c8065675",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "a",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "a",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "c",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "d",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "f",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "f",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "g",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "g",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "g",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 2
+            }
+          ],
+          "projectionHash": "71c768403d91b77700b6d3d66555233493e97fa90c62fb3a2175802cfaa6735b"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:42:2",
+          "sourceGraphHash": "b073b39e9515d61b1291c2bb76cf78c69510c3ff8d4f7dbe6d2604a3ce93895d",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "a",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "a",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "b",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "b",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "c",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "d",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "e",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "e",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 9
+            }
+          ],
+          "projectionHash": "8dcb313da2ab120f432b0685efab9d25a63c079ddf1985fb9f0b4356e30fabb3"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:42:3",
+          "sourceGraphHash": "8852e5cb3a0b8be91e9b940e29ba84af30814bdc2dfd1f8dc223c2484e66bc65",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "a",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "a",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "b",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "b",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "c",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "c",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "d",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "d",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "e",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "e",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "e",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "e",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "f",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "f",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "g",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "g",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 8
+            }
+          ],
+          "projectionHash": "24f64b5fd105011a5b67e5e4a303a8b17711e14bf5f029b866a8e4f4ca970a38"
+        }
+      ]
+    },
+    {
+      "name": "seeded-directed-rewiring-91",
+      "source": {
+        "kind": "declared-synthetic",
+        "generationSeed": 91,
+        "policy": "Four sequential independent weighted digraph draws; all seeds7,42,91 retained, not chosen by outcome."
+      },
+      "deltaModes": [
+        "derived",
+        "derived",
+        "derived"
+      ],
+      "projections": [
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:91:0",
+          "sourceGraphHash": "d48e75de6027c210f48db1f089acf8217440a0b4ea563b74bcd8b045121da340",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "b",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "c",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "c",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "e",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "f",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "g",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 9
+            }
+          ],
+          "projectionHash": "c122ce26c14a774e455596d555eefec8e474357707fcb8f2b88194ebc1484308"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:91:1",
+          "sourceGraphHash": "8cab1235f01aa5a04791642602de2377038c9ae441bab430755dba8c9e3885df",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "c",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "c",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "d",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "d",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "d",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "e",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "e",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "f",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "f",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "g",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 2
+            }
+          ],
+          "projectionHash": "ce5e2f3fc27a97a60b1afae259e3a96b6b0ba21ee707350d953be4a0bb2d342f"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:91:2",
+          "sourceGraphHash": "9b2cd05f30b16e184a6d63c53097b4fd1a28e9d3d99999e64fb094949f179409",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "b",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 1
+            },
+            {
+              "source": "c",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "c",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "d",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "d",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "d",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "d",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "e",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "e",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "f",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "f",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "f",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "f",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "g",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "g",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "g",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 1
+            }
+          ],
+          "projectionHash": "6582fd054b703fb00cdfe52c7c7d49d840ea2d53b3476bc34cb725ec829e5831"
+        },
+        {
+          "version": "module-analysis-v1",
+          "level": "folder",
+          "snapshotId": "seeded:91:3",
+          "sourceGraphHash": "af489f868a11aacb3caef94f8eb0ee92a617cb06015b8a26cd9680e8fd7b5296",
+          "scope": {
+            "folders": null,
+            "ownershipSource": "captured"
+          },
+          "coverage": {
+            "status": "complete"
+          },
+          "units": [
+            {
+              "id": "a",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:a"
+              ]
+            },
+            {
+              "id": "b",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:b"
+              ]
+            },
+            {
+              "id": "c",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:c"
+              ]
+            },
+            {
+              "id": "d",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:d"
+              ]
+            },
+            {
+              "id": "e",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:e"
+              ]
+            },
+            {
+              "id": "f",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:f"
+              ]
+            },
+            {
+              "id": "g",
+              "kind": "folder",
+              "sourceIds": [
+                "synthetic:g"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "source": "a",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 8
+            },
+            {
+              "source": "b",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 9
+            },
+            {
+              "source": "b",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "c",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "c",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "c",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 3
+            },
+            {
+              "source": "e",
+              "target": "a",
+              "relation": "depends_on",
+              "count": 6
+            },
+            {
+              "source": "e",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 4
+            },
+            {
+              "source": "e",
+              "target": "g",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "f",
+              "target": "d",
+              "relation": "depends_on",
+              "count": 5
+            },
+            {
+              "source": "f",
+              "target": "e",
+              "relation": "depends_on",
+              "count": 7
+            },
+            {
+              "source": "g",
+              "target": "b",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "g",
+              "target": "c",
+              "relation": "depends_on",
+              "count": 2
+            },
+            {
+              "source": "g",
+              "target": "f",
+              "relation": "depends_on",
+              "count": 2
+            }
+          ],
+          "projectionHash": "5fb39998493398c291b89923582d8a50f3c4d28dc0ff8f95cfe808d9b3aef098"
+        }
+      ]
+    }
+  ]
+}

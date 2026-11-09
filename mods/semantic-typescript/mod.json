@@ -1,0 +1,38 @@
+{
+  "apiVersion": 1,
+  "id": "semantic-typescript",
+  "name": "TypeScript semantic analysis",
+  "version": "1.0.0",
+  "description": "Optional installed TS5 Compiler API: captured sources only, no ambient libraries or builds.",
+  "autoActivate": {
+    "extensions": [
+      ".ts",
+      ".tsx"
+    ],
+    "manifestNames": []
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "semanticProviders": [
+      {
+        "id": "typescript",
+        "language": "typescript",
+        "strategy": "typescript-local-v1",
+        "capabilities": [
+          "definition",
+          "calls"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "TypeScript: локальный Compiler API",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "atlas-delivery-problem/v1",
+  "source": "declared-synthetic",
+  "files": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h"
+  ],
+  "dependencies": [
+    [
+      "a",
+      "b"
+    ],
+    [
+      "e",
+      "f"
+    ]
+  ],
+  "requirements": {
+    "r0": [
+      "e",
+      "b"
+    ],
+    "r1": [
+      "e",
+      "c",
+      "f"
+    ],
+    "r2": [
+      "g",
+      "a"
+    ],
+    "r3": [
+      "d"
+    ],
+    "r4": [
+      "d",
+      "b"
+    ],
+    "r5": [
+      "b",
+      "f",
+      "h"
+    ],
+    "r6": [
+      "b",
+      "d"
+    ],
+    "r7": [
+      "d"
+    ],
+    "r8": [
+      "b",
+      "e"
+    ],
+    "r9": [
+      "a",
+      "f",
+      "h"
+    ],
+    "r10": [
+      "c"
+    ],
+    "r11": [
+      "h"
+    ]
+  },
+  "configurations": {
+    "cfg0": [
+      "r11",
+      "r0",
+      "r3"
+    ],
+    "cfg1": [
+      "r4",
+      "r6",
+      "r2"
+    ],
+    "cfg2": [
+      "r7",
+      "r9"
+    ],
+    "cfg3": [
+      "r5",
+      "r2"
+    ],
+    "cfg4": [
+      "r0"
+    ],
+    "cfg5": [
+      "r10",
+      "r0"
+    ]
+  },
+  "moduleLimit": 3
+}

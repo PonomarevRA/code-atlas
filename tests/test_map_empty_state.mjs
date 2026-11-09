@@ -1,0 +1,31 @@
+/** Start, load, failure and true empty-map states must expose different recovery actions. */
+import assert from 'node:assert/strict';
+import {renderMapEmptyState} from '../web/map-empty-state.js';
+const fields = new Map(['h2','p','button'].map(tag => [tag,{textContent:''}]));
+const root = {dataset:{}, querySelector:tag => fields.get(tag)};
+renderMapEmptyState(root,{hasGraph:false,loading:false,project:null});
+assert.equal(root.hidden,false);assert.equal(root.dataset.action,'add');
+renderMapEmptyState(root,{hasGraph:false,loading:true,project:{id:'saved'}});
+assert.equal(root.hidden,true,'a selected loading project must not ask for another folder');
+renderMapEmptyState(root,{hasGraph:false,loading:false,project:{id:'saved'},error:'<private markup>'});
+assert.equal(root.hidden,false);assert.equal(root.dataset.action,'retry');
+assert.equal(fields.get('p').textContent,'<private markup>','error text stays literal');
+assert.equal(fields.get('button').textContent,'Повторить загрузку');
+renderMapEmptyState(root,{hasGraph:false,loading:false,project:{id:'saved'}});
+assert.equal(root.dataset.action,'choose');
+renderMapEmptyState(root,{hasGraph:true,loading:false,project:{id:'saved'}});
+assert.equal(root.hidden,true);
+renderMapEmptyState(root,{hasGraph:false,loading:false,project:{id:'saved'},systemContext:true});
+assert.equal(root.hidden,true,'metadata-only architecture owns its own state and must not show raw-map empty overlay');
+renderMapEmptyState(root,{hasGraph:false,loading:false,project:{id:'saved'},systemContext:false});
+assert.equal(root.hidden,false,'ordinary empty code map still exposes recovery');
+console.log('Map empty-state recovery PASS');
+
+renderMapEmptyState(root,{hasGraph:false,loading:false,project:{id:'calc',snapshotId:null,status:'failed',error:'AST extraction failed'}});
+assert.match(fields.get('h2').textContent,/не удалось построить/);
+assert.match(fields.get('p').textContent,/Проект уже добавлен/);
+assert.match(fields.get('p').textContent,/AST extraction failed/);
+assert.equal(root.dataset.action,'rebuild');
+renderMapEmptyState(root,{hasGraph:false,loading:false,project:{id:'new',snapshotId:null,status:'not-built'}});
+assert.match(fields.get('h2').textContent,/ещё не построена/);
+assert.equal(root.dataset.action,'rebuild');

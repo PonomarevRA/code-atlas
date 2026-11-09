@@ -1,0 +1,122 @@
+{
+  "graph": {
+    "analysisStatus": "complete",
+    "snapshotId": "synthetic-dense-bridge",
+    "nodes": [
+      {
+        "id": "a",
+        "kind": "function",
+        "file": "a/definition.py"
+      },
+      {
+        "id": "b",
+        "kind": "function",
+        "file": "b/definition.py"
+      },
+      {
+        "id": "c",
+        "kind": "function",
+        "file": "c/definition.py"
+      },
+      {
+        "id": "x",
+        "kind": "function",
+        "file": "x/definition.py"
+      },
+      {
+        "id": "y",
+        "kind": "function",
+        "file": "y/definition.py"
+      },
+      {
+        "id": "z",
+        "kind": "function",
+        "file": "z/definition.py"
+      }
+    ],
+    "edges": [
+      {
+        "source": "a",
+        "target": "b",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "a",
+        "target": "c",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "b",
+        "target": "a",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "b",
+        "target": "c",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "c",
+        "target": "a",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "c",
+        "target": "b",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "x",
+        "target": "y",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "x",
+        "target": "z",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "y",
+        "target": "x",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "y",
+        "target": "z",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "z",
+        "target": "x",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "z",
+        "target": "y",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "c",
+        "target": "x",
+        "relation": "calls",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "source": {
+    "kind": "hand-constructed",
+    "meaning": "structural regression, not functional ground truth"
+  }
+}

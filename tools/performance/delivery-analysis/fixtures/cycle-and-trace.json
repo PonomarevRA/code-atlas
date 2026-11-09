@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "atlas-delivery-problem/v1",
+  "source": "declared-synthetic",
+  "files": [
+    "a",
+    "b",
+    "c",
+    "d"
+  ],
+  "dependencies": [
+    [
+      "a",
+      "b"
+    ],
+    [
+      "b",
+      "a"
+    ],
+    [
+      "c",
+      "d"
+    ]
+  ],
+  "requirements": {
+    "ra": [
+      "a"
+    ],
+    "rb": [
+      "b"
+    ],
+    "rc": [
+      "c"
+    ],
+    "mixed": [
+      "a",
+      "d"
+    ]
+  },
+  "configurations": {
+    "core": [
+      "ra"
+    ],
+    "extra": [
+      "rc"
+    ],
+    "mixed": [
+      "mixed"
+    ],
+    "empty": []
+  },
+  "moduleLimit": 2
+}

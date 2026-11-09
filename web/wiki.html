@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wiki Atlas · начало работы</title><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/data.css"><link rel="stylesheet" href="/atlas-menu.css"><link rel="stylesheet" href="/project-wiki.css"><script src="/color-scheme-init.js"></script><link id="color-scheme-styles" rel="stylesheet" href="/api/color-schemes/styles.css"><link rel="stylesheet" href="/color-scheme.css"></head>
+<body><header><a class="brand" href="/">CA · CODE ATLAS</a><div data-atlas-menu></div></header>
+<a class="wiki-skip" href="#wiki-article">Перейти к тексту</a>
+<main class="project-wiki"><aside class="wiki-sidebar" aria-label="Разделы wiki Atlas">
+<div class="wiki-sidebar-inner"><div class="wiki-sidebar-heading">
+<p class="wiki-sidebar-title">Wiki Atlas</p>
+<label for="wiki-filter">Найти раздел<input id="wiki-filter" type="search" placeholder="Карта, MCP, моды…" autocomplete="off"></label>
+<p class="wiki-nav-hint">Выберите задачу, затем главу или страницу мода.</p>
+<p id="wiki-count" class="wiki-count" role="status" aria-live="polite"></p>
+</div><details id="wiki-contents" class="wiki-contents wiki-sidebar-content"><summary>Оглавление</summary><nav id="wiki-pages" aria-label="Страницы руководства"></nav></details>
+<footer class="wiki-sidebar-footer"><p id="wiki-mod-state" class="wiki-catalog-state" role="status" aria-live="polite">Встроенное руководство доступно без API.</p><button id="wiki-catalog-load" type="button">Обновить wiki модов</button></footer></div></aside>
+<div class="project-wiki-reading"><nav id="wiki-breadcrumbs" class="wiki-breadcrumbs" aria-label="Путь раздела"></nav><p id="wiki-state" role="status" aria-live="polite">Загружаем встроенное руководство…</p><button id="wiki-retry" type="button" hidden>Повторить загрузку руководства</button><button id="wiki-mod-retry" type="button" hidden>Повторить загрузку страницы</button><button id="wiki-catalog-retry" type="button" hidden>Обновить каталог модов</button><article id="wiki-article" tabindex="-1"></article><section id="wiki-examples" aria-label="Примеры на карте Atlas" hidden></section><nav id="wiki-next" aria-label="Продолжить чтение"></nav></div></main>
+<script type="module" src="/project-wiki-page.js"></script><script type="module" src="/atlas-menu.js"></script></body></html>

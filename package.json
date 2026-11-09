@@ -1,0 +1,8 @@
+{
+  "name": "code-atlas-ui",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "design:verify": "node tools/verify-design-vendor.mjs"
+  }
+}

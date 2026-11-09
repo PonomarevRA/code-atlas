@@ -1,0 +1,30 @@
+{
+  "apiVersion": 1,
+  "id": "logs-lnav",
+  "name": "Logs: lnav runtime pack",
+  "version": "1.0.0",
+  "description": "Host-owned static document profile; import requires an explicit build request.",
+  "autoActivate": false,
+  "analysis": {
+    "apiVersion": 1,
+    "documentProviders": [
+      {
+        "id": "logs-lnav",
+        "strategy": "logs-lnav-v1",
+        "extensions": [
+          ".log"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Data-and-Updates",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Логи: профиль lnav",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

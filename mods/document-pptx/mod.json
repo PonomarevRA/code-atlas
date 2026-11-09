@@ -1,0 +1,34 @@
+{
+  "apiVersion": 1,
+  "id": "document-pptx",
+  "name": "PPTX",
+  "version": "1.0.0",
+  "description": "Host-owned static document profile; import requires an explicit build request.",
+  "autoActivate": {
+    "extensions": [
+      ".pptx"
+    ]
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "documentProviders": [
+      {
+        "id": "document-pptx",
+        "strategy": "document-pptx-v1",
+        "extensions": [
+          ".pptx"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Data-and-Updates",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "PPTX: статическое содержимое",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

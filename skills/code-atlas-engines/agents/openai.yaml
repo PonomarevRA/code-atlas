@@ -1,0 +1,4 @@
+interface:
+  display_name: "Atlas Engine Setup"
+  short_description: "Проверка и настройка семантических движков Atlas"
+  default_prompt: "Используй $code-atlas-engines, чтобы проверить движки в моём проекте и предложить нужную настройку."

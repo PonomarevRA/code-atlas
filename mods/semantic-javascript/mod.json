@@ -1,0 +1,40 @@
+{
+  "apiVersion": 1,
+  "id": "semantic-javascript",
+  "name": "JavaScript semantic analysis",
+  "version": "1.0.0",
+  "description": "Optional installed TS5 Compiler API for captured JavaScript/JSX source definitions and call candidates; project/reference closure remains unproven.",
+  "autoActivate": {
+    "extensions": [
+      ".js",
+      ".mjs",
+      ".cjs",
+      ".jsx"
+    ],
+    "manifestNames": []
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "semanticProviders": [
+      {
+        "id": "javascript",
+        "language": "javascript",
+        "strategy": "typescript-local-v1",
+        "capabilities": [
+          "definition",
+          "calls"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "JavaScript: кандидаты Compiler API",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

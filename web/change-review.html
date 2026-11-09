@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Обзор изменений · Code Atlas</title>
+<link rel="stylesheet" href="/data.css">
+<link rel="stylesheet" href="/atlas-menu.css">
+<script src="/color-scheme-init.js"></script>
+<link id="color-scheme-styles" rel="stylesheet" href="/api/color-schemes/styles.css">
+<link rel="stylesheet" href="/color-scheme.css">
+<link rel="stylesheet" href="/change-review.css">
+</head>
+<body>
+<header><a class="brand" href="/">CA · CODE ATLAS</a><div data-atlas-menu></div></header>
+<main class="review-page">
+  <h1>Обзор изменений</h1>
+  <p id="review-status" role="status"></p>
+  <section id="review-start" hidden aria-label="Как открыть обзор">
+    <p>Откройте ссылку, которую агент оставил по завершении работы. Она ведёт к сохранённым версиям «До» и «После».</p>
+    <p>До правок агент сохраняет точку входа. После правок он обновляет карту и завершает обзор.</p>
+    <p><a href="/wiki.html?page=Temporary-Checkout-Maps">Временные карты checkout</a></p>
+  </section>
+  <div id="review-result" hidden>
+    <p id="review-title" class="review-title"></p>
+    <section aria-labelledby="review-path-title">
+      <h2 id="review-path-title">Путь от точки входа</h2>
+      <p class="muted">Возможные статические вызовы и события в исходнике. Условия не вычисляются.</p>
+      <div id="review-paths" class="review-sides"></div>
+    </section>
+    <section id="review-diff" hidden aria-labelledby="review-diff-title">
+      <h2 id="review-diff-title">Изменённые функции</h2>
+      <p id="review-counts"></p>
+      <p id="review-coverage" class="muted"></p>
+      <p class="muted">Сравнение охватывает функции, найденные в двух картах. Файлы вне карт не проверяются.</p>
+      <ul id="review-functions" class="review-list"></ul>
+      <button id="review-more" type="button" hidden>Показать ещё функции</button>
+    </section>
+  </div>
+</main>
+<script type="module" src="/change-review.js"></script>
+<script type="module" src="/atlas-menu.js"></script>
+</body>
+</html>

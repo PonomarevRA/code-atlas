@@ -1,0 +1,122 @@
+{
+  "apiVersion": 1,
+  "id": "framework-allure",
+  "name": "allure source facts",
+  "version": "1.0.0",
+  "description": "Lexical test/library declarations. No test execution or dataset evaluation.",
+  "requires": [
+    "language-java"
+  ],
+  "analysis": {
+    "apiVersion": 1,
+    "testFrameworks": [
+      {
+        "id": "allure",
+        "language": "java",
+        "annotationRules": [
+          {
+            "name": "io.qameta.allure.Step",
+            "role": "step",
+            "displayArgument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Description",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Epic",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Feature",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Story",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Owner",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Severity",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Link",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Links",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Issue",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Issues",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.TmsLink",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.TmsLinks",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.AllureId",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Flaky",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Muted",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.Attachment",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "io.qameta.allure.LabelAnnotation",
+            "role": "metadata",
+            "argument": "value"
+          }
+        ],
+        "supportsComposed": false
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Allure: метаданные шагов",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

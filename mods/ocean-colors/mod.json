@@ -1,0 +1,30 @@
+{
+  "apiVersion": 1,
+  "id": "ocean-colors",
+  "name": "Океан · цветовая схема",
+  "version": "1.0.0",
+  "description": "Пример декларативной тёмной схемы без JavaScript и изменения карт.",
+  "colorSchemes": [
+    {
+      "id": "night",
+      "label": "Океан",
+      "base": "dark",
+      "tokens": {
+        "accent": "#8bc9fa",
+        "selection": "#b0ddff",
+        "accentSoft": "#243f53",
+        "cardHeader": "#293f4f"
+      }
+    }
+  ],
+  "wiki": {
+    "section": "Development-Guide",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Океан: цветовая схема",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

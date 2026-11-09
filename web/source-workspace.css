@@ -1,0 +1,50 @@
+/* Shared read-only workspace for the browser and native WebView. */
+.source-viewer { height: min(60vh, 720px); padding: 12px 16px; }
+.source-viewer[data-maximized="true"] { top: 12px; bottom: 12px; height: auto; }
+.source-viewer .source-heading > div { display: flex; gap: 8px; flex-shrink: 0; }
+.source-viewer .source-heading button { padding: 6px 10px; font-size: 12px; }
+.source-toolbar { gap: 6px; margin-bottom: 6px; }
+.source-toolbar label, .source-files label { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.source-toolbar input { width: 190px; min-width: 0; padding: 5px 7px; }
+.source-toolbar input[data-source="goto"] { width: 68px; }
+.source-workspace { display: flex; flex: 1; min-height: 0; gap: 10px; margin-top: 6px; }
+.source-workspace [hidden] { display: none; }
+.source-code { min-width: 160px; font-size: 13px; }
+.source-line { min-width: max-content; }
+.source-line-number { position: sticky; left: 0; background: var(--atlas-surface, #f4f8f5); z-index: 1; user-select: none; }
+.source-line-match { background: var(--atlas-control, #fff3c9); }
+.source-line-selected { background: var(--atlas-control, #fff0ac); }
+.source-token-keyword { color: var(--atlas-keyword, #305bd2); }
+.source-token-string { color: var(--atlas-string, #a14e00); }
+.source-token-number { color: var(--atlas-number, #7653a4); }
+.source-token-comment { color: var(--atlas-muted, #617c6c); font-style: italic; }
+.source-token-function { color: var(--atlas-code, #176b80); }
+.source-token-type { color: var(--atlas-accent, #267d69); }
+.source-token-operator { color: var(--atlas-muted, #4a6260); }
+.source-files { width: 250px; flex-shrink: 0; overflow: auto; border: 1px solid var(--line); background: var(--atlas-surface, #f4f8f5); padding: 10px; }
+.source-files label { display: grid; }
+.source-files input { width: 100%; min-width: 0; }
+.source-file-list { display: grid; gap: 4px; }
+.source-file-list button { text-align: left; overflow-wrap: anywhere; padding: 7px; font: 12px/1.5 ui-monospace, monospace; }
+.source-library { width: 340px; flex-shrink: 0; overflow: auto; border-left: 1px solid var(--line); padding: 0 10px; overflow-wrap: anywhere; }
+.source-library h3 { font-size: 15px; margin: 2px 0 8px; }
+.source-library-form { display: grid; gap: 8px; }
+.source-library-form label { display: grid; gap: 4px; font-size: 12px; }
+.source-library input, .source-library select { width: 100%; min-width: 0; }
+.source-library-hit { padding: 10px 0; border-top: 1px solid var(--line); }
+.source-library pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }
+.source-viewer :focus-visible { outline: 2px solid var(--atlas-accent, #167d69); outline-offset: 2px; }
+@media (max-width: 900px) {
+  .source-viewer { left: 4px; right: 4px; padding: 10px; height: 75vh; }
+  .source-files { width: 180px; }
+  .source-library { width: 270px; }
+  .source-heading { align-items: flex-start; }
+  .source-heading > div { flex-wrap: wrap; justify-content: flex-end; }
+}
+@media (max-width: 650px) {
+  .source-workspace { flex-direction: column; flex-wrap: nowrap; overflow: auto; }
+  /* Stable pane height prevents late file/reference results from pushing a chosen source row below view. */
+  .source-files, .source-library { width: auto; height: 200px; flex: 0 0 200px; max-height: 200px; }
+  .source-code { flex: 1 0 220px; height: 220px; min-height: 220px; max-height: 360px; }
+  .source-viewer { min-height: 300px; }
+}

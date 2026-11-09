@@ -1,0 +1,11 @@
+{
+  "schema": "agent-memory-root-registry/v1",
+  "version": 1,
+  "areas": [
+    {
+      "id": "code-analysis",
+      "summary": "Using static evidence from Code Atlas.",
+      "path": "code-analysis/registry.a2a.yaml"
+    }
+  ]
+}

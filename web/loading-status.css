@@ -1,0 +1,46 @@
+/* Нативная индикация в палитре Atlas; фон не перекрывает доступ к карте. */
+.atlas-loading-status {
+  position: fixed;
+  inset-inline-end: 12px;
+  inset-block-end: 30px;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .65em;
+  max-inline-size: min(32rem, calc(100vw - 24px));
+  padding: .55em .8em;
+  border: 1px solid var(--atlas-border, var(--line, #b7c8bd));
+  border-radius: 6px;
+  background: var(--atlas-surface, #fff);
+  color: var(--atlas-text, #1b352c);
+  font: 500 .875rem/1.4 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+.atlas-loading-status[hidden] {display: none;}
+.atlas-loading-status__progress {
+  inline-size: 3em;
+  block-size: .5em;
+  flex: 0 0 3em;
+  accent-color: var(--atlas-accent, var(--accent, #176b4b));
+}
+@media (prefers-reduced-motion: reduce) {
+  .atlas-loading-status__progress {display: none;}
+}
+
+.atlas-loading-status > [role="status"] {flex: 1; min-inline-size: 0;}
+.atlas-loading-status__pause {
+  pointer-events: auto;
+  flex: 0 1 auto;
+  border: 1px solid var(--atlas-border, var(--line, #b7c8bd));
+  border-radius: 4px;
+  padding: .2em .5em;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.atlas-loading-status__pause:focus-visible {outline: 2px solid var(--atlas-accent, var(--accent, #176b4b)); outline-offset: 2px;}
+.atlas-loading-status[data-motion="paused"] .atlas-loading-status__progress {display:none;}
+@media (prefers-reduced-motion: reduce) {.atlas-loading-status__pause {display:none;}}

@@ -1,0 +1,80 @@
+{
+  "apiVersion": 1,
+  "id": "framework-mstest",
+  "name": "mstest source facts",
+  "version": "1.0.0",
+  "description": "Lexical test/library declarations. No test execution or dataset evaluation.",
+  "requires": [
+    "language-csharp"
+  ],
+  "analysis": {
+    "apiVersion": 1,
+    "testFrameworks": [
+      {
+        "id": "mstest",
+        "language": "csharp",
+        "annotationRules": [
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute",
+            "role": "test"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.DataTestMethodAttribute",
+            "role": "test"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute",
+            "role": "parameter-source"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.DynamicDataAttribute",
+            "role": "parameter-source"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.AssemblyInitializeAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.AssemblyCleanupAttribute",
+            "role": "lifecycle"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute",
+            "role": "disabled"
+          },
+          {
+            "name": "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute",
+            "role": "metadata"
+          }
+        ],
+        "supportsComposed": false
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "MSTest: тесты и данные",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

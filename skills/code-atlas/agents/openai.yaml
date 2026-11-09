@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Atlas"
+  short_description: "Исследование кода и данных через локальный Atlas"
+  default_prompt: "Используй $code-atlas для исследования выбранного проекта через Atlas."

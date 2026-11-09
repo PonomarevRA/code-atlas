@@ -1,0 +1,57 @@
+.coverage-page { margin: 0; color: var(--atlas-text, #253c36); background: var(--atlas-surfaceAlt, #f4f7f5); font: 15px/1.5 system-ui, sans-serif; }
+.coverage-page * { box-sizing: border-box; }
+.coverage-page a { color: var(--atlas-accent, #1c6554); text-underline-offset: 3px; }
+.coverage-page button, .coverage-page input, .coverage-page select, .coverage-page textarea { font: inherit; }
+.coverage-page button { cursor: pointer; padding: 9px 14px; border: 1px solid var(--atlas-cardBorder, #a6c0b6); border-radius: 7px; background: var(--atlas-surface, #fff); color: var(--atlas-text, #23483a); }
+.coverage-page button:disabled { cursor: default; opacity: .5; }
+.coverage-page :focus-visible { outline: 3px solid var(--atlas-code, #398cbe); outline-offset: 3px; }
+.coverage-page input, .coverage-page select, .coverage-page textarea { display: block; width: 100%; margin-top: 4px; padding: 8px 10px; border: 1px solid var(--atlas-cardBorder, #b9cbc3); border-radius: 6px; color: var(--atlas-text, #253c36); background: var(--atlas-surface, #fff); }
+.coverage-page label { font-size: 13px; font-weight: 600; }
+.coverage-page [hidden] { display: none !important; }
+.coverage-page h1 { margin: 14px 0 4px; font-size: 28px; }
+.coverage-page h2 { font-size: 19px; margin: 0 0 12px; }
+.coverage-page h3 { font-size: 16px; margin: 0 0 8px; }
+.coverage-page p { margin: 8px 0; }
+.coverage-header, #coverage-root { max-width: 1600px; margin: 0 auto; padding: 24px 32px; }
+.coverage-header { padding-bottom: 10px; }
+.coverage-intro { color: var(--atlas-muted, #4f675e); }
+.coverage-evidence-note { background: var(--atlas-surfaceAlt, #e9f0ed); border-left: 3px solid var(--atlas-cardBorder, #698f7e); padding: 10px 14px; }
+.coverage-muted { color: var(--atlas-muted, #60746d); font-size: 13px; overflow-wrap: anywhere; }
+.coverage-controls { display: grid; grid-template-columns: minmax(180px, 320px) 1fr auto; gap: 12px 20px; align-items: end; padding: 18px; background: var(--atlas-surface, #fff); border: 1px solid var(--atlas-border, #d4e0da); border-radius: 10px; }
+.coverage-controls details, #coverage-status, #coverage-provenance { grid-column: 1 / -1; }
+.coverage-controls details { max-width: 860px; }
+.coverage-controls summary { cursor: pointer; color: var(--atlas-muted, #416151); }
+.coverage-controls textarea { resize: vertical; }
+.coverage-scope-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.coverage-scope-row p { flex: 1; overflow-wrap: anywhere; }
+#coverage-analyze { background: var(--atlas-accent, #245f49); color: var(--atlas-onAccent, #fff); border-color: var(--atlas-accent, #245f49); }
+.coverage-summary { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 12px; }
+.coverage-stat { padding: 9px 13px; background: var(--atlas-surface, #fff); border: 1px solid var(--atlas-border, #d4e0da); border-radius: 7px; }
+.coverage-warnings { color: var(--atlas-string, #76521d); }
+.coverage-warnings p { padding: 8px 12px; background: var(--atlas-warningSoft, #fff7e8); border-radius: 5px; }
+.coverage-filters { display: grid; grid-template-columns: minmax(220px, 1fr) repeat(3, minmax(140px, 190px)); gap: 12px; margin: 20px 0; }
+.coverage-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, .9fr); gap: 24px; align-items: start; }
+.coverage-file { margin-bottom: 24px; }
+.coverage-file > h2 { font-size: 14px; color: var(--atlas-muted, #60746d); overflow-wrap: anywhere; }
+.coverage-method { padding: 15px; margin: 10px 0; background: var(--atlas-surface, #fff); border: 1px solid var(--atlas-border, #d4e0da); border-radius: 9px; }
+.coverage-method h3, .coverage-detail h2, .coverage-condition-location { overflow-wrap: anywhere; }
+.coverage-condition { display: block; width: 100%; text-align: left; margin: 8px 0; background: var(--atlas-surface, #f7faf8) !important; border-color: var(--atlas-border, #dce6e0) !important; }
+.coverage-condition[aria-pressed="true"] { border-color: var(--atlas-accent, #317d62) !important; box-shadow: 0 0 0 1px var(--atlas-accent, #317d62); }
+.coverage-condition-title { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.coverage-condition-expression { display: block; margin-top: 6px; white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.5 ui-monospace, monospace; }
+.coverage-condition-location { display: block; margin-top: 5px; font-size: 12px; color: var(--atlas-muted, #60746d); }
+.coverage-badge { display: inline-block; border-radius: 4px; padding: 2px 7px; font-size: 12px; color: var(--atlas-muted, #50645c); background: var(--atlas-surfaceAlt, #e8eeeb); }
+.coverage-badge-covered { color: var(--atlas-accent, #255e44); background: var(--atlas-surfaceAlt, #e1f0e6); }
+.coverage-badge-partial { color: var(--atlas-string, #825511); background: var(--atlas-control, #fff0cf); }
+.coverage-badge-uncovered { color: var(--atlas-error, #914a43); background: var(--atlas-errorSoft, #fbe7e3); }
+.coverage-detail { padding: 20px; background: var(--atlas-surface, #fff); border: 1px solid var(--atlas-border, #d4e0da); border-radius: 10px; position: sticky; top: 20px; max-height: calc(100vh - 40px); overflow: auto; }
+.coverage-detail pre { margin: 10px 0; padding: 12px; border-radius: 5px; background: var(--atlas-surfaceAlt, #f2f6f3); font: 13px/1.6 ui-monospace, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.coverage-detail ul { padding-left: 20px; }
+.coverage-detail li { margin: 6px 0; }
+.coverage-detail-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 16px 0; }
+.coverage-pagination { display: flex; gap: 12px; justify-content: center; align-items: center; margin: 20px 0; }
+.coverage-inventory { margin-top: 32px; border-top: 1px solid var(--atlas-border, #d4e0da); padding-top: 24px; }
+.coverage-test { padding: 12px 15px; border: 1px solid var(--atlas-border, #d4e0da); border-radius: 7px; background: var(--atlas-surface, #fff); margin: 8px 0; overflow-wrap: anywhere; }
+.coverage-test pre { white-space: pre-wrap; font-size: 12px; }
+@media (max-width: 900px) { .coverage-layout { grid-template-columns: 1fr; } .coverage-detail { position: static; max-height: none; } .coverage-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .coverage-header, #coverage-root { padding: 16px; } .coverage-controls { grid-template-columns: 1fr; } .coverage-filters { grid-template-columns: 1fr; } .coverage-condition-title { flex-wrap: wrap; } }

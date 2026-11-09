@@ -1,0 +1,48 @@
+import assert from 'node:assert/strict';
+import {HealthRefreshController,healthRefreshText} from '../web/health-refresh.js';
+import {Svg} from './svg_fixture.mjs';
+globalThis.document={createElement:tag=>new Svg(tag)};
+const root=new Svg('div'),pending=[],timers=[];let ready=0;
+const controller=new HealthRefreshController(root,{request:(url,options)=>new Promise(resolve=>pending.push({url,options,resolve})),
+  schedule:fn=>{timers.push(fn);return timers.length;},cancel:()=>{},onReady:()=>{ready++;}});
+const old=controller.watch({projectId:'old',snapshotId:'one'});
+const current=controller.watch({projectId:'new',snapshotId:'two'});
+pending[0].resolve({status:'completed',methodCount:1,assessedCount:1,unknownCount:0});await old;
+assert.equal(ready,0);
+pending[1].resolve({status:'running'});await current;
+assert.equal(controller.button.disabled,true);
+assert.ok(controller.message.textContent.includes('идёт пересчёт'));
+const tick=timers.shift()();
+pending[2].resolve({status:'completed',methodCount:4,assessedCount:0,unknownCount:4});await tick;
+assert.equal(ready,1);assert.equal(controller.button.disabled,false);
+assert.ok(controller.message.textContent.includes('неизвестно: 4'));
+assert.ok(pending[2].url.includes('snapshotId=two'));
+const retry=controller.refresh();
+assert.equal(pending[3].options.method,'POST');
+assert.deepEqual(JSON.parse(pending[3].options.body),{snapshotId:'two'});
+pending[3].resolve({status:'queued'});await Promise.resolve();await Promise.resolve();
+pending[4].resolve({status:'completed',methodCount:4,assessedCount:1,unknownCount:3});await retry;
+assert.equal(ready,2);
+const failure=controller.watch({projectId:'new',snapshotId:'three'});
+pending[5].resolve({status:'failed',error:'<script>'});await failure;
+assert.equal(controller.button.disabled,false);
+assert.ok(!controller.message.textContent.includes('<script>'));
+await controller.watch(null);assert.equal(root.hidden,true);
+assert.ok(healthRefreshText({status:'interrupted'}).includes('прерван'));
+console.log('Health refresh: pinned status, stale response rejection, one terminal update, explicit retry and unknown scores PASS');
+const {applyHealthUpdates}=await import('../web/health-refresh.js');
+const card={id:'m',label:'Root()',x:10,health:{score:null,structuralScore:42}},step={nodeId:'m'},unrelated={id:'other',health:{score:1}};
+applyHealthUpdates([card,step,unrelated],new Map([['m',{id:'m',health:{score:70}}],['new',{id:'new',health:{score:100}}]]));
+assert.equal(card.health.score,70);assert.equal(card.health.structuralScore,42);assert.equal(card.x,10);
+assert.equal(step.health.score,70);assert.equal(unrelated.health.score,1);
+console.log('Derived health updates preserve node identity, geometry, unseen records and existing full facts PASS');
+const originalCancel=globalThis.clearTimeout,originalSchedule=globalThis.setTimeout;let cancelled=false,scheduled=false;
+globalThis.clearTimeout=function(){assert.equal(this,undefined);cancelled=true;};
+globalThis.setTimeout=function(){assert.equal(this,undefined);scheduled=true;return 1;};
+try {
+ const nativeTimers=new HealthRefreshController(new Svg('div'),{request:async()=>({status:'running'})});
+ await nativeTimers.watch({projectId:'p',snapshotId:'s'});
+ assert.ok(cancelled && scheduled);
+ nativeTimers.stop();
+} finally {globalThis.clearTimeout=originalCancel;globalThis.setTimeout=originalSchedule;}
+console.log('Browser timers are invoked through receiver-safe default wrappers PASS');

@@ -1,0 +1,89 @@
+{
+  "apiVersion": 1,
+  "id": "framework-testng",
+  "name": "testng source facts",
+  "version": "1.0.0",
+  "description": "Lexical test/library declarations. No test execution or dataset evaluation.",
+  "requires": [
+    "language-java"
+  ],
+  "analysis": {
+    "apiVersion": 1,
+    "testFrameworks": [
+      {
+        "id": "testng",
+        "language": "java",
+        "annotationRules": [
+          {
+            "name": "org.testng.annotations.Test",
+            "role": "test",
+            "sourceArgument": "dataProvider",
+            "displayArgument": "description",
+            "disabledArgument": "enabled"
+          },
+          {
+            "name": "org.testng.annotations.DataProvider",
+            "role": "parameter-source",
+            "argument": "name"
+          },
+          {
+            "name": "org.testng.annotations.Parameters",
+            "role": "parameter-source",
+            "sourceArgument": "value"
+          },
+          {
+            "name": "org.testng.annotations.BeforeSuite",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.testng.annotations.AfterSuite",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.testng.annotations.BeforeTest",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.testng.annotations.AfterTest",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.testng.annotations.BeforeGroups",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.testng.annotations.AfterGroups",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.testng.annotations.BeforeClass",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.testng.annotations.AfterClass",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.testng.annotations.BeforeMethod",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.testng.annotations.AfterMethod",
+            "role": "lifecycle"
+          }
+        ],
+        "supportsComposed": false
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "TestNG: тесты и DataProvider",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "apiVersion": 1,
+  "id": "langgraph-guide",
+  "name": "Помощник по проекту · LangGraph",
+  "version": "1.0.0",
+  "description": "Локальный сбор кода, комментариев, связей и справочников по вопросу или выбранному методу. Состояние этапов сохраняется. Без LLM и внешних запросов.",
+  "workflows": [
+    {
+      "id": "explore",
+      "label": "Разобраться в проекте",
+      "engine": "langgraph",
+      "kind": "research"
+    }
+  ],
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "LangGraph: исследование проекта",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

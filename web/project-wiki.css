@@ -1,0 +1,68 @@
+/* The guide owns reading scroll; contents follow the task-grouped AG Design book pattern. */
+.project-wiki{display:grid;grid-template-columns:minmax(13rem,16rem) minmax(0,51.25rem);gap:2.25rem;max-width:73.75rem;margin:auto;padding:1.75rem 1.5rem;color:var(--atlas-text,#203330)}
+.project-wiki [hidden]{display:none!important}
+.project-wiki .wiki-sidebar{position:static;min-width:0;align-self:stretch;border:0;border-inline-end:1px solid var(--atlas-border,#c8d8ce);padding:0 1rem 0 0;background:transparent;font-size:.875rem}
+.wiki-sidebar-inner{position:sticky;top:1.25rem;display:flex;flex-direction:column;block-size:calc(100dvh - 10rem);min-width:0}
+.wiki-sidebar-heading{flex:none}
+.wiki-sidebar-content{flex:1;min-block-size:0;overflow:auto;padding-inline-end:.25rem;scrollbar-gutter:stable}
+.project-wiki .wiki-sidebar-title{font-size:1rem;font-weight:650;margin:0 0 1.25rem}
+.project-wiki aside label{font-weight:600}
+.project-wiki input{width:100%;min-height:2.5rem;margin:.375rem 0 .5rem}
+.project-wiki input,.project-wiki button{font:inherit;max-width:100%;box-sizing:border-box}
+.project-wiki button{min-height:2.25rem;white-space:normal;overflow-wrap:anywhere}
+.project-wiki .wiki-nav-hint,.project-wiki .wiki-count{font-size:.8125rem;line-height:1.5;color:var(--atlas-muted,#60746c);margin:.5rem 0 1rem}
+.wiki-contents>summary{font-size:.9375rem;font-weight:650;padding:.5rem 0;cursor:pointer}
+#wiki-pages{display:grid;gap:.75rem;margin-block-start:.5rem}
+.wiki-topic-group{margin:0}
+.wiki-topic-group>summary{display:list-item;position:relative;color:var(--atlas-muted,#60746c);font-size:.8125rem;font-weight:600;line-height:1.5;cursor:pointer;padding:.625rem .125rem;overflow-wrap:anywhere}
+.wiki-group-count{font-size:.75rem;font-weight:400;margin-inline-start:.5rem}
+.wiki-topic-items{display:grid;gap:.125rem;padding-block-end:.375rem}
+.project-wiki aside a{display:block;min-height:2.5rem;box-sizing:border-box;padding:.5625rem .75rem;border-radius:.4375rem;color:var(--atlas-muted,#60746c);text-decoration:none;font-size:.875rem;line-height:1.5;overflow-wrap:anywhere}
+.project-wiki aside a:hover{background:var(--atlas-surfaceAlt,#edf3ef);color:var(--atlas-text,#203330)}
+.project-wiki aside a[aria-current]{background:var(--atlas-surfaceAlt,#edf3ef);color:var(--atlas-text,#203330);box-shadow:inset 3px 0 var(--atlas-accent,#19725b);font-weight:650}
+.wiki-mod-pages{margin:.125rem 0;margin-inline-start:.75rem;border:0;border-inline-start:1px solid var(--atlas-border,#c8d8ce);padding:0 0 0 .625rem}
+.wiki-mod-pages summary{font-size:.8125rem;line-height:1.5;padding:.5rem .25rem;cursor:pointer;overflow-wrap:anywhere}
+.wiki-mod-children{display:flex;flex-direction:column;gap:.125rem;padding-block-end:.5rem}
+.project-wiki .wiki-mod-children a{font-size:.8125rem;padding-inline:.5rem}
+.wiki-empty-search{font-size:.875rem;line-height:1.5;color:var(--atlas-muted,#60746c)}
+.wiki-sidebar-footer{flex:none;border-block-start:1px solid var(--atlas-border,#c8d8ce);margin-block-start:1rem;padding-block-start:.75rem}
+.project-wiki .wiki-catalog-state{font-size:.8125rem;line-height:1.45;color:var(--atlas-muted,#60746c);margin:.25rem 0 .625rem}
+#wiki-catalog-load{font-size:.8125rem;padding:.35rem .625rem;text-align:start}
+.project-wiki-reading{min-width:0;overflow-wrap:anywhere;padding-block-end:3rem}
+.project-wiki article{font-size:1rem;line-height:1.65;max-width:75ch;overflow-wrap:anywhere}
+.project-wiki h1{font-size:1.875rem;line-height:1.25;margin:.875rem 0 1.5rem}
+.project-wiki h2{font-size:1.375rem;margin:1.875rem 0 .625rem}
+.project-wiki h3{font-size:1.125rem}
+.project-wiki article [id]{scroll-margin-block-start:1.5rem}
+.project-wiki li{margin:9px 0}
+.project-wiki p{margin:12px 0}
+.project-wiki code{font-size:.9em;background:var(--atlas-surfaceAlt,#edf3ef);padding:.125rem .25rem;border-radius:.1875rem;color:var(--atlas-text,#203330)}
+.project-wiki pre{overflow:auto;padding:1.125rem;background:var(--atlas-surfaceAlt,#edf3ef);border-radius:.4375rem;line-height:1.55}
+.project-wiki pre code{padding:0}
+.project-wiki a{color:var(--atlas-accent,#19725b)}
+.project-wiki a:focus-visible,.project-wiki input:focus-visible,.project-wiki button:focus-visible,.project-wiki summary:focus-visible{outline:2px solid var(--atlas-accent,#19725b);outline-offset:3px}
+.wiki-breadcrumbs{display:flex;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:.375rem .5rem;font-size:.8125rem;line-height:1.5;color:var(--atlas-muted,#60746c);margin-block-end:1rem;overflow-wrap:anywhere}
+.wiki-breadcrumbs [aria-current]{color:var(--atlas-text,#203330);font-weight:600}
+#wiki-state{font-size:.8125rem;line-height:1.5;color:var(--atlas-muted,#60746c)}
+#wiki-examples{border-top:1px solid var(--atlas-border,#c8d8ce);margin-top:1.875rem;padding-top:.25rem}
+#wiki-examples button{margin:.25rem .5rem .25rem 0}
+#wiki-next{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;border-top:1px solid var(--atlas-border,#c8d8ce);margin-top:1.5rem;padding:1.125rem 0}
+#wiki-next a{min-width:0;max-width:100%;overflow-wrap:anywhere}
+#wiki-mod-retry,#wiki-catalog-retry,#wiki-retry{margin-block:.25rem 1rem}
+.wiki-skip{position:absolute;left:-10000px}
+.wiki-skip:focus{position:static;display:block;padding:.75rem}
+/* Width and font-scaled vertical budget share the same compact flow. */
+.project-wiki.wiki-compact{grid-template-columns:minmax(0,1fr);gap:1.5rem}
+.wiki-compact .wiki-sidebar{border:0;padding:0}
+.wiki-compact .wiki-sidebar-inner{position:static;block-size:auto}
+.wiki-compact .wiki-sidebar-content{overflow:visible;flex:none;padding:0}
+.wiki-compact .wiki-sidebar-title{margin-block-end:.75rem}
+.wiki-compact .wiki-nav-hint{display:none}
+.wiki-compact .wiki-count{margin-block:.25rem .625rem}
+.wiki-compact .wiki-contents{border-block:1px solid var(--atlas-border,#c8d8ce);padding-block:.375rem}
+.wiki-compact #wiki-pages{max-block-size:21.25rem;overflow:auto;padding:.5rem}
+.wiki-compact .wiki-sidebar-footer{border:0;margin-block-start:.5rem;padding:0}
+.wiki-compact .wiki-catalog-state{display:inline;margin-inline-end:.625rem}
+@media(max-width:600px){.project-wiki{padding:1rem;gap:1rem}.project-wiki h1{font-size:1.5625rem}.wiki-breadcrumbs{gap:.25rem .375rem}}
+@media(prefers-reduced-motion:reduce){.project-wiki *{scroll-behavior:auto!important}}
+@media print{.wiki-sidebar,.wiki-skip{display:none!important}.project-wiki{display:block}.project-wiki-reading{padding:0}}

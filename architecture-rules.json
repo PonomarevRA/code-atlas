@@ -1,0 +1,95 @@
+{
+  "version": "atlas-architecture-v1",
+  "pythonRoot": ".",
+  "layers": [
+    {
+      "id": "language",
+      "paths": [
+        "atlas/flow_languages/*.py"
+      ]
+    },
+    {
+      "id": "graphify-adapter",
+      "paths": [
+        "atlas/integrations/graphify/adapter.py"
+      ]
+    },
+    {
+      "id": "architecture-core",
+      "paths": [
+        "atlas/architecture_rules.py",
+        "atlas/architecture_cycles.py",
+        "atlas/architecture_engine.py",
+        "atlas/architecture_baseline.py"
+      ]
+    },
+    {
+      "id": "transport",
+      "paths": [
+        "atlas/server.py",
+        "atlas/*_api.py",
+        "atlas/*_mcp.py",
+        "atlas/mcp_transport.py"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "language-no-transport",
+      "kind": "forbidden",
+      "layers": [
+        "language"
+      ],
+      "target": [
+        "transport"
+      ],
+      "relations": [
+        "python-import"
+      ]
+    },
+    {
+      "id": "graphify-no-transport",
+      "kind": "forbidden",
+      "layers": [
+        "graphify-adapter"
+      ],
+      "target": [
+        "transport"
+      ],
+      "relations": [
+        "python-import"
+      ]
+    },
+    {
+      "id": "architecture-core-no-transport",
+      "kind": "forbidden",
+      "layers": [
+        "architecture-core"
+      ],
+      "target": [
+        "transport"
+      ],
+      "relations": [
+        "python-import"
+      ]
+    },
+    {
+      "id": "architecture-core-no-cycles",
+      "kind": "cycles",
+      "layers": [
+        "architecture-core"
+      ],
+      "relations": [
+        "python-import"
+      ]
+    }
+  ],
+  "exclude": [
+    "outputs",
+    "evidence",
+    "sites",
+    ".atlas",
+    "resources/language-references",
+    "resources/reference-search"
+  ]
+}

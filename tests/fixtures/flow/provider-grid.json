@@ -1,0 +1,57 @@
+{
+  "csharp": [
+    ".cs",
+    "class Example { int run(int x) { if (x > 0) return work(x); return 0; } }\n",
+    1
+  ],
+  "python": [
+    ".py",
+    "def run(x):\n    if x > 0:\n        return work(x)\n    return 0\n",
+    1
+  ],
+  "java": [
+    ".java",
+    "class Example { int run(int x) { if (x > 0) return work(x); return 0; } }\n",
+    1
+  ],
+  "javascript": [
+    ".js",
+    "function run(x) { if (x > 0) return work(x); return 0; }\n",
+    1
+  ],
+  "typescript": [
+    ".ts",
+    "function run(x: number): number { if (x > 0) return work(x); return 0; }\n",
+    1
+  ],
+  "go": [
+    ".go",
+    "package example\nfunc run(x int) int { if x > 0 { return work(x) }; return 0 }\n",
+    2
+  ],
+  "cpp": [
+    ".cpp",
+    "int run(int x) { if (x > 0) return work(x); return 0; }\n",
+    1
+  ],
+  "kotlin": [
+    ".kt",
+    "fun run(x: Int): Int {\n    if (x > 0) return work(x)\n    return 0\n}\n",
+    1
+  ],
+  "php": [
+    ".php",
+    "<?php\nfunction run($x) { if ($x > 0) return work($x); return 0; }\n",
+    2
+  ],
+  "rust": [
+    ".rs",
+    "fn run(x: i32) -> i32 { if x > 0 { return work(x); } return 0; }\n",
+    1
+  ],
+  "swift": [
+    ".swift",
+    "func run(_ x: Int) -> Int {\n    if x > 0 { return work(x) }\n    return 0\n}\n",
+    1
+  ]
+}

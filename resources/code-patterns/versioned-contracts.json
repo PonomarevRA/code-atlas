@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "atlas-code-pattern/v1",
+  "id": "versioned-contracts",
+  "version": "1.0.0",
+  "title": "Версионированные DTO и ошибки",
+  "category": "contracts",
+  "summary": "Сохраняйте смысл полей, nullability, единицы и ошибки; номер версии дополняет проверки совместимости.",
+  "problem": "Те же имена API начинают принимать и возвращать другой смысл без предупреждения потребителя.",
+  "whenToUse": [
+    "DTO, tools, курсоры или результат читаются разными версиями клиентов.",
+    "Схема меняется независимо от вычислительного ядра."
+  ],
+  "whenNotToUse": [
+    "Значение живёт только внутри одной функции и не пересекает границу."
+  ],
+  "moduleBoundary": "Папка контрактов независима от транспорта и алгоритмов; адаптер переводит DTO в use case.",
+  "responsibilities": [
+    "Объявить единицы и отсутствие значения.",
+    "Отделить ошибку от успешного пустого результата."
+  ],
+  "publicContract": "ResultV1 всегда содержит version/status/value/reason: unknown имеет value=null и строковую reason; known имеет исходное значение и reason=null.",
+  "dependencies": [
+    "Core не импортирует MCP SDK ради DTO."
+  ],
+  "stateLifetime": "Объект результата неизменяемый; cursor связывается с source/config identity.",
+  "errors": [
+    "Несовместимая версия отклоняется явно."
+  ],
+  "example": {
+    "language": "python",
+    "code": "def amount_result(value):\n    \"\"\"Возвращает копейки либо unknown с явной причиной отсутствия.\"\"\"\n    if value is None:\n        return {\"version\": 1, \"status\": \"unknown\", \"value\": None, \"reason\": \"source-not-provided\"}\n    return {\"version\": 1, \"status\": \"known\", \"value\": value, \"reason\": None}\n",
+    "explanation": "Неизвестное значение отличается от фактического нуля; обе ветви содержат reason с договорённой nullability."
+  },
+  "counterexample": {
+    "language": "python",
+    "code": "def amount_result(value):\n    return {\"value\": value or 0}\n",
+    "explanation": "Falsy fallback стирает различие неизвестного и измеренного результата."
+  },
+  "migrationSteps": [
+    "Опишите текущий контракт до изменения.",
+    "Проверьте старые входы/выходы на новом ядре."
+  ],
+  "limits": [
+    "Schema hash не доказывает поведенческую совместимость."
+  ],
+  "checks": [
+    "Проверить null, ноль, ошибку и неподдержанную версию.",
+    "Проверить единицы и ограничения scope."
+  ],
+  "alternatives": [
+    "Локальный тип без version field, если границы версий нет."
+  ],
+  "codingGuidance": [
+    "Описание метода объясняет вход, результат и существенные ошибки; комментарий ветви объясняет причину.",
+    "Используйте ясные локальные этапы и ранние выходы; новый класс или интерфейс нужен только для самостоятельной ответственности."
+  ],
+  "sources": [
+    {
+      "title": "Semantic Versioning 2.0.0",
+      "url": "https://semver.org/",
+      "supports": "Версия публичного API отражает тип изменения. Номер версии без тестов не доказывает совместимость."
+    },
+    {
+      "title": "Contract Test",
+      "url": "https://martinfowler.com/bliki/ContractTest.html",
+      "supports": "Проверка соответствия тестового двойника реальному контракту внешней системы."
+    }
+  ],
+  "reviewedAt": "2026-10-30",
+  "applicability": {
+    "languages": [
+      "python"
+    ],
+    "versions": [
+      "Примеры: синтаксис Python 3.12/3.13; типизированные интерфейсы не заменяют runtime-проверки."
+    ],
+    "scope": "Инженерная рекомендация для проверки на конкретном проекте; не автоматическое правило рефакторинга."
+  },
+  "status": "draft",
+  "keywords": [
+    "DTO",
+    "schema",
+    "контракт",
+    "совместимость",
+    "версия",
+    "unknown"
+  ],
+  "related": [
+    "stable-mcp-facade",
+    "contract-qualification"
+  ]
+}

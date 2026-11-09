@@ -1,0 +1,179 @@
+{
+  "apiVersion": 1,
+  "id": "framework-junit5",
+  "name": "junit5 source facts",
+  "version": "1.1.0",
+  "description": "Lexical test/library declarations. No test execution or dataset evaluation.",
+  "requires": [
+    "language-java"
+  ],
+  "analysis": {
+    "apiVersion": 1,
+    "testFrameworks": [
+      {
+        "id": "junit5",
+        "language": "java",
+        "annotationRules": [
+          {
+            "name": "org.junit.jupiter.api.Test",
+            "role": "test"
+          },
+          {
+            "name": "org.junit.jupiter.api.RepeatedTest",
+            "role": "test"
+          },
+          {
+            "name": "org.junit.jupiter.api.TestFactory",
+            "role": "test"
+          },
+          {
+            "name": "org.junit.jupiter.api.TestTemplate",
+            "role": "test"
+          },
+          {
+            "name": "org.junit.jupiter.params.ParameterizedTest",
+            "role": "test",
+            "displayArgument": "name"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.ValueSource",
+            "role": "parameter-source",
+            "sourceArgument": "value",
+            "datasetStrategy": "junit-single-values-v1"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.MethodSource",
+            "role": "parameter-source",
+            "sourceArgument": "value",
+            "datasetStrategy": "junit-literal-provider-v1"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.CsvSource",
+            "role": "parameter-source",
+            "sourceArgument": "value",
+            "datasetStrategy": "junit-positional-csv-v1"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.CsvFileSource",
+            "role": "parameter-source",
+            "sourceArgument": "resources",
+            "datasetStrategy": "resource-reference-v1"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.EnumSource",
+            "role": "parameter-source",
+            "sourceArgument": "value",
+            "datasetStrategy": "junit-enum-constants-v1"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.ArgumentsSource",
+            "role": "parameter-source",
+            "sourceArgument": "value",
+            "datasetStrategy": "unresolved-v1"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.ArgumentsSources",
+            "role": "parameter-source",
+            "sourceArgument": "value",
+            "datasetStrategy": "unresolved-v1"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.NullSource",
+            "role": "parameter-source",
+            "sourceArgument": "value",
+            "datasetStrategy": "unresolved-v1"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.EmptySource",
+            "role": "parameter-source",
+            "sourceArgument": "value",
+            "datasetStrategy": "unresolved-v1"
+          },
+          {
+            "name": "org.junit.jupiter.params.provider.NullAndEmptySource",
+            "role": "parameter-source",
+            "sourceArgument": "value",
+            "datasetStrategy": "unresolved-v1"
+          },
+          {
+            "name": "org.junit.jupiter.api.BeforeAll",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.junit.jupiter.api.BeforeEach",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.junit.jupiter.api.AfterAll",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.junit.jupiter.api.AfterEach",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.junit.jupiter.api.Disabled",
+            "role": "disabled",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.jupiter.api.DisplayName",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.jupiter.api.DisplayNameGeneration",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.jupiter.api.Tag",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.jupiter.api.Tags",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.jupiter.api.TestInstance",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.jupiter.api.Nested",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.jupiter.api.Order",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.jupiter.api.TestMethodOrder",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.jupiter.api.extension.ExtendWith",
+            "role": "lifecycle",
+            "argument": "value"
+          }
+        ],
+        "supportsComposed": true
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "JUnit 5: тесты и источники",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

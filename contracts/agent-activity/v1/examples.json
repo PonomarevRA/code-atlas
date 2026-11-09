@@ -1,0 +1,216 @@
+{
+  "cursor": {
+    "journalEpoch": "example-epoch",
+    "sequence": "2"
+  },
+  "events": [
+    {
+      "schemaVersion": "agent-activity/v1",
+      "eventId": "example-event-1",
+      "journalEpoch": "example-epoch",
+      "sequence": "1",
+      "occurredAt": "2026-10-21T12:00:00Z",
+      "recordedAt": "2026-10-21T12:00:00Z",
+      "application": "atlas",
+      "source": "mcp",
+      "clientKind": "codex",
+      "sessionId": "example-session",
+      "agentId": null,
+      "identityQuality": "process",
+      "operationId": "example-operation",
+      "operation": "describe",
+      "phase": "finished",
+      "outcome": "succeeded",
+      "durationMs": 4.5,
+      "resultCount": 1,
+      "query": {
+        "mode": "omitted",
+        "truncated": false
+      },
+      "target": {
+        "kind": "code",
+        "projectId": "example-project",
+        "nodeId": "example-node",
+        "snapshotId": "example-snapshot",
+        "label": "Calculate",
+        "status": "available"
+      },
+      "request": {
+        "tool": "describe-node",
+        "summary": "Описать узел Calculate"
+      },
+      "response": {
+        "summary": "Получено описание Calculate: метод расчёта",
+        "resultCount": 1,
+        "items": [
+          {
+            "label": "Calculate",
+            "nodeId": "example-node",
+            "file": "src/Calculator.cs"
+          }
+        ],
+        "truncated": false
+      }
+    },
+    {
+      "schemaVersion": "agent-activity/v1",
+      "eventId": "example-event-2",
+      "journalEpoch": "example-epoch",
+      "sequence": "2",
+      "occurredAt": "2026-10-21T12:00:00Z",
+      "recordedAt": "2026-10-21T12:00:00Z",
+      "application": "agmemory",
+      "source": "mcp",
+      "clientKind": "codex",
+      "sessionId": "example-session",
+      "agentId": null,
+      "identityQuality": "process",
+      "operationId": "example-operation",
+      "operation": "recall",
+      "phase": "finished",
+      "outcome": "succeeded",
+      "durationMs": 4.5,
+      "resultCount": 1,
+      "query": {
+        "mode": "omitted",
+        "truncated": false
+      },
+      "target": {
+        "kind": "memory",
+        "nodeKey": "example-opaque-node",
+        "generation": "example-generation",
+        "status": "available"
+      },
+      "request": {
+        "tool": "memory_recall",
+        "summary": "Найти сведения о настройках журналирования; limit=3"
+      },
+      "response": {
+        "summary": "Найдена 1 запись; тип Outcome",
+        "resultCount": 1,
+        "items": [
+          {
+            "label": "Outcome"
+          }
+        ],
+        "truncated": false
+      }
+    }
+  ],
+  "uiDefaults": {
+    "chatEnabled": false,
+    "markersEnabled": false
+  },
+  "snapshot": {
+    "type": "snapshot",
+    "messageId": "example-message",
+    "journalEpoch": "example-epoch",
+    "cursor": {
+      "journalEpoch": "example-epoch",
+      "sequence": "2"
+    },
+    "events": [
+      {
+        "schemaVersion": "agent-activity/v1",
+        "eventId": "example-event-1",
+        "journalEpoch": "example-epoch",
+        "sequence": "1",
+        "occurredAt": "2026-10-21T12:00:00Z",
+        "recordedAt": "2026-10-21T12:00:00Z",
+        "application": "atlas",
+        "source": "mcp",
+        "clientKind": "codex",
+        "sessionId": "example-session",
+        "agentId": null,
+        "identityQuality": "process",
+        "operationId": "example-operation",
+        "operation": "describe",
+        "phase": "finished",
+        "outcome": "succeeded",
+        "durationMs": 4.5,
+        "resultCount": 1,
+        "query": {
+          "mode": "omitted",
+          "truncated": false
+        },
+        "target": {
+          "kind": "code",
+          "projectId": "example-project",
+          "nodeId": "example-node",
+          "snapshotId": "example-snapshot",
+          "label": "Calculate",
+          "status": "available"
+        },
+        "request": {
+          "tool": "describe-node",
+          "summary": "Описать узел Calculate"
+        },
+        "response": {
+          "summary": "Получено описание Calculate: метод расчёта",
+          "resultCount": 1,
+          "items": [
+            {
+              "label": "Calculate",
+              "nodeId": "example-node",
+              "file": "src/Calculator.cs"
+            }
+          ],
+          "truncated": false
+        }
+      },
+      {
+        "schemaVersion": "agent-activity/v1",
+        "eventId": "example-event-2",
+        "journalEpoch": "example-epoch",
+        "sequence": "2",
+        "occurredAt": "2026-10-21T12:00:00Z",
+        "recordedAt": "2026-10-21T12:00:00Z",
+        "application": "agmemory",
+        "source": "mcp",
+        "clientKind": "codex",
+        "sessionId": "example-session",
+        "agentId": null,
+        "identityQuality": "process",
+        "operationId": "example-operation",
+        "operation": "recall",
+        "phase": "finished",
+        "outcome": "succeeded",
+        "durationMs": 4.5,
+        "resultCount": 1,
+        "query": {
+          "mode": "omitted",
+          "truncated": false
+        },
+        "target": {
+          "kind": "memory",
+          "nodeKey": "example-opaque-node",
+          "generation": "example-generation",
+          "status": "available"
+        },
+        "request": {
+          "tool": "memory_recall",
+          "summary": "Найти сведения о настройках журналирования; limit=3"
+        },
+        "response": {
+          "summary": "Найдена 1 запись; тип Outcome",
+          "resultCount": 1,
+          "items": [
+            {
+              "label": "Outcome"
+            }
+          ],
+          "truncated": false
+        }
+      }
+    ],
+    "omittedCount": 0
+  },
+  "ack": {
+    "type": "ack",
+    "messageId": "example-message",
+    "cursor": {
+      "journalEpoch": "example-epoch",
+      "sequence": "2"
+    }
+  }
+}

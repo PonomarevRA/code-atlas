@@ -1,0 +1,34 @@
+{
+  "apiVersion": 1,
+  "id": "document-xlsx",
+  "name": "XLSX",
+  "version": "1.0.0",
+  "description": "Host-owned static document profile; import requires an explicit build request.",
+  "autoActivate": {
+    "extensions": [
+      ".xlsx"
+    ]
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "documentProviders": [
+      {
+        "id": "document-xlsx",
+        "strategy": "document-xlsx-v1",
+        "extensions": [
+          ".xlsx"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Data-and-Updates",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "XLSX: записанные данные",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

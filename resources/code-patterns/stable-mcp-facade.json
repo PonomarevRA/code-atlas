@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "atlas-code-pattern/v1",
+  "id": "stable-mcp-facade",
+  "version": "1.0.0",
+  "title": "Стабильный MCP facade перед ядром",
+  "category": "mcp",
+  "summary": "Transport и tool contract принадлежат facade; прикладные вычисления выполняет независимо обновляемое ядро.",
+  "problem": "Обновление алгоритма завершает MCP-процесс и теряет действующие клиентские каналы.",
+  "whenToUse": [
+    "MCP-проект должен обновлять ядро при сохранении совместимого tool surface.",
+    "Есть стабильная process/HTTP граница."
+  ],
+  "whenNotToUse": [
+    "Меняются schemas/semantics/capabilities или сам facade SDK.",
+    "Нельзя сохранить ownership текущих операций."
+  ],
+  "moduleBoundary": "Папка MCP adapter независима от core; composition root связывает их через port.",
+  "responsibilities": [
+    "Сохранить канал и JSON-RPC mapping.",
+    "Передать нормализованный вызов ядру и вернуть договорённый результат."
+  ],
+  "publicContract": "Facade сообщает поддерживаемый protocol profile; вход/выход/ошибки совместимы с существующим клиентом.",
+  "dependencies": [
+    "Core не импортирует MCP SDK.",
+    "Facade не содержит алгоритм и не читает глобальный graph internals."
+  ],
+  "stateLifetime": "Transport/session там, где применимо, живут в facade; job/cursor имеют отдельного владельца.",
+  "errors": [
+    "Смена tool names/schema/semantics требует отдельного compatibility решения."
+  ],
+  "example": {
+    "language": "python",
+    "code": "class ToolFacade:\n    \"\"\"Делегирует use case; transport lifetime находится снаружи.\"\"\"\n    def __init__(self, core):\n        self.core = core\n\n    def describe(self, request):\n        return self.core.describe(request)\n",
+    "explanation": "Минимальный пример показывает направление зависимости, но не реализует seamless update или negotiation."
+  },
+  "counterexample": {
+    "language": "python",
+    "code": "def update_core(stop_mcp_process, replace_binary):\n    stop_mcp_process()\n    replace_binary()\n",
+    "explanation": "Остановка владельца stdio уничтожает действующий канал."
+  },
+  "migrationSteps": [
+    "Снимите точный публичный контракт и runtime profile.",
+    "Отделите use case от транспорта до обновления."
+  ],
+  "limits": [
+    "Рецепт draft; live qualification Atlas ещё не подтверждена этой карточкой.",
+    "MCP2026-07-28 HTTP sessions отличаются от legacy initialize/session."
+  ],
+  "checks": [
+    "Подключить клиента до обновления и проверить вызовы до/после.",
+    "Проверить schema, errors, scope и отмену."
+  ],
+  "alternatives": [
+    "Явный reconnect при обновлении несовместимого facade."
+  ],
+  "codingGuidance": [
+    "Описание метода объясняет вход, результат и существенные ошибки; комментарий ветви объясняет причину.",
+    "Используйте ясные локальные этапы и ранние выходы; новый класс или интерфейс нужен только для самостоятельной ответственности."
+  ],
+  "sources": [
+    {
+      "title": "MCP 2025-11-25 transports",
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports",
+      "supports": "stdio принадлежит запущенному клиентом процессу; выделенный facade — предлагаемая архитектура, не гарантия протокола."
+    },
+    {
+      "title": "MCP 2026-07-28 Streamable HTTP",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http",
+      "supports": "В этой версии удалены protocol-level sessions; профиль нельзя смешивать с legacy handshake/session правилами."
+    }
+  ],
+  "reviewedAt": "2026-10-30",
+  "applicability": {
+    "languages": [
+      "python"
+    ],
+    "versions": [
+      "Примеры: синтаксис Python 3.12/3.13; типизированные интерфейсы не заменяют runtime-проверки."
+    ],
+    "scope": "Инженерная рекомендация для проверки на конкретном проекте; не автоматическое правило рефакторинга."
+  },
+  "status": "draft",
+  "keywords": [
+    "MCP",
+    "соединение",
+    "ядро",
+    "обновление",
+    "facade",
+    "transport",
+    "mcp-проект"
+  ],
+  "related": [
+    "generation-handoff",
+    "versioned-contracts"
+  ]
+}

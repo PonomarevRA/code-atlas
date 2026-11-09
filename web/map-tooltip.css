@@ -1,0 +1,23 @@
+/* Shared source-backed node popups; other dialogs retain their own layout. */
+.map-tooltip{width:300px;padding:0;border:1px solid var(--atlas-cardBorder,#baccc2);border-radius:11px;background:var(--atlas-surface,#fff);background:color-mix(in srgb,var(--atlas-surface,#fff) 94%,transparent);backdrop-filter:blur(18px);box-shadow:0 10px 28px #0002,0 1px 4px #0002}
+.map-tooltip.is-expanded{width:460px}
+.map-tooltip-header{position:sticky;top:0;z-index:1;display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:6px;align-items:center;min-height:33px;padding:3px 7px;background:var(--atlas-surfaceAlt,#f5f7f5);border-bottom:1px solid var(--line,#dce4df)}
+.map-tooltip-title{font-size:12px;font-weight:600;line-height:1.4;text-align:center;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.map-tooltip-window-controls{display:flex;gap:2px;align-items:center}
+.map-tooltip-window-controls button{position:relative;display:grid;place-items:center;width:18px;height:24px;min-height:24px;padding:0;border:0;border-radius:50%;background:transparent;color:#203330;font-size:12px;font-weight:600;line-height:1}
+.map-tooltip-window-controls button::before{content:'';position:absolute;width:13px;height:13px;border-radius:50%;box-shadow:inset 0 0 0 1px #0001}
+.map-tooltip-window-controls .map-tooltip-close::before{background:#ff6058}.map-tooltip-window-controls .map-tooltip-collapse::before{background:#ffbd2e}.map-tooltip-window-controls .map-tooltip-expand::before{background:#28c840}
+.map-tooltip-window-controls button span{position:relative;opacity:0}
+.map-tooltip-window-controls:hover button span,.map-tooltip-window-controls button:focus-visible span{opacity:.75}
+.map-tooltip-actions{display:flex;gap:2px;flex-wrap:nowrap;margin:0}
+.map-tooltip-actions button{display:grid;place-items:center;min-height:26px;width:26px;height:26px;padding:4px;border:0;border-radius:6px;background:transparent;color:var(--atlas-muted,#60746b)}
+.map-tooltip-actions button:hover{background:var(--atlas-surface,#fff);color:var(--atlas-text,#203330)}
+.map-tooltip-actions button[aria-pressed=true]{color:var(--accent,#176b53);background:color-mix(in srgb,var(--accent,#176b53) 10%,transparent)}
+.map-tooltip-actions svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.map-tooltip-body{padding:10px 12px}
+.map-tooltip-body[hidden]{display:none}
+.map-tooltip-role{font-size:11px;line-height:1.4;border-left:3px solid var(--tooltip-role-color,var(--accent,#176b53));padding-left:6px}
+.map-tooltip-summary,.map-tooltip-location,.map-tooltip-links,.map-tooltip-evidence{font-size:11px;line-height:1.45;margin:6px 0}
+.map-tooltip-location{font-family:ui-monospace,SFMono-Regular,monospace;font-size:10px}
+.map-tooltip-links,.map-tooltip-evidence{font-size:10px;color:var(--atlas-muted,#60746b)}
+.map-tooltip.is-collapsed .map-tooltip-header{border-bottom:0}

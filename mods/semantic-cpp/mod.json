@@ -1,0 +1,41 @@
+{
+  "apiVersion": 1,
+  "id": "semantic-cpp",
+  "name": "Optional C++ semantic bindings",
+  "version": "1.0.0",
+  "description": "Use existing compatible clangd and safe compile metadata for selected pinned-source definitions. Missing engines preserve the baseline map.",
+  "autoActivate": {
+    "extensions": [
+      ".cpp",
+      ".cc",
+      ".cxx",
+      ".h",
+      ".hpp"
+    ],
+    "manifestNames": []
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "semanticProviders": [
+      {
+        "id": "clangd",
+        "language": "cpp",
+        "strategy": "clangd-local-v1",
+        "capabilities": [
+          "definition",
+          "calls"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "C++: локальные семантические привязки",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

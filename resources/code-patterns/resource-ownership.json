@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "atlas-code-pattern/v1",
+  "id": "resource-ownership",
+  "version": "1.0.0",
+  "title": "Владение ресурсами и ограничение работы",
+  "category": "lifecycle",
+  "summary": "Один владелец управляет получением и освобождением ресурса; очередь, время и отмена имеют явные пределы.",
+  "problem": "Ресурс теряется при исключении, а фоновые работы переживают владельца без политики завершения.",
+  "whenToUse": [
+    "Файлы, HTTP-клиенты, locks или worker tasks имеют lifetime.",
+    "Сервису нужны bounded concurrency и отмена."
+  ],
+  "whenNotToUse": [
+    "Функция работает только с переданными значениями без ресурсов."
+  ],
+  "moduleBoundary": "Класс контекста или папка lifecycle с одним владельцем; consumers не закрывают общий пул.",
+  "responsibilities": [
+    "Вызвать освобождение ресурса на happy и error paths; отдельно определить исход при ошибке cleanup.",
+    "Ограничить число одновременно принятых задач."
+  ],
+  "publicContract": "При выходе из closing вызывается close(). Успешное освобождение зависит от ресурса; ошибка close() может стать основной вместо ошибки чтения.",
+  "dependencies": [
+    "Вычисления получают ресурс через порт."
+  ],
+  "stateLifetime": "Владелец lifetime известен: request, task или service; срок не расширяется скрыто.",
+  "errors": [
+    "Отмена не превращается в повторное выполнение. Если close() выбрасывает исключение, оно становится основным; исходная ошибка чтения может остаться в __context__. Политика ошибок cleanup должна быть явной."
+  ],
+  "example": {
+    "language": "python",
+    "code": "from contextlib import closing\n\ndef read_one(open_resource):\n    \"\"\"Читает ресурс и вызывает close; ошибка close может перекрыть read.\"\"\"\n    with closing(open_resource()) as resource:\n        return resource.read()\n",
+    "explanation": "Контекст вызывает close() и после ошибки чтения. Это гарантирует попытку cleanup, а не успешное закрытие или сохранение исходного исключения как основного."
+  },
+  "counterexample": {
+    "language": "python",
+    "code": "def read_one(open_resource):\n    resource = open_resource()\n    value = resource.read()\n    resource.close()\n    return value\n",
+    "explanation": "Исключение до close оставляет ресурс открытым."
+  },
+  "migrationSteps": [
+    "Определите владельца и срок.",
+    "Вынесите acquire/release в контекст или явный try/finally."
+  ],
+  "limits": [
+    "Количество записей в кеше не является точным ограничением RSS."
+  ],
+  "checks": [
+    "Проверить исключение до завершения чтения.",
+    "Проверить отмену, timeout и ограничение очереди.",
+    "Проверить ошибку close() после ошибки read() и согласованный приоритет исключений."
+  ],
+  "alternatives": [
+    "Использовать стандартный with у самого ресурса."
+  ],
+  "codingGuidance": [
+    "Описание метода объясняет вход, результат и существенные ошибки; комментарий ветви объясняет причину.",
+    "Используйте ясные локальные этапы и ранние выходы; новый класс или интерфейс нужен только для самостоятельной ответственности."
+  ],
+  "sources": [
+    {
+      "title": "Python 3.13 contextlib",
+      "url": "https://docs.python.org/3.13/library/contextlib.html",
+      "supports": "Контекстный менеджер явно связывает получение и освобождение ресурса."
+    }
+  ],
+  "reviewedAt": "2026-10-30",
+  "applicability": {
+    "languages": [
+      "python"
+    ],
+    "versions": [
+      "Примеры: синтаксис Python 3.12/3.13; типизированные интерфейсы не заменяют runtime-проверки."
+    ],
+    "scope": "Инженерная рекомендация для проверки на конкретном проекте; не автоматическое правило рефакторинга."
+  },
+  "status": "draft",
+  "keywords": [
+    "ресурс",
+    "отмена",
+    "lifetime",
+    "context",
+    "bounded",
+    "очередь"
+  ],
+  "related": [
+    "source-bound-cache",
+    "generation-handoff"
+  ]
+}

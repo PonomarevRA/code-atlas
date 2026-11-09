@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "atlas-code-pattern/v1",
+  "id": "contract-qualification",
+  "version": "1.0.0",
+  "title": "Контрактная проверка и квалификация применения",
+  "category": "verification",
+  "summary": "Проверяйте реальный адаптер и тестовый двойник по одному контракту; статус карточки не доказывает успешное применение.",
+  "problem": "Fixture тесты проходят, хотя реальный transport, backend или caller ведут себя иначе.",
+  "whenToUse": [
+    "Нужна замена адаптера или обновление его реализации.",
+    "Проверки должны различать source, integration и installed runtime."
+  ],
+  "whenNotToUse": [
+    "Ожидаемое поведение выводится только из случайного результата реализации."
+  ],
+  "moduleBoundary": "Папка contract fixtures и test adapter отделена от production use case.",
+  "responsibilities": [
+    "Проверить нормальный/ошибочный результат.",
+    "Сохранить identity версии проверенного потребителя и evidence."
+  ],
+  "publicContract": "Одинаковый acceptance contract применяется к test adapter и реальному пути; missing evidence остаётся unknown.",
+  "dependencies": [
+    "Production код не импортирует test harness."
+  ],
+  "stateLifetime": "Фикстура изолирована; проверки не изменяют пользовательские данные.",
+  "errors": [
+    "Недоступный runtime означает not-assessed, а не PASS."
+  ],
+  "example": {
+    "language": "python",
+    "code": "def assert_result_contract(result):\n    \"\"\"Проверяет минимальную форму результата, не его истинность.\"\"\"\n    assert result[\"status\"] in {\"known\", \"unknown\"}\n    if result[\"status\"] == \"unknown\":\n        assert result[\"value\"] is None\n",
+    "explanation": "Проверка формы явно ограничена и должна дополняться смысловыми и integration cases."
+  },
+  "counterexample": {
+    "language": "python",
+    "code": "def assert_result_contract(result):\n    assert result\n",
+    "explanation": "Непустой dict не доказывает согласованный контракт."
+  },
+  "migrationSteps": [
+    "Зафиксируйте acceptance до изменения реализации.",
+    "Запустите один контракт для реального и тестового адаптеров."
+  ],
+  "limits": [
+    "Unit PASS не доказывает installation, accessibility или live compatibility."
+  ],
+  "checks": [
+    "Проверить отрицательный результат и degraded dependency.",
+    "Связать отчёт с точной revision/consumer identity."
+  ],
+  "alternatives": [
+    "Оставить not-assessed до появления нужного evidence."
+  ],
+  "codingGuidance": [
+    "Описание метода объясняет вход, результат и существенные ошибки; комментарий ветви объясняет причину.",
+    "Используйте ясные локальные этапы и ранние выходы; новый класс или интерфейс нужен только для самостоятельной ответственности."
+  ],
+  "sources": [
+    {
+      "title": "Contract Test",
+      "url": "https://martinfowler.com/bliki/ContractTest.html",
+      "supports": "Проверка соответствия тестового двойника реальному контракту внешней системы."
+    }
+  ],
+  "reviewedAt": "2026-10-30",
+  "applicability": {
+    "languages": [
+      "python"
+    ],
+    "versions": [
+      "Примеры: синтаксис Python 3.12/3.13; типизированные интерфейсы не заменяют runtime-проверки."
+    ],
+    "scope": "Инженерная рекомендация для проверки на конкретном проекте; не автоматическое правило рефакторинга."
+  },
+  "status": "draft",
+  "keywords": [
+    "тест",
+    "contract",
+    "qualification",
+    "квалификация",
+    "доказательство",
+    "проверка"
+  ],
+  "related": [
+    "ports-adapters",
+    "versioned-contracts"
+  ]
+}

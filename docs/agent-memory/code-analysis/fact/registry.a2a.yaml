@@ -1,0 +1,21 @@
+{
+  "schema": "agent-memory-kind-registry/v1",
+  "version": 1,
+  "area": "code-analysis",
+  "kind": "fact",
+  "objects": [
+    {
+      "id": "code-analysis.fact.snapshot-evidence",
+      "title": "Interpret Atlas results as static snapshot evidence",
+      "summary": "Check the snapshot and verify important facts against the matching source file.",
+      "status": "active",
+      "recorded": "2026-11-09",
+      "updated": "2026-11-09",
+      "tags": [
+        "snapshots",
+        "evidence"
+      ],
+      "path": "snapshot-evidence.a2a.yaml"
+    }
+  ]
+}

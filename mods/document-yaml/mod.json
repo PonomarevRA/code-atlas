@@ -1,0 +1,36 @@
+{
+  "apiVersion": 1,
+  "id": "document-yaml",
+  "name": "YAML 1.1: структура документа",
+  "version": "1.0.0",
+  "description": "Статический captured документ; импорт выполняется только явным запросом.",
+  "autoActivate": {
+    "extensions": [
+      ".yaml",
+      ".yml"
+    ]
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "documentProviders": [
+      {
+        "id": "yaml",
+        "strategy": "document-yaml-v1",
+        "extensions": [
+          ".yaml",
+          ".yml"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Data-and-Updates",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "YAML 1.1: исходная структура",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

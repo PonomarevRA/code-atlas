@@ -1,0 +1,30 @@
+{
+  "apiVersion": 1,
+  "id": "framework-fastapi",
+  "name": "FastAPI HTTP entrypoints",
+  "version": "1.0.0",
+  "description": "Captured HTTP decorator registrations with exact source handlers; no application execution.",
+  "requires": [
+    "language-python"
+  ],
+  "analysis": {
+    "apiVersion": 1,
+    "entrypointProviders": [
+      {
+        "id": "fastapi",
+        "language": "python",
+        "strategy": "python-fastapi-v1"
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "FastAPI: HTTP-входы",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

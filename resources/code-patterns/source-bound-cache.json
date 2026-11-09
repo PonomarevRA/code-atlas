@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "atlas-code-pattern/v1",
+  "id": "source-bound-cache",
+  "version": "1.0.0",
+  "title": "Кеш с идентичностью источника",
+  "category": "lifecycle",
+  "summary": "Повторное использование связано с source hash, настройками и версией вычисления; лимит и invalidation явные.",
+  "problem": "Кеш по имени файла возвращает данные другой редакции или других параметров.",
+  "whenToUse": [
+    "Одно вычисление повторяется в совместимом контексте.",
+    "Есть измеренная повторная стоимость."
+  ],
+  "whenNotToUse": [
+    "Ключ не содержит все существенные входы.",
+    "Кеш быстрее только по предположению и дублирует существующий механизм."
+  ],
+  "moduleBoundary": "Класс контекста или папка reuse contract; алгоритм не управляет глобальным кешем.",
+  "responsibilities": [
+    "Проверить identity до reuse.",
+    "Ограничить объём и срок, запретить публикацию после expiry."
+  ],
+  "publicContract": "key=(source_hash,settings_hash,analyzer_version); miss и отказ reuse различимы.",
+  "dependencies": [
+    "Provider отдаёт immutable result.",
+    "Owner lifetime управляет eviction."
+  ],
+  "stateLifetime": "RAM-кеш принадлежит явно выбранному task/service; disk snapshot хранится отдельно.",
+  "errors": [
+    "Истёкший контекст и смена источника не маскируются текущим результатом."
+  ],
+  "example": {
+    "language": "python",
+    "code": "def cache_key(source_hash, settings_hash, analyzer_version):\n    \"\"\"Связывает reuse со всеми значимыми версиями входа.\"\"\"\n    return source_hash, settings_hash, analyzer_version\n",
+    "explanation": "Идентичность включает версии источника и вычисления, а не только путь."
+  },
+  "counterexample": {
+    "language": "python",
+    "code": "def cache_key(filename, settings_hash, analyzer_version):\n    return filename\n",
+    "explanation": "Одинаковый путь не доказывает одинаковые данные и параметры."
+  },
+  "migrationSteps": [
+    "Сначала измерьте повторные вычисления.",
+    "Проверьте существующий cache/context перед добавлением нового."
+  ],
+  "limits": [
+    "TTL сам по себе не гарантирует актуальность источника."
+  ],
+  "checks": [
+    "Сравнить cold/reused результат.",
+    "Изменить source/settings/provider и проверить invalidation."
+  ],
+  "alternatives": [
+    "Не кешировать дешёвую операцию."
+  ],
+  "codingGuidance": [
+    "Описание метода объясняет вход, результат и существенные ошибки; комментарий ветви объясняет причину.",
+    "Используйте ясные локальные этапы и ранние выходы; новый класс или интерфейс нужен только для самостоятельной ответственности."
+  ],
+  "sources": [
+    {
+      "title": "Python 3.13 functools",
+      "url": "https://docs.python.org/3.13/library/functools.html",
+      "supports": "Кеширование и ограничение числа сохранённых результатов; смысл ключа и инвалидация зависят от приложения."
+    }
+  ],
+  "reviewedAt": "2026-10-30",
+  "applicability": {
+    "languages": [
+      "python"
+    ],
+    "versions": [
+      "Примеры: синтаксис Python 3.12/3.13; типизированные интерфейсы не заменяют runtime-проверки."
+    ],
+    "scope": "Инженерная рекомендация для проверки на конкретном проекте; не автоматическое правило рефакторинга."
+  },
+  "status": "draft",
+  "keywords": [
+    "кеш",
+    "cache",
+    "source",
+    "hash",
+    "invalidation",
+    "повтор"
+  ],
+  "related": [
+    "resource-ownership",
+    "versioned-contracts"
+  ]
+}

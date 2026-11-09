@@ -1,0 +1,52 @@
+{
+  "version": "atlas-readability-v1",
+  "calibration": "uncalibrated-project-heuristic",
+  "description": "Local syntax review signal; not Cognitive Complexity, comprehension probability, correctness or a human review verdict.",
+  "penalties": {
+    "nesting": {
+      "metric": "maxNestingDepth",
+      "free": 2,
+      "rate": 12,
+      "cap": 48
+    },
+    "size": {
+      "metric": "statementCount",
+      "free": 30,
+      "rate": 0.6,
+      "cap": 24
+    },
+    "booleanOperands": {
+      "metric": "maxBooleanOperands",
+      "free": 3,
+      "rate": 6,
+      "cap": 24
+    },
+    "mixedBooleans": {
+      "metric": "mixedBooleanExpressions",
+      "free": 0,
+      "rate": 4,
+      "cap": 12
+    },
+    "decisions": {
+      "metric": "branchCount",
+      "free": 6,
+      "rate": 2,
+      "cap": 18
+    }
+  },
+  "formula": "max(0,100-max(nesting,decisions)-size-max(booleanOperands,mixedBooleans))",
+  "unverifiedDimensions": [
+    "design",
+    "naming",
+    "contracts",
+    "correctness",
+    "tests",
+    "comment-accuracy"
+  ],
+  "references": [
+    "https://google.github.io/eng-practices/review/reviewer/looking-for.html",
+    "https://arxiv.org/abs/2007.12520",
+    "https://docs.scitools.com/plugins/Solutions/.doc/manager_halstead.html",
+    "https://learn.microsoft.com/en-us/visualstudio/code-quality/code-metrics-values?view=visualstudio"
+  ]
+}

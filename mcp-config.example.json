@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "code-atlas-agent": {
+      "command": "<absolute-python-executable>",
+      "args": [
+        "-m",
+        "atlas.agent_mcp",
+        "--port",
+        "8765"
+      ],
+      "env": {
+        "PYTHONPATH": "<absolute-atlas-source-directory>"
+      }
+    }
+  }
+}

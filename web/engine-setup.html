@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Настройка локальных движков · Code Atlas</title>
+<link rel="stylesheet" href="/data.css"><link rel="stylesheet" href="/atlas-menu.css"><link rel="stylesheet" href="/technical.css">
+<link rel="alternate" type="text/markdown" href="/agent-setup.md" title="Atlas agent setup">
+<script src="/color-scheme-init.js"></script><link id="color-scheme-styles" rel="stylesheet" href="/api/color-schemes/styles.css"><link rel="stylesheet" href="/color-scheme.css">
+</head>
+<body><header><a class="brand" href="/">CA · CODE ATLAS</a><div data-atlas-menu></div></header>
+<main class="technical"><h1>Настройка локальных движков</h1>
+<p>Для пользователя и агента в браузере. <a href="/mods.html#engine-agent-configuration">Открыть настройки модов</a> · <a href="/technical.html">Техническая страница</a></p>
+<p>Atlas сам ищет установленные движки при работе с картой. Агент и MCP не обязательны. Настройки путей общие для выбранного мода на этом компьютере и влияют на все карты. Включение мода и выбор пути независимы.</p>
+<section><h2>Через интерфейс</h2><ol>
+<li>Откройте настройки нужного семантического мода. «Найти установленные пути» проверяет известные места без запуска анализаторов и установщиков.</li>
+<li>«Подставить» меняет черновик. Для записи нажмите «Сохранить пути».</li>
+<li>«Автоматически» рядом с полем удаляет только его сохранённый путь. «Автоматический выбор» сбрасывает пути всего мода.</li>
+<li>Выберите опубликованную карту и проверьте совместимость. Наличие файла не означает подходящую версию, полный контекст или успешный анализ.</li>
+</ol></section>
+<section><h2>Самоанализ и HTTP API для агента</h2>
+<p>Чтение страницы не разрешает менять настройки. Выполняйте запись в рамках поручения пользователя. Браузерный агент использует same-origin API Atlas; файлы ищет сервер на компьютере Atlas, а не удалённый браузер.</p>
+<ol>
+<li>Прочитайте <a href="/api/semantic-engines/settings"><code>GET /api/semantic-engines/settings</code></a>. Ответ содержит <code>profiles</code>, допустимые <code>fields</code>, текущие <code>mods</code> и контракт операций <code>configuration</code>.</li>
+<li>Для найденного <code>modId</code>: <code>GET /api/mods/{modId}/semantic-engine-diagnostics?projectId=ID</code>. Необязательный <code>projectId</code> берите из <code>GET /api/projects</code>. Ответ содержит пути-кандидаты, режимы полей и <code>compatibility=unchecked</code>.</li>
+<li>Сохраните разрешённые абсолютные пути: <code>POST /api/mods/{modId}/semantic-engine-settings</code> с <code>Content-Type: application/json</code>. Например для Python: <pre>{"mode":"patch","paths":{"pythonPath":"/absolute/path/to/python"}}</pre>Имена полей берите из диагностики. Команды shell и аргументы не принимаются.</li>
+<li>Возврат одного поля к автоматике: <pre>{"mode":"patch","paths":{"pythonPath":""}}</pre>Возврат всего мода: <pre>{"mode":"replace","paths":{}}</pre><code>patch</code> сохраняет остальные поля, <code>replace</code> заменяет весь набор путей мода.</li>
+<li>Проверьте выбранную карту: <code>POST /api/projects/{projectId}/semantic-enrichment</code> с её актуальным <code>snapshotId</code>: <pre>{"snapshotId":"из GET /api/projects","nodeIds":[],"force":true}</pre>Это ограниченная фоновая проверка. Читайте статус по тому же адресу с <code>GET</code> и параметром <code>snapshotId</code>; не опрашивайте бесконечно. Базовая карта остаётся доступной.</li>
+</ol>
+<p>MCP: <code>inspect_semantic_engine_settings</code> возвращает те же настройки и диагностику; <code>set_semantic_engine_paths</code> записывает их. Статус карты — <code>get_semantic_engine_status</code>. <a href="/agent-setup.md">Полное руководство подключения MCP</a>.</p>
+</section></main><script type="module" src="/atlas-menu.js"></script></body></html>

@@ -1,0 +1,75 @@
+{
+  "version": "atlas-health-v2",
+  "weights": {
+    "flow": 0.35,
+    "size": 0.15,
+    "dependencies": 0.15,
+    "documentation": 0.2,
+    "organization": 0.15
+  },
+  "documentationWeights": {
+    "purpose": 50,
+    "contract": 30,
+    "explanations": 20
+  },
+  "limits": {
+    "maxFiles": 20,
+    "maxMethods": 120,
+    "maxFileBytes": 1048576,
+    "maxTotalBytes": 4194304,
+    "maxAstNodes": 50000,
+    "maxRecords": 64,
+    "maxRecordBytes": 2097152
+  },
+  "flow": {
+    "nestingFree": 2,
+    "nestingPenalty": 15,
+    "nestingCap": 70,
+    "branchesFree": 6,
+    "branchPenalty": 2,
+    "branchCap": 20,
+    "loopsFree": 2,
+    "loopPenalty": 3,
+    "loopCap": 10
+  },
+  "size": {
+    "statementsFree": 30,
+    "statementPenalty": 1.5,
+    "cap": 80
+  },
+  "dependencies": {
+    "targetsFree": 5,
+    "targetPenalty": 5,
+    "targetCap": 70,
+    "writesFree": 3,
+    "writePenalty": 3,
+    "writeCap": 15,
+    "recursionPenalty": 15
+  },
+  "review": {
+    "maxNesting": 3,
+    "healthWarning": 80,
+    "healthLow": 60,
+    "fragmentationMethods": 5
+  },
+  "mode": "advisory",
+  "description": "Advisory local flow, documentation and selected-scope file/folder organization. Not correctness, semantic cohesion or runtime cost.",
+  "transparencyWeights": {
+    "flow": 0.3,
+    "organization": 0.3,
+    "documentation": 0.2,
+    "dependencies": 0.2
+  },
+  "organization": {
+    "statementsFree": 300,
+    "statementPenalty": 0.1,
+    "declarationsFree": 30,
+    "declarationPenalty": 1,
+    "outgoingFilesFree": 8,
+    "folderFilesFree": 25,
+    "outgoingFoldersFree": 4,
+    "cyclePenalty": 20,
+    "tinyFilesFree": 6,
+    "fragmentationPenalty": 15
+  }
+}

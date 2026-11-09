@@ -1,0 +1,28 @@
+{
+  "apiVersion": 1,
+  "id": "automatic-documentation",
+  "name": "Автоматическая документация",
+  "version": "1.0.0",
+  "description": "На основе сборщика LangGraph создаёт локальный документ из кода, комментариев и выдержек языковых/библиотечных справочников. Ссылки, версии и неизвестные сведения остаются явными. Без модельной генерации.",
+  "requires": [
+    "langgraph-guide"
+  ],
+  "workflows": [
+    {
+      "id": "document",
+      "label": "Подготовить документацию",
+      "engine": "langgraph",
+      "kind": "documentation"
+    }
+  ],
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Автоматическая документация: сбор фактов",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

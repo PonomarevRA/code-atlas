@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Покрытие условий · Code Atlas</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/coverage.css">
+  <script type="module" src="/coverage-page.js"></script>
+<script src="/color-scheme-init.js"></script><link id="color-scheme-styles" rel="stylesheet" href="/api/color-schemes/styles.css"><link rel="stylesheet" href="/color-scheme.css"></head>
+<body class="coverage-page">
+  <header class="coverage-header">
+    <a id="coverage-back" href="/">← Карта кода</a>
+    <h1>Покрытие условий</h1>
+    <p class="coverage-intro">Условия из исходника, найденные тесты и результаты отчётов — с отдельными доказательствами.</p>
+    <p class="coverage-evidence-note">«Неизвестно» означает, что данных выполнения нет. Найденный тест или сценарий не доказывает, что ветвь выполнена.</p>
+  </header>
+  <main id="coverage-root">
+    <section class="coverage-controls" aria-label="Область анализа">
+      <label>Проект<select id="coverage-project"><option value="">Загружаем проекты…</option></select></label>
+      <div class="coverage-scope-row"><p id="coverage-scope">Весь репозиторий</p><button id="coverage-clear-scope" type="button" hidden>Весь репозиторий</button></div>
+      <details><summary>Локальные отчёты Cobertura</summary><label>До 8 путей относительно репозитория<textarea id="coverage-reports" rows="2" placeholder="coverage.cobertura.xml&#10;artifacts/coverage.xml"></textarea></label><p class="coverage-muted">Разделяйте пути запятыми или новыми строками. Отчёты читаются локально; загрузка файлов не требуется.</p></details>
+      <button id="coverage-analyze" type="button">Анализировать</button>
+      <p id="coverage-status" role="status" aria-live="polite">Выберите проект для анализа.</p>
+      <p id="coverage-provenance" class="coverage-muted"></p>
+    </section>
+    <section id="coverage-results" hidden>
+      <div id="coverage-summary" class="coverage-summary" aria-label="Сводка доказательств"></div>
+      <div id="coverage-warnings" class="coverage-warnings"></div>
+      <form id="coverage-filters" class="coverage-filters" role="search">
+        <label>Поиск<input id="coverage-search" type="search" placeholder="Метод, условие, файл или тест" autocomplete="off"></label>
+        <label>Конструкция<select id="coverage-kind"><option value="all">Все</option><option value="if">if</option><option value="switch">switch</option><option value="loop">Циклы</option></select></label>
+        <label>Результат выполнения<select id="coverage-runtime"><option value="all">Все</option><option value="unknown">Неизвестно</option><option value="partial">Частично</option><option value="uncovered">Не покрыто</option><option value="covered">Покрыто отчётом</option></select></label>
+        <label>Связанные тесты<select id="coverage-test-kind"><option value="all">Все</option><option value="unit">Unit</option><option value="gherkin">Gherkin</option></select></label>
+      </form>
+      <div class="coverage-layout">
+        <section aria-label="Условия по методам"><p id="coverage-count" class="coverage-muted"></p><div id="coverage-conditions"></div><nav id="coverage-pagination" class="coverage-pagination" aria-label="Страницы условий"></nav></section>
+        <aside id="coverage-detail" class="coverage-detail" aria-label="Выбранное условие"><h2>Детали условия</h2><p>Выберите условие, чтобы увидеть цели проверки, отчёты и возможные связи с тестами.</p></aside>
+      </div>
+      <section class="coverage-inventory" aria-label="Найденные тесты"><h2>Найденные тесты и сценарии</h2><p class="coverage-muted">Инвентарь исходников. Атрибуты, строки данных и сценарии сами по себе не подтверждают запуск.</p><div id="coverage-tests"></div><p id="coverage-tests-count" class="coverage-muted"></p></section>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{
+  "apiVersion": 1,
+  "id": "framework-junit4",
+  "name": "junit4 source facts",
+  "version": "1.0.0",
+  "description": "Lexical test/library declarations. No test execution or dataset evaluation.",
+  "requires": [
+    "language-java"
+  ],
+  "analysis": {
+    "apiVersion": 1,
+    "testFrameworks": [
+      {
+        "id": "junit4",
+        "language": "java",
+        "annotationRules": [
+          {
+            "name": "org.junit.Test",
+            "role": "test"
+          },
+          {
+            "name": "org.junit.Ignore",
+            "role": "disabled",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.Before",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.junit.After",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.junit.BeforeClass",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.junit.AfterClass",
+            "role": "lifecycle"
+          },
+          {
+            "name": "org.junit.runner.RunWith",
+            "role": "metadata",
+            "argument": "value"
+          },
+          {
+            "name": "org.junit.runners.Parameterized.Parameters",
+            "role": "parameter-source",
+            "sourceArgument": "name"
+          }
+        ],
+        "supportsComposed": false
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "JUnit 4: объявления тестов",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

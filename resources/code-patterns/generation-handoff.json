@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "atlas-code-pattern/v1",
+  "id": "generation-handoff",
+  "version": "1.0.0",
+  "title": "Подготовка и смена поколения ядра",
+  "category": "mcp",
+  "summary": "Новые вызовы переходят на готовое поколение; принятые остаются у старого до завершения или явной отмены.",
+  "problem": "Замена backend во время вызова смешивает состояние, результаты и маршруты отмены.",
+  "whenToUse": [
+    "Проверена возможность одновременного существования N и N+1.",
+    "Есть контракт хранения, handles и ограниченный drain."
+  ],
+  "whenNotToUse": [
+    "Обратная совместимость storage не установлена.",
+    "Старое поколение нельзя удержать для активных владельцев."
+  ],
+  "moduleBoundary": "Класс lifecycle coordinator владеет prepare/switch/drain; dispatch lease отделён от бизнес-логики.",
+  "responsibilities": [
+    "Проверить candidate до переключения.",
+    "Закрепить generation за каждым принятым вызовом."
+  ],
+  "publicContract": "Switch атомарен для новых вызовов; cleanup ждёт нулевого числа владельцев и compatibility gate.",
+  "dependencies": [
+    "Coordinator знает readiness/dispatch port, но не вычислительный алгоритм."
+  ],
+  "stateLifetime": "Lease, background jobs и subscriptions удерживают нужное поколение до явного освобождения.",
+  "errors": [
+    "Startup failure оставляет текущий маршрут; irreversible migration запрещает обратный переход."
+  ],
+  "example": {
+    "language": "python",
+    "code": "def choose_generation(candidate_ready, compatible, current, candidate):\n    \"\"\"Выбирает маршрут только для новых вызовов; leases отдельно.\"\"\"\n    if candidate_ready and compatible:\n        return candidate\n    return current\n",
+    "explanation": "Упрощённый guard не выдаёт candidate до readiness; полный lifecycle требует leases/drain и отдельной квалификации."
+  },
+  "counterexample": {
+    "language": "python",
+    "code": "def choose_generation(candidate_ready, compatible, current, candidate):\n    return candidate\n",
+    "explanation": "Новая версия выбирается даже при неготовности и несовместимости."
+  },
+  "migrationSteps": [
+    "Определите in-flight и storage owner.",
+    "Проверьте candidate и только затем разрешите switch."
+  ],
+  "limits": [
+    "Логический rollback маршрута не равен физическому rollback executable.",
+    "Frozen-reader packaging имеет отдельные ограничения; один rename их не решает."
+  ],
+  "checks": [
+    "Длительный вызов завершается на N, новый идёт на N+1.",
+    "Отмена и timeout не приводят к повторной мутации."
+  ],
+  "alternatives": [
+    "Отложить обновление до окончания операций."
+  ],
+  "codingGuidance": [
+    "Описание метода объясняет вход, результат и существенные ошибки; комментарий ветви объясняет причину.",
+    "Используйте ясные локальные этапы и ранние выходы; новый класс или интерфейс нужен только для самостоятельной ответственности."
+  ],
+  "sources": [
+    {
+      "title": "MCP 2025-11-25 transports",
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports",
+      "supports": "stdio принадлежит запущенному клиентом процессу; выделенный facade — предлагаемая архитектура, не гарантия протокола."
+    },
+    {
+      "title": "Making retries safe with idempotent APIs",
+      "url": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/",
+      "supports": "Повтор запроса с тем же намерением требует устойчивой идентичности и согласованного результата."
+    }
+  ],
+  "reviewedAt": "2026-10-30",
+  "applicability": {
+    "languages": [
+      "python"
+    ],
+    "versions": [
+      "Примеры: синтаксис Python 3.12/3.13; типизированные интерфейсы не заменяют runtime-проверки."
+    ],
+    "scope": "Инженерная рекомендация для проверки на конкретном проекте; не автоматическое правило рефакторинга."
+  },
+  "status": "draft",
+  "keywords": [
+    "generation",
+    "поколение",
+    "switch",
+    "drain",
+    "обновление",
+    "MCP",
+    "lease"
+  ],
+  "related": [
+    "stable-mcp-facade",
+    "resource-ownership"
+  ]
+}

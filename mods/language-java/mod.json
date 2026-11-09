@@ -1,0 +1,38 @@
+{
+  "apiVersion": 1,
+  "id": "language-java",
+  "name": "java project structure",
+  "version": "1.0.0",
+  "description": "Declarative build-marker discovery. Logical folders are navigation areas, not claimed build modules.",
+  "analysis": {
+    "apiVersion": 1,
+    "projectRules": [
+      {
+        "id": "java-projects",
+        "language": "java",
+        "extensions": [
+          ".java"
+        ],
+        "manifestNames": [
+          "pom.xml"
+        ],
+        "manifestSuffixes": [],
+        "sourceRootMarkers": [
+          "src/main/java",
+          "src/test/java"
+        ],
+        "logicalFolders": true
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Java: структура проекта",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-activity:v1:event",
+  "title": "Observed agent activity event",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "eventId",
+    "journalEpoch",
+    "sequence",
+    "occurredAt",
+    "application",
+    "sessionId",
+    "operationId",
+    "operation",
+    "phase"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "agent-activity/v1"
+    },
+    "eventId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "journalEpoch": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "sequence": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$",
+      "maxLength": 20
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "recordedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "application": {
+      "enum": [
+        "atlas",
+        "agmemory",
+        "small-yuki"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "maxLength": 32
+    },
+    "clientKind": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "agentId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 512
+    },
+    "identityQuality": {
+      "enum": [
+        "process",
+        "session",
+        "agent",
+        "unknown"
+      ]
+    },
+    "operationId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "parentOperationId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 512
+    },
+    "operation": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "phase": {
+      "enum": [
+        "started",
+        "finished"
+      ]
+    },
+    "outcome": {
+      "enum": [
+        "succeeded",
+        "failed",
+        "cancelled",
+        "unknown",
+        null
+      ]
+    },
+    "durationMs": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "resultCount": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "errorCode": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 512
+    },
+    "query": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "preview",
+            "fingerprint",
+            "omitted"
+          ]
+        },
+        "preview": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "fingerprint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "target": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "kind": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "projectId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "nodeId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "snapshotId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "nodeKey": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "generation": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        }
+      },
+      "additionalProperties": true
+    },
+    "request": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "tool",
+        "summary"
+      ],
+      "properties": {
+        "tool": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 512
+        }
+      },
+      "additionalProperties": false
+    },
+    "response": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "summary",
+        "truncated"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "maxLength": 512
+        },
+        "resultCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "label"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxLength": 128
+              },
+              "file": {
+                "type": "string",
+                "maxLength": 128
+              },
+              "nodeId": {
+                "type": "string",
+                "maxLength": 128
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "errorCode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "cursor": {
+      "type": "object",
+      "required": [
+        "journalEpoch",
+        "sequence"
+      ],
+      "properties": {
+        "journalEpoch": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "sequence": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

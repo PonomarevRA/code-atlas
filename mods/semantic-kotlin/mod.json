@@ -1,0 +1,37 @@
+{
+  "apiVersion": 1,
+  "id": "semantic-kotlin",
+  "name": "Kotlin engine availability",
+  "version": "1.0.0",
+  "description": "Discovery/fallback only: static Kotlin workspace importer is not qualified; no semantic worker, Gradle or classpath hooks.",
+  "autoActivate": {
+    "extensions": [
+      ".kt"
+    ],
+    "manifestNames": []
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "semanticProviders": [
+      {
+        "id": "kotlin",
+        "language": "kotlin",
+        "strategy": "kotlin-local-v1",
+        "capabilities": [
+          "definition",
+          "calls"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Kotlin: доступность движка",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

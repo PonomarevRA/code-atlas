@@ -1,0 +1,50 @@
+{
+  "source": "PonomarevRA/ag-design desktop/widgets/macos",
+  "version": "0.1.0",
+  "files": [
+    {
+      "file": "AGRequests.xcodeproj/project.pbxproj",
+      "sha256": "0864bf0d2708aa3f085f08f5d410bff46a85be5d09f46ffa4ffe151e45cc6cfa"
+    },
+    {
+      "file": "Host-Info.plist",
+      "sha256": "d64e4af925c4b3699a8c5dbd96b79ae26925e64efa6ba518ff9e034394f26f0c"
+    },
+    {
+      "file": "Sources/Host.swift",
+      "sha256": "d68b8d3b5945ff86d6370632e3d102edccfc9176f120c133ef0fa4e7b80a121a"
+    },
+    {
+      "file": "Sources/RequestsView.swift",
+      "sha256": "4024bb591e55e1a1a20310a11957da03b6b2945dd2bde315d3dfc965f5005609"
+    },
+    {
+      "file": "Sources/RequestsWidget.swift",
+      "sha256": "0e62c1a9731e311b801db47ff427c90515dd964fe0f0b9f029ef3997352293bf"
+    },
+    {
+      "file": "Sources/Snapshot.swift",
+      "sha256": "4e97d058752ef0295e968496c66ce17c513d1edc5d8dbe61f49194a684bc910b"
+    },
+    {
+      "file": "Sources/StaticWidgets.swift",
+      "sha256": "f39c55c38a3579274b677feb400878f2d6471bac0a91c1be8a6968f3ec598d58"
+    },
+    {
+      "file": "Widget-Info.plist",
+      "sha256": "41be832c800c6cf79ff69f4e5326752bfd27995734b85007d1e17b8e819668d8"
+    },
+    {
+      "file": "Widget.entitlements",
+      "sha256": "b043dea477bbd5da1552ef2f436a0cb644b884bb2568a9f831bd4ee362f9e99b"
+    },
+    {
+      "file": "build.py",
+      "sha256": "8eafd5fefc648b33c0e80a42a93abb228c773b97b7d4a2cee770c4b72353d7cf"
+    },
+    {
+      "file": "generate_project.py",
+      "sha256": "5ca283be293d96c1e596cc241744963d63576a88decf21a8e554632cd30915e4"
+    }
+  ]
+}

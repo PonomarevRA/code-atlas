@@ -1,0 +1,56 @@
+{
+  "graph": {
+    "analysisStatus": "complete",
+    "snapshotId": "synthetic-disconnected",
+    "nodes": [
+      {
+        "id": "a",
+        "kind": "function",
+        "file": "a/definition.py"
+      },
+      {
+        "id": "b",
+        "kind": "function",
+        "file": "b/definition.py"
+      },
+      {
+        "id": "c",
+        "kind": "function",
+        "file": "c/definition.py"
+      },
+      {
+        "id": "d",
+        "kind": "function",
+        "file": "d/definition.py"
+      },
+      {
+        "id": "e",
+        "kind": "function",
+        "file": "e/definition.py"
+      },
+      {
+        "id": "f",
+        "kind": "function",
+        "file": "f/definition.py"
+      }
+    ],
+    "edges": [
+      {
+        "source": "a",
+        "target": "b",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "c",
+        "target": "d",
+        "relation": "calls",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "source": {
+    "kind": "hand-constructed",
+    "meaning": "structural regression, not functional ground truth"
+  }
+}

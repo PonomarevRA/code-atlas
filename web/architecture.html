@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Архитектурные проверки · Code Atlas</title>
+<link rel="stylesheet" href="/data.css"><link rel="stylesheet" href="/atlas-menu.css"><link rel="stylesheet" href="/architecture.css">
+<script src="/color-scheme-init.js"></script><link id="color-scheme-styles" rel="stylesheet" href="/api/color-schemes/styles.css"><link rel="stylesheet" href="/color-scheme.css"></head>
+<body><header><a class="brand" href="/">CA · CODE ATLAS</a><div data-atlas-menu></div></header>
+<main class="architecture-page"><h1>Архитектурные проверки</h1>
+<p>Проверьте границы модулей и циклы. Результат относится к выбранным статическим объявлениям; полнота runtime не предполагается.</p>
+<section aria-labelledby="rules-heading"><h2 id="rules-heading">Область и правила</h2>
+<label for="architecture-project">Проект</label><select id="architecture-project"></select>
+<p id="architecture-snapshot" class="path"></p>
+<label for="architecture-rules">Правила JSON · версия atlas-architecture-v1</label>
+<textarea id="architecture-rules" rows="13" maxlength="65536" spellcheck="false" aria-describedby="rules-help"></textarea>
+<p id="rules-help">Шаблоны paths выбирают файлы. pythonRoot задаёт корень имён модулей. forbidden запрещает прямую связь; cycles ищет файловый цикл. Пустая или неоднозначная область даёт unknown.</p>
+<div class="actions"><button id="architecture-run" class="primary" type="button">Проверить архитектуру</button><button id="architecture-reload" type="button">Обновить список проектов</button></div>
+<p id="architecture-status" role="status" aria-live="polite">Загрузка проектов…</p></section>
+<section aria-labelledby="results-heading"><h2 id="results-heading">Результаты</h2>
+<p id="architecture-summary">Запустите проверку, чтобы получить результат.</p><details><summary>Происхождение результата</summary><p id="architecture-context" class="path"></p></details>
+<ul id="architecture-results"></ul><button id="architecture-more-rules" type="button" hidden>Ещё правила</button>
+<h3>Нарушения</h3><ul id="architecture-findings"></ul><button id="architecture-more-findings" type="button" hidden>Ещё нарушения</button></section>
+<section aria-labelledby="architecture-proof-heading"><h2 id="architecture-proof-heading" tabindex="-1">Доказательство на карте</h2>
+<p id="architecture-proof-status" role="status" aria-live="polite">Выберите нарушение, чтобы увидеть направленные связи и открыть исходник.</p>
+<div id="architecture-map" role="region" aria-label="Карта доказательства" tabindex="0"></div>
+<ol id="architecture-edges"></ol><button id="architecture-more-edges" type="button" hidden>Следующие связи пути</button></section>
+<p>Результаты хранятся в памяти до часа и могут быть вытеснены. После смены карты, исходников или перезапуска запустите проверку снова. Введённые правила сохраняются в этом браузере для выбранного проекта.</p>
+</main>
+<dialog id="architecture-source" aria-labelledby="architecture-source-title"><h2 id="architecture-source-title">Исходник доказательства</h2><button id="architecture-source-close" type="button">Закрыть исходник</button><p id="architecture-source-context" class="path"></p><pre id="architecture-source-text" tabindex="0"></pre></dialog>
+<script type="module" src="/atlas-menu.js"></script><script type="module" src="/architecture-page.js"></script></body></html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Atlas Mod Creator"
+  short_description: "Создание тем, действий и группировок Atlas"
+  default_prompt: "Используй $code-atlas-mods, чтобы создать и проверить мод Atlas по моему описанию."

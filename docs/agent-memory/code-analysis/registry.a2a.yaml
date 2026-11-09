@@ -1,0 +1,12 @@
+{
+  "schema": "agent-memory-area-registry/v1",
+  "version": 1,
+  "area": "code-analysis",
+  "kinds": [
+    {
+      "kind": "fact",
+      "summary": "Reading snapshot evidence.",
+      "path": "fact/registry.a2a.yaml"
+    }
+  ]
+}

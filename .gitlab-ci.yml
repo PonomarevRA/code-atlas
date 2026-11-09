@@ -1,0 +1,63 @@
+stages: [build, docs]
+.native:
+  stage: build
+  script:
+    - python -m pip install -r requirements.lock -r packaging/requirements-build.txt
+    - python -m atlas.architecture_cli check --root . --rules architecture-rules.json
+    - python -m pytest -q
+    - python packaging/build.py
+    - python packaging/check_native.py
+  artifacts:
+    name: CodeAtlas-$CI_JOB_NAME-$CI_COMMIT_SHORT_SHA
+    paths: [dist/, packaging/install-macos.sh, packaging/install-linux.sh, packaging/install-windows.ps1, docs/wiki/]
+    expire_in: 14 days
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+macos-x64:
+  extends: .native
+  tags: [macos, x86_64]
+  variables:
+    ATLAS_BUILD_TARGET: darwin-x86_64
+macos-arm64:
+  extends: .native
+  tags: [macos, arm64]
+  variables:
+    ATLAS_BUILD_TARGET: darwin-arm64
+windows-x64:
+  extends: .native
+  tags: [windows, x86_64]
+  variables:
+    ATLAS_BUILD_TARGET: win32-x86_64
+windows-arm64:
+  extends: .native
+  tags: [windows, arm64]
+  variables:
+    ATLAS_BUILD_TARGET: win32-arm64
+  rules:
+    - if: '$ENABLE_WINDOWS_ARM64 == "true" && $CI_PIPELINE_SOURCE == "web"'
+linux-x64:
+  extends: .native
+  tags: [linux, x86_64]
+  variables:
+    ATLAS_BUILD_TARGET: linux-x86_64
+linux-arm64:
+  extends: .native
+  tags: [linux, arm64]
+  variables:
+    ATLAS_BUILD_TARGET: linux-arm64
+sync-wiki:
+  stage: docs
+  image: python:3.13-bookworm
+  tags: [linux]
+  resource_group: code-atlas-wiki
+  variables:
+    WIKI_USERNAME: oauth2
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends git openssh-client
+  script:
+    - export WIKI_GIT_URL="${WIKI_GIT_URL:-${CI_PROJECT_URL}.wiki.git}"
+    - python scripts/sync_wiki.py --publish
+  rules:
+    - if: '$WIKI_SYNC_ENABLED == "true" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes: [docs/wiki/**/*, scripts/sync_wiki.py]

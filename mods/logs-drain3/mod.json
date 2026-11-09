@@ -1,0 +1,32 @@
+{
+  "apiVersion": 1,
+  "id": "logs-drain3",
+  "name": "Logs: Drain3",
+  "version": "1.0.0",
+  "description": "Host-owned static document profile; import requires an explicit build request.",
+  "autoActivate": false,
+  "analysis": {
+    "apiVersion": 1,
+    "documentProviders": [
+      {
+        "id": "logs-drain3",
+        "strategy": "logs-drain3-v1",
+        "extensions": [
+          ".log",
+          ".jsonl",
+          ".ndjson"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Data-and-Updates",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Логи: шаблоны Drain3",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

@@ -1,0 +1,593 @@
+{
+  "graph": {
+    "analysisStatus": "partial",
+    "snapshotId": "atlas-classes-frozen-20261030",
+    "nodes": [
+      {
+        "id": "atlas.mcp_transport:_error_message",
+        "kind": "function",
+        "file": "atlas/mcp_transport.py",
+        "line": 14,
+        "complexity": {
+          "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+        }
+      },
+      {
+        "id": "atlas.mcp_transport:LoopbackTransport",
+        "kind": "class",
+        "classIdentity": "atlas.mcp_transport:LoopbackTransport",
+        "file": "atlas/mcp_transport.py",
+        "line": 39,
+        "complexity": {
+          "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+        }
+      },
+      {
+        "id": "atlas.mcp_transport:LoopbackTransport.__init__",
+        "kind": "method",
+        "file": "atlas/mcp_transport.py",
+        "line": 42,
+        "complexity": {
+          "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.mcp_transport:LoopbackTransport"
+        }
+      },
+      {
+        "id": "atlas.mcp_transport:LoopbackTransport._new_client",
+        "kind": "method",
+        "file": "atlas/mcp_transport.py",
+        "line": 49,
+        "complexity": {
+          "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.mcp_transport:LoopbackTransport"
+        }
+      },
+      {
+        "id": "atlas.mcp_transport:LoopbackTransport.lifespan",
+        "kind": "method",
+        "file": "atlas/mcp_transport.py",
+        "line": 56,
+        "complexity": {
+          "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.mcp_transport:LoopbackTransport"
+        }
+      },
+      {
+        "id": "atlas.mcp_transport:LoopbackTransport.request",
+        "kind": "method",
+        "file": "atlas/mcp_transport.py",
+        "line": 65,
+        "complexity": {
+          "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.mcp_transport:LoopbackTransport"
+        }
+      },
+      {
+        "id": "atlas.mcp_transport:LoopbackTransport._request",
+        "kind": "method",
+        "file": "atlas/mcp_transport.py",
+        "line": 81,
+        "complexity": {
+          "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.mcp_transport:LoopbackTransport"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal",
+        "kind": "class",
+        "classIdentity": "atlas.agent_activity.service:ActivityJournal",
+        "file": "atlas/agent_activity/service.py",
+        "line": 12,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal.__init__",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 15,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal.submit",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 38,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal._snapshot",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 72,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal._estimate",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 139,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal._take_batch",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 165,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal._run",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 185,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal.subscribe",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 218,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal.unsubscribe",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 225,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal._notify",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 230,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal.status",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 241,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal.clear",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 259,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal.flush",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 277,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.agent_activity.service:ActivityJournal.close",
+        "kind": "method",
+        "file": "atlas/agent_activity/service.py",
+        "line": 288,
+        "complexity": {
+          "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.agent_activity.service:ActivityJournal"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalJournal",
+        "kind": "class",
+        "classIdentity": "atlas.technical_logs.service:TechnicalJournal",
+        "file": "atlas/technical_logs/service.py",
+        "line": 13,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalJournal.__init__",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 16,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalJournal"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalJournal.submit",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 37,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalJournal"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalJournal._take_batch",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 68,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalJournal"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalJournal._run",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 88,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalJournal"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalJournal.status",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 114,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalJournal"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalJournal.install",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 130,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalJournal"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalJournal.flush",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 142,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalJournal"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalJournal.close",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 153,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalJournal"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalHandler",
+        "kind": "class",
+        "classIdentity": "atlas.technical_logs.service:TechnicalHandler",
+        "file": "atlas/technical_logs/service.py",
+        "line": 171,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalHandler.__init__",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 174,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalHandler"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalHandler.handle",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 179,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalHandler"
+        }
+      },
+      {
+        "id": "atlas.technical_logs.service:TechnicalHandler.emit",
+        "kind": "method",
+        "file": "atlas/technical_logs/service.py",
+        "line": 184,
+        "complexity": {
+          "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+        },
+        "memberFacts": {
+          "ownerNodeId": "atlas.technical_logs.service:TechnicalHandler"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "atlas.mcp_transport:LoopbackTransport",
+        "target": "atlas.mcp_transport:LoopbackTransport.__init__",
+        "relation": "contains",
+        "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+      },
+      {
+        "source": "atlas.mcp_transport:LoopbackTransport",
+        "target": "atlas.mcp_transport:LoopbackTransport._new_client",
+        "relation": "contains",
+        "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+      },
+      {
+        "source": "atlas.mcp_transport:LoopbackTransport",
+        "target": "atlas.mcp_transport:LoopbackTransport.lifespan",
+        "relation": "contains",
+        "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+      },
+      {
+        "source": "atlas.mcp_transport:LoopbackTransport",
+        "target": "atlas.mcp_transport:LoopbackTransport.request",
+        "relation": "contains",
+        "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+      },
+      {
+        "source": "atlas.mcp_transport:LoopbackTransport",
+        "target": "atlas.mcp_transport:LoopbackTransport._request",
+        "relation": "contains",
+        "sourceHash": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal.__init__",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal.submit",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal._snapshot",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal._estimate",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal._take_batch",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal._run",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal.subscribe",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal.unsubscribe",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal._notify",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal.status",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal.clear",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal.flush",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.agent_activity.service:ActivityJournal",
+        "target": "atlas.agent_activity.service:ActivityJournal.close",
+        "relation": "contains",
+        "sourceHash": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalJournal",
+        "target": "atlas.technical_logs.service:TechnicalJournal.__init__",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalJournal",
+        "target": "atlas.technical_logs.service:TechnicalJournal.submit",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalJournal",
+        "target": "atlas.technical_logs.service:TechnicalJournal._take_batch",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalJournal",
+        "target": "atlas.technical_logs.service:TechnicalJournal._run",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalJournal",
+        "target": "atlas.technical_logs.service:TechnicalJournal.status",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalJournal",
+        "target": "atlas.technical_logs.service:TechnicalJournal.install",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalJournal",
+        "target": "atlas.technical_logs.service:TechnicalJournal.flush",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalJournal",
+        "target": "atlas.technical_logs.service:TechnicalJournal.close",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalHandler",
+        "target": "atlas.technical_logs.service:TechnicalHandler.__init__",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalHandler",
+        "target": "atlas.technical_logs.service:TechnicalHandler.handle",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      },
+      {
+        "source": "atlas.technical_logs.service:TechnicalHandler",
+        "target": "atlas.technical_logs.service:TechnicalHandler.emit",
+        "relation": "contains",
+        "sourceHash": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+      }
+    ]
+  },
+  "projection": {
+    "level": "class"
+  },
+  "source": {
+    "kind": "python-ast-declarations",
+    "fileHashes": {
+      "atlas/mcp_transport.py": "dc61f3e973b87e2d4afcdc9237ee9ddb1808d9d79d5e83cc6f46aaeefe768962",
+      "atlas/agent_activity/service.py": "20b9ef41a2349a14741897fc8443872c7785ebdd8f677c37f54ab6ab87222277",
+      "atlas/technical_logs/service.py": "f721f72a3d1833495f865a66e676d16591e361694e61254aeb016d7b36159bbf"
+    },
+    "coverage": "Lexical class/member ownership only; top-level functions have no class owner; runtime binding/calls not captured."
+  }
+}

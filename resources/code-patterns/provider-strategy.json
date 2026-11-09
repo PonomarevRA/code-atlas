@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "atlas-code-pattern/v1",
+  "id": "provider-strategy",
+  "version": "1.0.0",
+  "title": "Стратегия и реестр провайдеров",
+  "category": "behavior",
+  "summary": "Заменяемый алгоритм выбирается по явному ID через реестр с одинаковым контрактом входа и результата.",
+  "problem": "Новые алгоритмы добавляются ветвями в UI, а общие веса и исходные данные изменяются неявно.",
+  "whenToUse": [
+    "Несколько реализаций одной измеримой задачи.",
+    "Нужен честный baseline с фиксированными параметрами."
+  ],
+  "whenNotToUse": [
+    "Варианты решают разные задачи с несовместимыми входами или objective."
+  ],
+  "moduleBoundary": "Класс провайдера или папка алгоритма; реестр только разрешает ID, не вычисляет результат.",
+  "responsibilities": [
+    "Валидировать ID.",
+    "Сохранить параметры и provenance конкретного запуска."
+  ],
+  "publicContract": "choose(provider_id)(values) -> результат; неизвестный ID — явная ошибка.",
+  "dependencies": [
+    "Алгоритмы не импортируют UI.",
+    "Реестр не изменяет raw graph."
+  ],
+  "stateLifetime": "Параметры и seed принадлежат запуску, а не изменяемому глобальному singleton.",
+  "errors": [
+    "Неизвестный provider_id отклоняется, а не заменяется default молча."
+  ],
+  "example": {
+    "language": "python",
+    "code": "def choose(identifier):\n    \"\"\"Возвращает только явно разрешённый алгоритм.\"\"\"\n    providers = {\"sum\": sum, \"maximum\": max}\n    if identifier not in providers:\n        raise ValueError(\"Unknown provider\")\n    return providers[identifier]\n",
+    "explanation": "Реестр ограничен и неизвестное значение не подменяет семантику."
+  },
+  "counterexample": {
+    "language": "python",
+    "code": "def choose(identifier):\n    return eval(identifier)\n",
+    "explanation": "Выполнение введённой строки не является безопасным выбором стратегии."
+  },
+  "migrationSteps": [
+    "Согласуйте общий контракт.",
+    "Зарегистрируйте проверенную реализацию и её параметры."
+  ],
+  "limits": [
+    "Усреднение разных objective не создаёт справедливого сравнения."
+  ],
+  "checks": [
+    "Неизвестный ID отклоняется.",
+    "Один input не мутирует между сравниваемыми провайдерами."
+  ],
+  "alternatives": [
+    "Один обычный вызов, пока альтернатив нет."
+  ],
+  "codingGuidance": [
+    "Описание метода объясняет вход, результат и существенные ошибки; комментарий ветви объясняет причину.",
+    "Используйте ясные локальные этапы и ранние выходы; новый класс или интерфейс нужен только для самостоятельной ответственности."
+  ],
+  "sources": [
+    {
+      "title": "Python 3.13 typing.Protocol",
+      "url": "https://docs.python.org/3.13/library/typing.html#typing.Protocol",
+      "supports": "Структурное описание интерфейса Python. Аннотации сами не проверяют поведение во время выполнения."
+    },
+    {
+      "title": "Hexagonal Architecture — original article",
+      "url": "https://alistair.cockburn.us/hexagonal-architecture",
+      "supports": "Приложение взаимодействует с внешними устройствами через порты и адаптеры."
+    }
+  ],
+  "reviewedAt": "2026-10-30",
+  "applicability": {
+    "languages": [
+      "python"
+    ],
+    "versions": [
+      "Примеры: синтаксис Python 3.12/3.13; типизированные интерфейсы не заменяют runtime-проверки."
+    ],
+    "scope": "Инженерная рекомендация для проверки на конкретном проекте; не автоматическое правило рефакторинга."
+  },
+  "status": "draft",
+  "keywords": [
+    "strategy",
+    "provider",
+    "провайдер",
+    "алгоритм",
+    "реестр",
+    "сравнение"
+  ],
+  "related": [
+    "pipeline",
+    "contract-qualification"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "apiVersion": 1,
+  "id": "build-gradle",
+  "name": "Gradle project discovery",
+  "version": "1.0.0",
+  "description": "Independent declarative Gradle build markers for active Java or Kotlin language providers. Gradle scripts are never executed.",
+  "analysis": {
+    "apiVersion": 1,
+    "buildRules": [
+      {
+        "id": "gradle-builds",
+        "languages": [
+          "java",
+          "kotlin"
+        ],
+        "manifestNames": [
+          "build.gradle",
+          "build.gradle.kts"
+        ],
+        "manifestSuffixes": []
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Gradle: границы Java и Kotlin",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

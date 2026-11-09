@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>Atlas.Semantic.Roslyn</AssemblyName>
+    <Nullable>enable</Nullable>
+    <RollForward>LatestMajor</RollForward>
+    <SelfContained>false</SelfContained>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeAnalysis" HintPath="$(RoslynBinaries)/Microsoft.CodeAnalysis.dll" Private="false" />
+    <Reference Include="Microsoft.CodeAnalysis.CSharp" HintPath="$(RoslynBinaries)/Microsoft.CodeAnalysis.CSharp.dll" Private="false" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,42 @@
+/* Native host controls: no overlay and no focus transfer during enrichment. */
+.architecture-exploration { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:8px 0; }
+.architecture-exploration button[aria-pressed="true"] { border-color:var(--accent); font-weight:600; }
+.architecture-exploration-status { flex-basis:100%; margin:0; }
+.architecture-export { display:flex; gap:6px; align-items:center; flex-wrap:wrap; min-width:0; max-width:100%; }
+.architecture-export > * { min-width:0; max-width:100%; }
+.architecture-export select { width:auto; max-width:min(180px,100%); }
+.architecture-export-status { flex-basis:100%; margin:0; overflow-wrap:anywhere; }
+.architecture-pin-label { font-weight:600; }
+
+/* Цвет дополняет постоянные подпись типа и line-глиф; имена ресурсов не влияют на палитру. */
+:is([data-architecture-kind="database"], [data-cluster-kind="database"]) { --architecture-resource-accent:#246d9c; }
+:is([data-architecture-kind="kafka"], [data-cluster-kind="kafka"]) { --architecture-resource-accent:#8050a4; }
+:is([data-architecture-kind="rabbit"], [data-cluster-kind="rabbit"]) { --architecture-resource-accent:#a45b16; }
+:is([data-architecture-kind="http"], [data-cluster-kind="http"]) { --architecture-resource-accent:#26755a; }
+:where(.architecture-resource-card, .architecture-resource-cluster) {
+  --architecture-resource-accent:var(--atlas-accent,#306f55);
+  --architecture-resource-ink:color-mix(in srgb, var(--architecture-resource-accent) 70%, var(--atlas-text,#203d33));
+}
+:root[data-color-scheme] svg .architecture-resource-card :is(.flow-card-body,.architecture-resource-surface) {
+  fill:var(--atlas-card); stroke:var(--architecture-resource-ink); stroke-width:2;
+}
+:root[data-color-scheme] svg .architecture-resource-card .flow-card-header {
+  fill:color-mix(in srgb, var(--architecture-resource-accent) 18%, var(--atlas-card));
+}
+.architecture-resource-stripe { fill:var(--architecture-resource-ink); }
+:root[data-color-scheme] svg .architecture-resource-card .flow-port { fill:var(--architecture-resource-ink); }
+.architecture-resource-type { color:var(--architecture-resource-ink); }
+.architecture-resource-type-label { fill:var(--atlas-text,#203d33); font-size:13px; font-weight:700; }
+:root[data-color-scheme] svg .architecture-resource-card :is(.flow-card-name,.community-label) { fill:var(--atlas-text); }
+:root[data-color-scheme] svg .architecture-resource-card.selected > :is(.flow-card-body,.architecture-resource-surface) { stroke:var(--atlas-selection); stroke-width:3; }
+.architecture-cluster-surface {
+  fill:color-mix(in srgb, var(--architecture-resource-accent) 5%, var(--atlas-canvas,#f2f6f3));
+  stroke:color-mix(in srgb, var(--architecture-resource-accent) 45%, var(--atlas-border,#a1b3a7));
+  stroke-width:1.25; stroke-dasharray:6 5;
+}
+.architecture-cluster-heading { fill:var(--atlas-text,#203d33); font-size:16px; font-weight:700; }
+@media (forced-colors:active) {
+  .architecture-resource-card, .architecture-resource-cluster { --architecture-resource-ink:CanvasText; }
+  .architecture-resource-type-label, .architecture-cluster-heading { fill:CanvasText; }
+  .architecture-cluster-surface { fill:Canvas; stroke:CanvasText; }
+}

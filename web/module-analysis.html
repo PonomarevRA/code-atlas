@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Модули классов и папок · Code Atlas</title>
+<link rel="stylesheet" href="/data.css">
+<link rel="stylesheet" href="/atlas-menu.css">
+<link rel="stylesheet" href="/module-analysis.css">
+<script src="/color-scheme-init.js"></script>
+<link id="color-scheme-styles" rel="stylesheet" href="/api/color-schemes/styles.css">
+<link rel="stylesheet" href="/color-scheme.css">
+</head>
+<body>
+<header><a class="brand" href="/">CA · CODE ATLAS</a><div data-atlas-menu></div></header>
+<main class="module-page">
+<h1>Модули классов и папок</h1>
+<p>Сравните текущие границы модулей с предложениями алгоритмов на выбранном снимке.</p>
+<form id="module-form">
+<label>Проект<select id="project" required><option value="">Выберите проект</option></select></label>
+<label>Снимок<input id="snapshot" readonly required></label>
+<label>Уровень модуля<select id="level"><option value="folder">Папка</option><option value="class">Класс</option></select></label>
+<label>Папки области анализа<textarea id="folders" rows="2" maxlength="4000" placeholder="atlas/code_patterns" aria-describedby="folder-help"></textarea><small id="folder-help">Необязательно. Одна папка на строку; пути относительно проекта. Для большой карты выберите меньшую область.</small></label>
+<fieldset><legend>Алгоритмы сравнения</legend>
+<label><input type="checkbox" name="algorithm" value="current" checked>Текущие границы</label>
+<label><input type="checkbox" name="algorithm" value="louvain" checked>Louvain</label>
+<label><input type="checkbox" name="algorithm" value="leiden" checked>Leiden</label>
+<label><input type="checkbox" name="algorithm" value="sarf-simple-directed">SArF · простая направленная модель</label>
+</fieldset>
+<button type="submit" class="primary">Сравнить модули</button>
+</form>
+<p id="module-status" role="status" aria-live="polite">Загружаем проекты…</p>
+<section id="module-results" aria-label="Результат сравнения" hidden></section>
+<section id="module-proposals" lang="ru" aria-labelledby="module-proposals-title">
+<h2 id="module-proposals-title">Варианты и обновления структуры</h2>
+<p>Используются выбранные выше проект, классы или папки. Поиск сравнивает связность и число перемещённых модулей. Расчёт не переносит исходники и не меняет сохранённую карту.</p>
+<details><summary>Параметры воспроизводимого поиска</summary>
+<label>Seed <input data-proposal-seed type="number" min="0" max="4294967295" value="42"></label>
+<label>Оценок на каждый метод <select data-proposal-budget><option>32</option><option selected>64</option><option>128</option><option>256</option></select></label>
+</details>
+<div class="actions"><button type="button" data-proposal-action="search">Найти варианты</button><button type="button" data-proposal-action="baseline">Сохранить базу обновления</button><button type="button" data-proposal-action="update">Проверить обновление</button></div>
+<p>База и обновление используют последний опубликованный снимок. Состав групп и положение измеряются отдельно. Инкрементальный вариант Atlas — исследовательская адаптация, не точное воспроизведение LD-Leiden.</p>
+<p data-proposal-status role="status" aria-live="polite"></p><div data-proposal-output></div>
+</section>
+<details><summary>Как читать результат</summary>
+<p>Связи и размеры описывают наблюдаемый граф. Графовая модулярность Q не доказывает функциональное качество класса или папки. Неизвестные связи и владение остаются явными.</p>
+<p>Класс определяется по подтверждённому владению, а не по похожему имени. Для кода без классов используйте папки. Недоступный алгоритм не заменяется другим автоматически.</p>
+<p>Результат содержит предложения: перенос исходников и изменение сохранённой карты выполняются отдельным решением.</p>
+<a href="/wiki.html?page=Code-Patterns">Справочник паттернов</a>
+</details>
+</main>
+<script type="module" src="/module-analysis-page.js"></script>
+<script type="module" src="/module-proposals-start.js"></script>
+<script type="module" src="/atlas-menu.js"></script>
+</body>
+</html>

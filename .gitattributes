@@ -1,0 +1,18 @@
+# Git archive excludes local evidence; Git push still contains reachable history.
+# Use tools/public_release.py for current working source and start fresh public history.
+/docs/research export-ignore
+/docs/library-documentation-validation-2026-10-11.md export-ignore
+/tools/portfolio-lab export-ignore
+/sites export-ignore
+/*-preview.png export-ignore
+/.agents export-ignore
+/.claude export-ignore
+/.cursor export-ignore
+/.codex export-ignore
+/outputs export-ignore
+/evidence export-ignore
+/build export-ignore
+/dist export-ignore
+/releases export-ignore
+/resources/semantic-csharp/obj export-ignore
+/resources/semantic-csharp/bin export-ignore

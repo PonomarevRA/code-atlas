@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "scope": "Reviewed logos/icons, NotoSans, vendored native libraries and npm packages; preserve adjacent license/notice files. Exact pins reject new or changed opaque payloads.",
+  "files": {
+    "packaging/assets/NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+    "packaging/assets/code-atlas.icns": "236c5df224091d27fda78d197d98e94d0571c55a5d5bd3269d9914cfefe28223",
+    "packaging/assets/code-atlas.ico": "2ae830915cafa37efc7d14229e053b9ed2770166accba161b1d1d3b4e39f3ec5",
+    "packaging/assets/code-atlas.png": "69939a6cd77b0c68a181c98f693be7528cfd9d2ee23d7bfd0eb2c14daa857f18",
+    "resources/lnav/darwin-arm64/lib/libarchive.13.dylib": "ad00bd2b6ac06625a40f757662c925ba56a23d63f01246316a017ff522af35b7",
+    "resources/lnav/darwin-arm64/lib/libpcre2-8.0.dylib": "8d46e60a5eb38d7c7ad195820f6e8150427e327471fa1b6ca946a91c9547d7de",
+    "resources/lnav/darwin-arm64/lib/libunistring.5.dylib": "dbcf25622a72a735cf55afd851d082021cd0b29aea4df1970dac52f59df31a16",
+    "resources/lnav/darwin-arm64/lnav": "728f8fecf372270a8ec55c705ab44c69425ac00b54b11b2a1f1a24f75ba4dfec",
+    "resources/lnav/darwin-x86_64/lib/libarchive.13.dylib": "4b738946f32e28afc744d406cf90dce1200b7ae3fd55b31545300a94b2749064",
+    "resources/lnav/darwin-x86_64/lib/libb2.1.dylib": "711dd4f4402ff0770c464205fd9a56b075ded77ae5ab626fc9b4e2333dbe6278",
+    "resources/lnav/darwin-x86_64/lib/liblz4.1.10.0.dylib": "e9dc53f608a294e89eeab84a41de0ec71c8a80f82f7ce6fca336c9eff7e1d941",
+    "resources/lnav/darwin-x86_64/lib/liblzma.5.dylib": "2b4e45f74313fb3e5439ebb39dc873adb67a23eb30bc4c97f67efa3c55889663",
+    "resources/lnav/darwin-x86_64/lib/libpcre2-8.0.dylib": "fddd7bb9d7a831027177ecc183e9785c995a3f6ce3ff2425624575474b7df317",
+    "resources/lnav/darwin-x86_64/lib/libsqlite3.3.50.4.dylib": "3f465b793c12f7afbade8e50294ee99eaeef73afb1d45335a9000f4d4664a579",
+    "resources/lnav/darwin-x86_64/lib/libunistring.5.dylib": "53f1645dad4094e14318012cc5368678314fb94d49a2b36284fbb36a34b9910d",
+    "resources/lnav/darwin-x86_64/lib/libzstd.1.5.7.dylib": "6d11fb8853cdaa834fb5c014b292db394b4a0937d488322f7fa98005276fd08f",
+    "resources/lnav/darwin-x86_64/lnav": "077d9dc360e5e50c1ec579946ff04ad41135d979162face5bed16a8bcbf4cb99",
+    "vendor/atlas-browser-auth/confirm": "6cb60170c0a2b6085bc6371a55cb4c160bcef8a871e20315cfed5afd7368bb46",
+    "web/favicon.png": "69939a6cd77b0c68a181c98f693be7528cfd9d2ee23d7bfd0eb2c14daa857f18"
+  }
+}

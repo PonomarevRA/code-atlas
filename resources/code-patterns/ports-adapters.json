@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "atlas-code-pattern/v1",
+  "id": "ports-adapters",
+  "version": "1.0.0",
+  "title": "Порты и адаптеры",
+  "category": "structure",
+  "summary": "Приложение зависит от требуемых операций, а HTTP, MCP, файлы и база реализуют адаптеры.",
+  "problem": "Правило знает конкретный протокол или драйвер и не запускается отдельно от внешней системы.",
+  "whenToUse": [
+    "Папка с I/O должна поддерживать другой backend.",
+    "Один use case вызывается через несколько транспортов."
+  ],
+  "whenNotToUse": [
+    "Интерфейс существует только ради единственного тривиального вызова и ничего не изолирует."
+  ],
+  "moduleBoundary": "Папка приложения содержит порты и use cases; адаптеры находятся на внешней границе.",
+  "responsibilities": [
+    "Определить нужную приложению операцию.",
+    "Перевести внешний формат в проверенные значения."
+  ],
+  "publicContract": "Reader.read() -> list[int]; недоступность источника представлена явной ошибкой адаптера.",
+  "dependencies": [
+    "Ядро знает контракт Reader, не SqlReader.",
+    "Composition root выбирает адаптер."
+  ],
+  "stateLifetime": "Пул соединений и освобождение принадлежат адаптеру; use case не закрывает чужой ресурс.",
+  "errors": [
+    "Адаптер преобразует техническую ошибку в договорённый результат или исключение."
+  ],
+  "example": {
+    "language": "python",
+    "code": "from typing import Protocol\n\nclass Reader(Protocol):\n    def read(self) -> list[int]: ...\n\ndef calculate(reader: Reader) -> int:\n    \"\"\"Суммирует значения из явно переданного порта.\"\"\"\n    return sum(reader.read())\n",
+    "explanation": "Требуемый интерфейс виден у вызывающего кода и заменяется тестовым reader."
+  },
+  "counterexample": {
+    "language": "python",
+    "code": "def calculate():\n    from product_database import global_client\n    return sum(global_client.query_all())\n",
+    "explanation": "Глобальная зависимость скрыта и связана с конкретным драйвером."
+  },
+  "migrationSteps": [
+    "Опишите минимальную операцию, нужную use case.",
+    "Перенесите создание драйвера в composition root."
+  ],
+  "limits": [
+    "Protocol описывает структуру типов, но не гарантирует корректное поведение."
+  ],
+  "checks": [
+    "Запустить use case с простым test adapter.",
+    "Проверить контракт реального адаптера отдельно."
+  ],
+  "alternatives": [
+    "Передать callable вместо класса, если нужна одна операция."
+  ],
+  "codingGuidance": [
+    "Описание метода объясняет вход, результат и существенные ошибки; комментарий ветви объясняет причину.",
+    "Используйте ясные локальные этапы и ранние выходы; новый класс или интерфейс нужен только для самостоятельной ответственности."
+  ],
+  "sources": [
+    {
+      "title": "Hexagonal Architecture — original article",
+      "url": "https://alistair.cockburn.us/hexagonal-architecture",
+      "supports": "Приложение взаимодействует с внешними устройствами через порты и адаптеры."
+    },
+    {
+      "title": "Python 3.13 typing.Protocol",
+      "url": "https://docs.python.org/3.13/library/typing.html#typing.Protocol",
+      "supports": "Структурное описание интерфейса Python. Аннотации сами не проверяют поведение во время выполнения."
+    }
+  ],
+  "reviewedAt": "2026-10-30",
+  "applicability": {
+    "languages": [
+      "python"
+    ],
+    "versions": [
+      "Примеры: синтаксис Python 3.12/3.13; типизированные интерфейсы не заменяют runtime-проверки."
+    ],
+    "scope": "Инженерная рекомендация для проверки на конкретном проекте; не автоматическое правило рефакторинга."
+  },
+  "status": "draft",
+  "keywords": [
+    "адаптер",
+    "порт",
+    "I/O",
+    "backend",
+    "инверсия",
+    "dependency",
+    "protocol"
+  ],
+  "related": [
+    "functional-core",
+    "contract-qualification"
+  ]
+}

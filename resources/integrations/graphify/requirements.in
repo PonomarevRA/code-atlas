@@ -1,0 +1,2 @@
+# Standalone provider environment. Change this pin without changing Atlas core.
+graphifyy[mcp]==0.9.85

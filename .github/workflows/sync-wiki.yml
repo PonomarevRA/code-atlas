@@ -1,0 +1,26 @@
+name: Sync wiki
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths: ['docs/wiki/**', 'scripts/sync_wiki.py']
+permissions:
+  contents: read
+concurrency:
+  group: code-atlas-wiki
+  cancel-in-progress: false
+jobs:
+  wiki:
+    if: vars.WIKI_SYNC_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Synchronize managed wiki pages
+        env:
+          WIKI_TOKEN: ${{ secrets.WIKI_TOKEN }}
+          WIKI_USERNAME: x-access-token
+          WIKI_GIT_URL: ${{ vars.WIKI_GIT_URL || format('{0}/{1}.wiki.git', github.server_url, github.repository) }}
+        run: python scripts/sync_wiki.py --publish

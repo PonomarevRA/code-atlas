@@ -1,0 +1,38 @@
+{
+  "apiVersion": 1,
+  "id": "logs-structured",
+  "name": "Logs: structured",
+  "version": "1.0.0",
+  "description": "Host-owned static document profile; import requires an explicit build request.",
+  "autoActivate": {
+    "extensions": [
+      ".log",
+      ".jsonl",
+      ".ndjson"
+    ]
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "documentProviders": [
+      {
+        "id": "logs-structured",
+        "strategy": "logs-structured-v1",
+        "extensions": [
+          ".log",
+          ".jsonl",
+          ".ndjson"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Data-and-Updates",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Логи: структурированные записи",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

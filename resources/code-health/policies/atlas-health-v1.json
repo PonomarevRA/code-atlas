@@ -1,0 +1,12 @@
+{
+  "version": "atlas-health-v1",
+  "weights": {"flow": 0.4, "size": 0.2, "dependencies": 0.2, "documentation": 0.2},
+  "documentationWeights": {"purpose": 50, "contract": 30, "explanations": 20},
+  "limits": {"maxFiles": 20, "maxMethods": 120, "maxFileBytes": 1048576, "maxTotalBytes": 4194304, "maxAstNodes": 50000, "maxRecords": 64, "maxRecordBytes": 2097152},
+  "flow": {"nestingFree": 2, "nestingPenalty": 15, "nestingCap": 70, "branchesFree": 6, "branchPenalty": 2, "branchCap": 20, "loopsFree": 2, "loopPenalty": 3, "loopCap": 10},
+  "size": {"statementsFree": 30, "statementPenalty": 1.5, "cap": 80},
+  "dependencies": {"targetsFree": 5, "targetPenalty": 5, "targetCap": 70, "writesFree": 3, "writePenalty": 3, "writeCap": 15, "recursionPenalty": 15},
+  "review": {"maxNesting": 3, "healthWarning": 80, "healthLow": 60, "fragmentationMethods": 5},
+  "mode": "advisory",
+  "description": "Local, versioned structural and documentation heuristics; not correctness, performance or verified prose quality."
+}

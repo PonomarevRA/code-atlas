@@ -1,0 +1,69 @@
+{
+  "graph": {
+    "analysisStatus": "complete",
+    "snapshotId": "synthetic-directed-hub",
+    "nodes": [
+      {
+        "id": "a",
+        "kind": "function",
+        "file": "a/definition.py"
+      },
+      {
+        "id": "b",
+        "kind": "function",
+        "file": "b/definition.py"
+      },
+      {
+        "id": "c",
+        "kind": "function",
+        "file": "c/definition.py"
+      },
+      {
+        "id": "hub",
+        "kind": "function",
+        "file": "hub/definition.py"
+      },
+      {
+        "id": "isolated",
+        "kind": "function",
+        "file": "isolated/definition.py"
+      }
+    ],
+    "edges": [
+      {
+        "source": "a",
+        "target": "hub",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "b",
+        "target": "hub",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "c",
+        "target": "hub",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "a",
+        "target": "b",
+        "relation": "calls",
+        "confidence": "confirmed"
+      },
+      {
+        "source": "b",
+        "target": "a",
+        "relation": "calls",
+        "confidence": "confirmed"
+      }
+    ]
+  },
+  "source": {
+    "kind": "hand-constructed",
+    "meaning": "structural regression, not functional ground truth"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "apiVersion": 1,
+  "id": "framework-fastmcp",
+  "name": "FastMCP entrypoints",
+  "version": "1.0.0",
+  "description": "Captured tool, resource and prompt decorator registrations; transport and execution remain unknown.",
+  "requires": [
+    "language-python"
+  ],
+  "analysis": {
+    "apiVersion": 1,
+    "entrypointProviders": [
+      {
+        "id": "fastmcp",
+        "language": "python",
+        "strategy": "python-fastmcp-v1"
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Agents-and-MCP",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "FastMCP: инструменты и ресурсы",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

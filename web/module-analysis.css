@@ -1,0 +1,20 @@
+.module-page { max-width: 1100px; margin: 2rem auto; padding: 0 1.2rem 3rem; }
+.module-page h1 { margin-bottom: .5rem; }
+#module-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; margin: 1.5rem 0; }
+#module-form > label { display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+#module-form small { font-weight: normal; }
+#module-form fieldset { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .8rem 1.2rem; padding: .8rem; }
+#module-form fieldset label { display: flex; align-items: center; gap: .35rem; }
+#module-form fieldset input[type="checkbox"] { inline-size: auto; flex: none; padding: 0; }
+#module-form button { justify-self: start; }
+#module-status { min-height: 1.5em; }
+.module-table-scroll { overflow-x: auto; }
+.module-table-scroll table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.module-table-scroll th, .module-table-scroll td { text-align: left; vertical-align: top; padding: .65rem; border-bottom: 1px solid var(--border, currentColor); }
+.module-page details { margin: 1rem 0; }
+.module-page pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.module-page [aria-busy="true"] { opacity: .7; }
+.module-geometry-scroll { overflow: auto; max-height: 36rem; border: 1px solid var(--border, currentColor); }
+.module-geometry-scroll svg { display: block; max-width: none; }
+#module-proposals .actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+@media (max-width: 700px) { #module-form { grid-template-columns: 1fr; } }

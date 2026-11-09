@@ -1,0 +1,36 @@
+{
+  "apiVersion": 1,
+  "id": "document-markdown",
+  "name": "Markdown: структура документа",
+  "version": "1.0.0",
+  "description": "Статический captured документ; импорт выполняется только явным запросом.",
+  "autoActivate": {
+    "extensions": [
+      ".md",
+      ".markdown"
+    ]
+  },
+  "analysis": {
+    "apiVersion": 1,
+    "documentProviders": [
+      {
+        "id": "markdown",
+        "strategy": "document-markdown-v1",
+        "extensions": [
+          ".md",
+          ".markdown"
+        ]
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Data-and-Updates",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "Markdown: структура документа",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}

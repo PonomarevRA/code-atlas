@@ -1,0 +1,38 @@
+{
+  "apiVersion": 1,
+  "id": "language-typescript",
+  "name": "typescript project structure",
+  "version": "1.0.0",
+  "description": "Declarative build-marker discovery. Logical folders are navigation areas, not claimed build modules.",
+  "analysis": {
+    "apiVersion": 1,
+    "projectRules": [
+      {
+        "id": "typescript-projects",
+        "language": "typescript",
+        "extensions": [
+          ".ts",
+          ".tsx"
+        ],
+        "manifestNames": [
+          "package.json"
+        ],
+        "manifestSuffixes": [],
+        "sourceRootMarkers": [
+          "src"
+        ],
+        "logicalFolders": false
+      }
+    ]
+  },
+  "wiki": {
+    "section": "Explore-Code",
+    "pages": [
+      {
+        "id": "overview",
+        "title": "TypeScript: структура проекта",
+        "path": "wiki/Overview.md"
+      }
+    ]
+  }
+}
