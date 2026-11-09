@@ -15,6 +15,7 @@ from uuid import uuid4
 from .runtime_paths import resource_root
 
 
+_MAX_NATIVE_LIBRARY_BYTES = 5 * 1024 * 1024
 _native_lock = RLock()
 _native_directory = None
 _native_libraries = {}
@@ -52,11 +53,11 @@ def sdk_files():
     """Validate pinned shipped assets before importing an adapter or loading a native library."""
     root = resource_root() / 'vendor/ag-privacy'
     manifest_bytes = (root / 'manifest.json').read_bytes()
-    if hashlib.sha256(manifest_bytes).hexdigest() != '52baf9af21c15a5cf70e465a58fec5c121339462c9616429b02470ba54e93ec8':
+    if hashlib.sha256(manifest_bytes).hexdigest() != 'ec0ae0bd3b73fe81c741a04dc67473eedaf315671f2b04254754564849e719c0':
         raise PrivacyFailure('browser-privacy-unavailable')
     manifest = json.loads(manifest_bytes)
     verified = {}
-    if manifest['sourceHead'] != 'b0405848c9a2517d16cb17c133ad002670ab6894':
+    if manifest['sourceHead'] != 'c6cfbab5302708de4a05329542d333594e141e92':
         raise PrivacyFailure('browser-privacy-unavailable')
     arch = 'arm64' if platform.machine().lower() in {'arm64', 'aarch64'} else 'x64'
     rid = ('osx' if sys.platform == 'darwin' else 'win' if sys.platform == 'win32' else 'linux') + '-' + arch
@@ -65,7 +66,9 @@ def sdk_files():
     library = root / needed[-1]
     for name in needed:
         path = root / name
-        if name == needed[-1] and not path.exists():
+        is_library = name == needed[-1]
+        packed_library = is_library and not path.exists()
+        if packed_library:
             # App bundles cannot contain unsigned .NET Mach-O as nested code. Store exact SDK bytes
             # as data, verify the selected entry, then load one private process-lifetime copy.
             archive_path = root / 'native-runtime.zip'
@@ -73,17 +76,23 @@ def sdk_files():
                 raise PrivacyFailure('browser-privacy-unavailable')
             with ZipFile(io.BytesIO(archive_path.read_bytes())) as archive:
                 info = archive.getinfo(name)
-                if info.file_size > 4 * 1024 * 1024:
+                if info.file_size > _MAX_NATIVE_LIBRARY_BYTES:
                     raise PrivacyFailure('browser-privacy-unavailable')
                 with archive.open(info) as stream:
-                    data = stream.read(4 * 1024 * 1024 + 1)
-            if len(data) > 4 * 1024 * 1024 or hashlib.sha256(data).hexdigest() != manifest['files'].get(name):
-                raise PrivacyFailure('browser-privacy-unavailable')
-            library = private_native_library(data, manifest['files'][name], filename)
+                    data = stream.read(_MAX_NATIVE_LIBRARY_BYTES + 1)
         else:
-            data = path.read_bytes()
-            if path.is_symlink() or hashlib.sha256(data).hexdigest() != manifest['files'].get(name):
+            if path.is_symlink():
                 raise PrivacyFailure('browser-privacy-unavailable')
+            if is_library:
+                with path.open('rb') as stream:
+                    data = stream.read(_MAX_NATIVE_LIBRARY_BYTES + 1)
+            else:
+                data = path.read_bytes()
+        digest = manifest['files'].get(name)
+        if (is_library and len(data) > _MAX_NATIVE_LIBRARY_BYTES) or hashlib.sha256(data).hexdigest() != digest:
+            raise PrivacyFailure('browser-privacy-unavailable')
+        if packed_library:
+            library = private_native_library(data, digest, filename)
         verified[name] = data
     # Loading by filename could execute an unverified, timestamp-valid __pycache__ entry.
     # Compile only the exact bytes whose digest was checked above, without consulting a loader cache.
@@ -104,6 +113,6 @@ def private_native_library(data, digest, filename):
             path = Path(_native_directory.name) / filename
             private_write(path, data)
             _native_libraries[digest] = path
-        if path.is_symlink() or hashlib.sha256(private_read(path, 4 * 1024 * 1024)).hexdigest() != digest:
+        if path.is_symlink() or hashlib.sha256(private_read(path, _MAX_NATIVE_LIBRARY_BYTES)).hexdigest() != digest:
             raise PrivacyFailure('browser-privacy-unavailable')
         return path

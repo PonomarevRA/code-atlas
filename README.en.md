@@ -112,6 +112,8 @@ Additional semantic engines are optional. Distinguish local discovery, compatibi
 
 [Mods and independent Graphify](docs/mods-and-graphify.md) · [Semantic search](docs/semantic-search.md) · [LangGraph workflows](docs/mods-langgraph.md) · [Code health](docs/code-health.md).
 
+[Atlas Health for GitLab and GitHub](plugins/atlas-health/README.en.md) reports metrics and line findings for changed code without blocking merges.
+
 ## How it works
 
 Atlas is a Python service with a local HTTP API, shared web interface and MCP access. Graphify extracts symbols/relations; Atlas providers and mods add facts and normalize them into saved snapshots. Document parsers create separate structured trees. API/UI/MCP consume these saved facts; health/search may run as background work. Current-source reads have separate provenance and may differ from the snapshot.

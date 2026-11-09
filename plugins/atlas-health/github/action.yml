@@ -1,0 +1,44 @@
+name: Atlas Health
+description: Advisory code-health findings for the Git diff of a pull request
+outputs:
+  report-directory:
+    description: Absolute runner path to the generated Atlas Health reports
+    value: ${{ steps.scan.outputs.report-directory }}
+runs:
+  using: composite
+  steps:
+    - id: scan
+      shell: bash
+      env:
+        ATLAS_ACTION_DIR: ${{ github.action_path }}
+        ATLAS_BASE_TIP: ${{ github.event.pull_request.base.sha }}
+        ATLAS_HEAD: ${{ github.event.pull_request.head.sha }}
+      run: |
+        set -euo pipefail
+        export GIT_NO_REPLACE_OBJECTS=1
+        cd -- "$ATLAS_ACTION_DIR"
+        if [[ "$GITHUB_EVENT_NAME" != pull_request || ! "$ATLAS_BASE_TIP" =~ ^[0-9a-f]{40}$ || ! "$ATLAS_HEAD" =~ ^[0-9a-f]{40}$ ]]; then
+          echo 'Atlas Health requires the exact base and head SHAs from a pull_request event.' >&2
+          exit 2
+        fi
+        report_dir=$(mktemp -d "$RUNNER_TEMP/atlas-health-report.XXXXXX")
+        printf 'report-directory=%s\n' "$report_dir" >> "$GITHUB_OUTPUT"
+        work=$(mktemp -d "$RUNNER_TEMP/atlas-health-work.XXXXXX")
+        trap 'rm -rf -- "$work"' EXIT
+        if ! base=$(git -C "$GITHUB_WORKSPACE" merge-base -- "$ATLAS_BASE_TIP" "$ATLAS_HEAD"); then
+          printf '# Atlas Health\n\nPR merge base unavailable. Fetch complete history.\n' >> "$GITHUB_STEP_SUMMARY"
+          exit 2
+        fi
+        if ! sh "$ATLAS_ACTION_DIR/../run.sh" "$GITHUB_WORKSPACE" "$base" "$ATLAS_HEAD" "$report_dir" "$work/venv"; then
+          printf '# Atlas Health\n\nAnalysis unavailable. See the job log.\n' >> "$GITHUB_STEP_SUMMARY"
+          exit 2
+        fi
+        cat -- "$report_dir/atlas-health.md" >> "$GITHUB_STEP_SUMMARY"
+        # Checks may use the synthetic merge commit's line coordinates.
+        if [[ ! "${GITHUB_SHA:-}" =~ ^[0-9a-f]{40}$ ]] ||
+           ! (ulimit -f 2048 && git -C "$GITHUB_WORKSPACE" diff --name-only -z --no-renames \
+                --no-ext-diff --no-textconv "$ATLAS_HEAD" "$GITHUB_SHA" -- > "$work/check-diff"); then
+          echo '::notice title=Atlas Health::Check revision unavailable. See the report for PR head locations.'
+          exit 0
+        fi
+        python3.12 -I "$ATLAS_ACTION_DIR/annotations.py" "$report_dir/gl-code-quality-report.json" "$work/check-diff"

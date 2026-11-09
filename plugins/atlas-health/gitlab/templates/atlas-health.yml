@@ -1,0 +1,90 @@
+spec:
+  inputs:
+    job-name:
+      default: atlas-health
+      regex: '^[A-Za-z0-9_.-]+$'
+    stage:
+      default: test
+    atlas-repository:
+      default: https://github.com/PonomarevRA/code-atlas.git
+      regex: '^https://[A-Za-z0-9.-]+(:[0-9]+)?(/[A-Za-z0-9._-]+)+$'
+    atlas-sha:
+      description: Full commit SHA of the reviewed Atlas analyzer and plugin
+      regex: '^[a-f0-9]{40}$'
+---
+"$[[ inputs.job-name ]]":
+  stage: $[[ inputs.stage ]]
+  image: python:3.12-bookworm
+  allow_failure: true
+  timeout: 10m
+  inherit:
+    default: false
+  dependencies: []
+  cache: []
+  variables:
+    GIT_STRATEGY: empty
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - |
+      set -eu
+      export GIT_TERMINAL_PROMPT=0
+      report_dir="$CI_PROJECT_DIR/.atlas-health-report"
+      mkdir -m 700 -- "$report_dir"
+
+      # Reports are change-scoped. A default-branch pipeline has no MR diff,
+      # so its Code Quality artifact provides an empty comparison baseline.
+      if [ "$CI_PIPELINE_SOURCE" != merge_request_event ]; then
+        printf '[]\n' > "$report_dir/gl-code-quality-report.json"
+        printf '# Atlas Health\n\nDefault-branch comparison baseline. No merge request diff.\n' > "$report_dir/atlas-health.md"
+        exit 0
+      fi
+
+      printf '# Atlas Health\n\nAnalysis unavailable. See the job log.\n' > "$report_dir/atlas-health.md"
+      base="${CI_MERGE_REQUEST_DIFF_BASE_SHA:-}"
+      case "${CI_MERGE_REQUEST_EVENT_TYPE:-}" in
+        detached) head="$CI_COMMIT_SHA" ;;
+        merged_result|merge_train) head="${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-}" ;;
+        *) echo 'Unsupported merge request event type.' >&2; exit 2 ;;
+      esac
+      if ! printf '%s' "$base" | grep -Eq '^[a-f0-9]{40}$' ||
+         ! printf '%s' "$head" | grep -Eq '^[a-f0-9]{40}$'; then
+        echo 'The merge request event has no complete base and source SHA pair.' >&2
+        exit 2
+      fi
+
+      work=$(mktemp -d)
+      trap 'rm -rf -- "$work"' EXIT
+      target="$work/target.git"
+      git init --quiet --bare "$target"
+      if ! git -C "$target" -c protocol.file.allow=never -c protocol.ext.allow=never \
+           fetch --quiet --depth=1 --no-tags -- "$CI_REPOSITORY_URL" "$base" "$head" >/dev/null 2>&1; then
+        # Servers can disallow direct SHA fetches. Fetch advertised refs as
+        # object sources, but still analyze the original immutable SHA pair.
+        for ref in "${CI_MERGE_REQUEST_REF_PATH:-}" "refs/heads/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-}"; do
+          if git check-ref-format "$ref"; then
+            git -C "$target" -c protocol.file.allow=never -c protocol.ext.allow=never \
+              fetch --quiet --no-tags -- "$CI_REPOSITORY_URL" "$ref" >/dev/null 2>&1 || :
+          fi
+        done
+      fi
+      if ! git -C "$target" cat-file -e "$base^{commit}" || ! git -C "$target" cat-file -e "$head^{commit}"; then
+        echo 'The exact merge request commits are unavailable to this job.' >&2
+        exit 2
+      fi
+
+      atlas_dir="$work/atlas"
+      atlas_repository='$[[ inputs.atlas-repository ]]'
+      atlas_sha='$[[ inputs.atlas-sha ]]'
+      git init --quiet "$atlas_dir"
+      git -C "$atlas_dir" fetch --quiet --depth=1 --no-tags "$atlas_repository" "$atlas_sha"
+      git -C "$atlas_dir" -c core.hooksPath=/dev/null checkout --quiet --detach "$atlas_sha"
+      sh "$atlas_dir/plugins/atlas-health/run.sh" "$target" "$base" "$head" "$report_dir" "$work/venv"
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - .atlas-health-report/
+    reports:
+      codequality: .atlas-health-report/gl-code-quality-report.json

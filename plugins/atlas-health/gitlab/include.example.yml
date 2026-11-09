@@ -1,0 +1,9 @@
+# Merge this include into the target repository's .gitlab-ci.yml.
+# Replace both SHA placeholders and the GitLab project path before using it.
+include:
+  - project: platform/code-atlas-components
+    ref: REPLACE_WITH_COMPONENT_COMMIT_SHA
+    file: /templates/atlas-health.yml
+    inputs:
+      stage: test
+      atlas-sha: REPLACE_WITH_ATLAS_COMMIT_SHA

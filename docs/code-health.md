@@ -181,7 +181,9 @@ Atlas's data directory in `code-health`, have a 2 MiB cap and retain the latest
 have an explicit 64 KB budget/truncation signal. Larger changes must use separate
 attributable scopes; a partial assessment is not whole-project health.
 
-Opt-in CI compares exported immutable records, not project source:
+The [Atlas Health CI pilot](../plugins/atlas-health/README.en.md) reads two Git
+revisions and reports local metrics and line findings for changed methods.
+For previously exported immutable Atlas records, use the separate opt-in gate:
 
 ```sh
 python -m atlas.code_health_gate --before before.json --after after.json --plan plan.json

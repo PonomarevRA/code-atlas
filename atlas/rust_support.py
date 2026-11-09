@@ -1,6 +1,7 @@
 """Лексические правила Rust: области impl, операторы и собственные rustdoc-комментарии."""
 
 import re
+from .documentation_ownership import occupied_lines
 
 BRANCHES = {'match_expression'}
 LOOPS = {'for_expression', 'while_expression', 'loop_expression'}
@@ -35,7 +36,7 @@ def statement_sample(node, control: bool) -> bool:
                 and node.type not in {'block', 'empty_statement', 'attribute_item'} and 'comment' not in node.type)
 
 
-def declaration_comment(declaration, source: bytes) -> str:
+def declaration_comment(declaration, source: bytes, *, ranges=None) -> str:
     """Читает прилегающие комментарии через атрибуты; внутренние //! и /*! не принадлежат функции."""
     pieces = []
     sibling, line = declaration.prev_named_sibling, declaration.start_point.row
@@ -47,6 +48,8 @@ def declaration_comment(declaration, source: bytes) -> str:
             pass  # #[inline]/#[cfg] не меняет владельца предшествующего rustdoc.
         elif 'comment' in sibling.type and not value.lstrip().startswith(('//!', '/*!')):
             pieces.append(value)
+            if ranges is not None:
+                ranges.append(occupied_lines(sibling))
         else:
             break
         line, sibling = sibling.start_point.row, sibling.prev_named_sibling

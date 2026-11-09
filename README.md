@@ -336,6 +336,7 @@ Native-релиз дополнительно проверяется `python pack
 - [Устройство проекта и пример запроса](docs/architecture.md).
 - [Использование карты](docs/wiki/Explore-Code.md), [тесты и данные](docs/wiki/Walkthrough-Tests.md).
 - [MCP для агентов](docs/wiki/Agents-and-MCP.md), [здоровье и планирование](docs/code-health.md).
+- [Atlas Health для GitLab и GitHub](plugins/atlas-health/README.md) показывает метрики и замечания по изменённому коду без блокировки merge.
 - [Документы и логи](docs/document-maps.md), [семантический поиск](docs/semantic-search.md).
 - [Моды и независимый Graphify](docs/mods-and-graphify.md), [правила анализа](docs/analysis-mods.md).
 - [Обновление установки](packaging/UPDATING.md), [сторонние библиотеки](docs/third-party.md).

@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 
 from .code_health_policy import finding, policy, round_score
 from . import rust_support
-from .documentation_ownership import comment_anchor
+from .documentation_ownership import comment_anchor, occupied_lines
 from .documentation_parameters import parameter_described, parameter_inventory, parameter_names
 
 VERSION = "documentation-coverage-v2"
@@ -27,10 +27,10 @@ def text(node, source: bytes) -> str:
     return source[node.start_byte:node.end_byte].decode("utf-8") if node is not None else ""
 
 
-def _adjacent(declaration, source: bytes, language: str) -> str:
+def _adjacent(declaration, source: bytes, language: str, *, ranges=None) -> str:
     """Python docstring и непосредственно прилегающий comment принадлежат самому методу."""
     if language == "rust":
-        return rust_support.declaration_comment(declaration, source)
+        return rust_support.declaration_comment(declaration, source, ranges=ranges)
     if language == "python":
         body = declaration.child_by_field_name("body")
         if body and body.named_children:
@@ -39,6 +39,8 @@ def _adjacent(declaration, source: bytes, language: str) -> str:
                 try:
                     value = python_ast.literal_eval(text(first.named_children[0], source))
                     if isinstance(value, str):
+                        if ranges is not None:
+                            ranges.append(occupied_lines(first))
                         return inspect.cleandoc(value)
                 except (ValueError, SyntaxError):
                     return ""
@@ -48,8 +50,17 @@ def _adjacent(declaration, source: bytes, language: str) -> str:
     sibling, line = declaration.prev_named_sibling, declaration.start_point.row
     while sibling and "comment" in sibling.type and line - sibling.end_point.row <= 1 and len(pieces) < 80:
         pieces.append(text(sibling, source))
+        if ranges is not None:
+            ranges.append(occupied_lines(sibling))
         line, sibling = sibling.start_point.row, sibling.prev_named_sibling
     return "\n".join(reversed(pieces))
+
+
+def owned_documentation_lines(declaration, source: bytes, language: str) -> list[tuple[int, int]]:
+    """Return exact owned docstring/comment lines using the same rules as D scoring."""
+    ranges = []
+    _adjacent(declaration, source, language, ranges=ranges)
+    return sorted(ranges)
 
 
 def _clean_comment(value: str) -> str:

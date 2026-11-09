@@ -10,6 +10,8 @@ import threading
 
 from .code_complexity import analyze_complexity
 from .code_health import capture_health_facts
+from .documentation_health import owned_documentation_lines
+from .documentation_ownership import occupied_lines
 from .member_languages import LANGUAGES, MemberLanguage
 
 CSHARP = MemberLanguage("csharp", "tree_sitter_c_sharp", frozenset({"class_declaration", "interface_declaration", "struct_declaration", "record_declaration"}),
@@ -62,7 +64,8 @@ def language_for(filename: str):
     return language if language and language.name in SUPPORTED else None
 
 
-def parse_health_source(filename: str, content: bytes, *, source_kind: str = "working-tree", max_methods: int = 120) -> dict:
+def parse_health_source(filename: str, content: bytes, *, source_kind: str = "working-tree", max_methods: int = 120,
+                        include_documentation_lines: bool = False) -> dict:
     """Возвращает самостоятельные методы и deferred тела; ошибки и бюджеты остаются явными."""
     from tree_sitter import Language, Parser
 
@@ -101,6 +104,9 @@ def parse_health_source(filename: str, content: bytes, *, source_kind: str = "wo
                         if ast.child_by_field_name("parameters") else ""}
             node["complexity"] = analyze_complexity(ast, content, language.name, source_kind=source_kind, source_hash=digest)
             capture_health_facts(node, ast, content, language.name, filename=filename, source_hash=digest, source_kind=source_kind)
+            if include_documentation_lines:
+                node["ownedDocumentationLines"] = owned_documentation_lines(ast, content, language.name)
+                _, node["endLine"] = occupied_lines(ast)
             if any(parent.has_error for parent in _owners(ast, language.classes)):
                 node["complexity"]["status"] = "unavailable"
                 node["complexity"]["score"] = None
