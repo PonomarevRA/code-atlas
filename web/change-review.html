@@ -23,6 +23,16 @@
   </section>
   <div id="review-result" hidden>
     <p id="review-title" class="review-title"></p>
+    <section id="review-map" hidden aria-labelledby="review-map-title">
+      <h2 id="review-map-title">Карта изменённого кода</h2>
+      <p id="review-map-scope" class="muted"></p>
+      <div class="review-map-layout">
+        <div id="review-map-files" role="group" aria-label="Изменённые файлы"></div>
+        <div id="review-map-selection" role="group" aria-label="Выбранная функция"></div>
+      </div>
+      <p id="review-map-count" class="muted"></p>
+      <button id="review-more" type="button" hidden>Показать ещё функции</button>
+    </section>
     <section aria-labelledby="review-path-title">
       <h2 id="review-path-title">Путь от точки входа</h2>
       <p class="muted">Возможные статические вызовы и события в исходнике. Условия не вычисляются.</p>
@@ -34,7 +44,6 @@
       <p id="review-coverage" class="muted"></p>
       <p class="muted">Сравнение охватывает функции, найденные в двух картах. Файлы вне карт не проверяются.</p>
       <ul id="review-functions" class="review-list"></ul>
-      <button id="review-more" type="button" hidden>Показать ещё функции</button>
     </section>
   </div>
 </main>

@@ -7,6 +7,7 @@ from urllib.parse import unquote, urlsplit
 
 from .html_markup import MarkupParser
 from .html_duplicates import duplicate_groups
+from .html_script_graph import InlineScriptCapture
 from .source_viewer import _read_regular_file, SourceError
 
 VERSION = 'html-dom-v2'
@@ -263,6 +264,11 @@ def capture_html(graph: dict, root: Path, rules: dict, inventory: dict) -> dict:
     files = set(inventory['files'])
     for document in documents:
         capture.references(document, files)
+    scripts = InlineScriptCapture(capture, _identity)
+    for document in documents:
+        scripts.document(document)
+    metadata['inlineJavaScript'] = scripts.report
+    metadata['truncated'] |= scripts.report['truncated']
     partial = metadata['truncated'] or any(item['parser'].warnings or item['sourceRole'] != 'authoring' for item in documents)
     metadata.update(fileCount=len(documents), duplicateGroupCount=len(groups),
                     derivedNodeCount=len(capture.result['nodes']) - capture.initial,

@@ -4,13 +4,16 @@ from concurrent.futures import ThreadPoolExecutor
 from hashlib import sha256
 import json
 from pathlib import Path
+import shutil
 from threading import Event
+from types import SimpleNamespace
 import time
 
 import pytest
 
 from atlas.checkout_maps import CheckoutMapError, CheckoutMaps
-from atlas.checkout_maps.models import MARKER, TTL_SECONDS
+from atlas.checkout_maps.models import MARKER, MAX_SESSIONS, RECLAIM_IDLE_SECONDS, TTL_SECONDS
+from atlas.checkout_maps import service
 
 
 class Clocks:
@@ -214,14 +217,132 @@ def test_late_builder_keeps_owned_folder_until_drain(setup, retirement):
 def test_capacity_includes_retiring_without_eviction(setup):
     """Active and pending-builder sessions both consume the bounded store capacity."""
     manager, source, _, _ = setup
-    identifiers = [manager.ensure(source, 'owner-'+str(index))['sessionId'] for index in range(4)]
+    identifiers = [manager.ensure(source, 'owner-'+str(index))['sessionId'] for index in range(MAX_SESSIONS)]
+    assert MAX_SESSIONS == 8
+    assert manager.ensure(source, 'owner-1')['sessionId'] == identifiers[1]
     manager.finish(identifiers[0])
     with pytest.raises(CheckoutMapError) as error:
-        manager.ensure(source, 'fifth')
+        manager.ensure(source, 'new-owner')
     assert error.value.status == 429
-    assert len(manager.list()['sessions']) == 4
+    assert error.value.code == 'checkout_map_capacity'
+    assert 'list_checkout_maps' in str(error.value)
+    assert {row['sessionId'] for row in manager.list()['sessions']} == set(identifiers)
     handle(manager, identifiers[0]).complete(); manager.sweep()
-    assert manager.ensure(source, 'fifth')['sessionId'] not in identifiers
+    assert manager.ensure(source, 'new-owner')['sessionId'] not in identifiers
+
+
+def test_reclaim_respects_activity_and_retries_reuse_the_new_map(setup):
+    """Capacity recovery uses idle time, skips readers/builders and removes just one map."""
+    manager, source, _, clock = setup
+    manager.capacity = 5
+    building = manager.ensure(source, 'building')
+    clock.advance(1)
+    reading = manager.ensure(source, 'reading')
+    clock.advance(1)
+    oldest = manager.ensure(source, 'oldest')
+    clock.advance(1)
+    later = manager.ensure(source, 'later')
+    clock.advance(1)
+    renewed = manager.ensure(source, 'renewed')
+    for session in (reading, oldest, later, renewed):
+        handle(manager, session['sessionId']).complete()
+    clock.advance(RECLAIM_IDLE_SECONDS)
+    with manager.access(renewed['sessionId']):
+        pass
+    with manager.access(reading['sessionId']):
+        assert not manager.status(reading['sessionId'])['reclaim']['eligible']
+        assert not manager.status(building['sessionId'])['reclaim']['eligible']
+        assert manager.status(oldest['sessionId'])['reclaim']['eligible']
+        current = manager.ensure(source, 'current', reclaim_idle=True)
+        assert current['reclaimed'] == {'sessionId': oldest['sessionId'], 'idleSeconds': RECLAIM_IDLE_SECONDS + 2}
+        assert manager.ensure(source, 'current', reclaim_idle=True)['sessionId'] == current['sessionId']
+    assert {row['sessionId'] for row in manager.list()['sessions']} == {
+        session['sessionId'] for session in (building, reading, later, renewed, current)
+    }
+    assert not Path(oldest['path']).exists()
+    assert (source / 'example.py').is_file()
+
+
+def test_reclaim_requires_capacity_and_minimum_idle_time(setup):
+    """A vacant slot avoids eviction, and a recently used map keeps its slot."""
+    manager, source, _, clock = setup
+    manager.capacity = 2
+    old = manager.ensure(source, 'old')
+    handle(manager, old['sessionId']).complete()
+    clock.advance(RECLAIM_IDLE_SECONDS)
+    recent = manager.ensure(source, 'recent', reclaim_idle=True)
+    assert 'reclaimed' not in recent
+    handle(manager, recent['sessionId']).complete()
+    with manager.access(old['sessionId']):
+        pass
+    with pytest.raises(CheckoutMapError) as error:
+        manager.ensure(source, 'new', reclaim_idle=True)
+    assert error.value.status == 429
+    assert {row['sessionId'] for row in manager.list()['sessions']} == {old['sessionId'], recent['sessionId']}
+
+
+def test_concurrent_reclaim_for_one_task_removes_only_one_map(setup):
+    """Concurrent retries for the same task share the admitted session."""
+    manager, source, _, clock = setup
+    manager.capacity = 2
+    oldest = manager.ensure(source, 'oldest')
+    clock.advance(1)
+    other = manager.ensure(source, 'other')
+    for session in (oldest, other):
+        handle(manager, session['sessionId']).complete()
+    clock.advance(RECLAIM_IDLE_SECONDS)
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        retries = [executor.submit(manager.ensure, source, 'current', reclaim_idle=True) for _ in range(2)]
+        results = [retry.result() for retry in retries]
+    assert results[0]['sessionId'] == results[1]['sessionId']
+    assert [result['reclaimed']['sessionId'] for result in results if 'reclaimed' in result] == [oldest['sessionId']]
+    assert Path(other['path']).is_dir()
+
+
+def test_restart_after_reclaim_folder_removed_before_index_update(setup):
+    """Recover an interrupted eviction while preserving the remaining private catalog."""
+    manager, source, data, clock = setup
+    old = manager.ensure(source, 'old')
+    other = manager.ensure(source, 'other')
+    manager.close()
+    index = json.loads(manager.index.read_text())
+    index['sessions'][0].update(state='deleting', retiredReason='capacity')
+    manager.index.write_text(json.dumps(index))
+    shutil.rmtree(old['path'])
+    restored = CheckoutMaps(data, clock=lambda: clock.monotonic, wall_clock=lambda: clock.wall, store_factory=FakeStore)
+    try:
+        assert [row['sessionId'] for row in restored.list()['sessions']] == [other['sessionId']]
+    finally:
+        restored.close()
+
+
+@pytest.mark.parametrize(('platform', 'clock_id'), [('darwin', 4), ('linux', 7)])
+def test_system_sleep_expires_temporary_maps(tmp_path, monkeypatch, platform, clock_id):
+    """Platform elapsed clocks retire idle maps after suspend, including at capacity."""
+    clocks = Clocks()
+    elapsed = clocks.monotonic
+    def read_clock(requested):
+        assert requested == clock_id
+        return elapsed
+    monkeypatch.setattr(service, 'sys', SimpleNamespace(platform=platform))
+    monkeypatch.setattr(service, 'time', SimpleNamespace(
+        CLOCK_MONOTONIC_RAW=4, CLOCK_BOOTTIME=7, clock_gettime=read_clock,
+        monotonic=lambda: clocks.monotonic,
+    ))
+    source = tmp_path / 'checkout'
+    source.mkdir()
+    manager = CheckoutMaps(tmp_path / 'app', wall_clock=lambda: clocks.wall,
+                           capacity=1, store_factory=FakeStore)
+    try:
+        old = manager.ensure(source, 'old')
+        handle(manager, old['sessionId']).complete()
+        elapsed += TTL_SECONDS
+        clocks.wall += TTL_SECONDS
+        new = manager.ensure(source, 'new')
+        assert new['sessionId'] != old['sessionId']
+        assert not Path(old['path']).exists()
+    finally:
+        manager.close()
 
 
 def test_shutdown_preserves_live_index_restart_expires_known_only(setup):

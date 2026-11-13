@@ -32,6 +32,56 @@
 .review-side ul { padding-inline-start: 1.25rem; }
 .review-side li { margin-block: .35rem; }
 .review-page :focus-visible { outline: 2px solid var(--atlas-accent, #286754); outline-offset: 3px; }
+.review-map-layout, .review-map-versions, .review-map-directions {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.review-map-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+#review-map-files, #review-map-selection {
+  min-inline-size: 0;
+  padding: .75rem;
+  border: 1px solid var(--atlas-border, #dce5dc);
+  border-radius: .6rem;
+}
+#review-map-files details:first-child { margin-block-start: 0; border-block-start: 0; }
+.review-map-version {
+  min-inline-size: 0;
+  padding: .75rem;
+  border-inline-start: 2px solid var(--atlas-border, #dce5dc);
+  background: var(--atlas-surfaceAlt, #eaf3ed);
+  border-radius: .25rem;
+}
+.review-map-version h4, .review-map-neighbours h5 { margin: 0; font-size: 1em; }
+.review-map-functions, .review-map-neighbours ul {
+  list-style: none;
+  margin-block: .25rem 0;
+  padding-inline-start: 0;
+}
+.review-map-functions {
+  margin-inline-start: .5rem;
+  padding-inline-start: .6rem;
+  border-inline-start: 1px solid var(--atlas-border, #dce5dc);
+}
+.review-map-functions li + li, .review-map-neighbours li + li { margin-block-start: .35rem; }
+.review-map-node {
+  min-block-size: 2.25rem;
+  inline-size: 100%;
+  padding: .35rem .5rem;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+.review-map-node[aria-current='true'] {
+  border-color: var(--atlas-accent, #286754);
+  background: var(--atlas-surfaceAlt, #eaf3ed);
+  font-weight: 650;
+}
+.review-map-node small, .review-map-neighbours small { display: block; }
 @media (max-width: 48rem) {
-  .review-sides, .review-locations { grid-template-columns: minmax(0, 1fr); }
+  .review-sides, .review-locations, .review-map-layout, .review-map-versions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 24rem) {
+  .review-map-directions { grid-template-columns: minmax(0, 1fr); }
 }

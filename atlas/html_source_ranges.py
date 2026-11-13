@@ -84,7 +84,8 @@ class SourceRanges(HTMLParser):
         self.open_tags[tag] -= 1
         ending = self.text.find('>', self.position())
         if ending >= 0:
-            record.update(end=self.boundaries[ending + 1], endLine=bisect_right(self.offsets, ending), rangeStatus='exact')
+            record.update(end=self.boundaries[ending + 1], endTagStart=self.boundaries[self.position()],
+                          endLine=bisect_right(self.offsets, ending), rangeStatus='exact')
 
     def handle_data(self, data):
         """Шаблонный текст запрещает доказательство дублей, но не DOM-навигацию."""

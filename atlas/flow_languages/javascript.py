@@ -1,7 +1,7 @@
 """JavaScript/JSX-адаптер подробного статического дерева выбранного объявления."""
-from .parsed_source import parsed_tree, source_bytes
+from .parsed_source import MAX_REQUEST_AST_NODES, parsed_tree, source_bytes
 from ..node_documentation import empty_documentation
-from .javascript_support.declarations import CALLABLES, documentation, name_of, parameters, select, walk
+from .javascript_support.declarations import CALLABLES, anchor_lines, documentation, name_of, parameters, select
 from .javascript_support.flow import Flow, site
 
 ANALYZER_VERSION = 'javascript-method-flow-v1'
@@ -24,25 +24,47 @@ def unavailable(reason, status='unresolved'):
             'controlFlow': {'branches': [], 'terminals': [], 'truncated': False, 'unsupported': [reason]}}
 
 
-def analyze(source: dict, node: dict, *, max_events: int) -> dict:
-    """Разбирает только полученный host-исходник установленной грамматикой, без I/O и исполнения."""
+def _declaration_branches(root, line):
+    """Walk branches crossing a line, including direct callable values on later binding lines."""
+    pending = [root]
+    while pending:
+        item = pending.pop()
+        yield item
+        for child in reversed(item.named_children):
+            if line is None or child.start_point.row + 1 <= line <= child.end_point.row + 1:
+                pending.append(child)
+            elif child.type in CALLABLES and line in anchor_lines(child):
+                pending.append(child)
+
+
+def callable_declarations(source: dict, *, line=None):
+    """Find the line's callable declarations within a bounded traversal of the parsed file."""
     try:
         from tree_sitter import Language, Parser
         import tree_sitter_javascript
         content = source_bytes(source)
-        root = parsed_tree(source, 'javascript', lambda data: Parser(Language(tree_sitter_javascript.language())).parse(data)).root_node
+        root = parsed_tree(source, 'javascript', lambda data: Parser(Language(tree_sitter_javascript.language())).parse(data),
+                           max_retained_nodes=MAX_REQUEST_AST_NODES).root_node
     except (ImportError, TypeError, ValueError) as error:
-        return unavailable(f'Локальная грамматика JavaScript недоступна: {type(error).__name__}.', 'unavailable')
+        return b'', None, unavailable(f'Локальная грамматика JavaScript недоступна: {type(error).__name__}.', 'unavailable')
     if root.has_error:
-        return unavailable('JavaScript parse error: точное дерево недоступно.')
+        return content, None, unavailable('JavaScript parse error: точное дерево недоступно.')
     declarations = []
-    for count, item in enumerate(walk(root), 1):
+    for count, item in enumerate(_declaration_branches(root, line), 1):
         if count > MAX_AST_NODES:
-            result = unavailable('Исчерпан бюджет 20000 AST-узлов файла.', 'unavailable')
+            result = unavailable(f'Исчерпан бюджет обхода JavaScript AST ({MAX_AST_NODES} узлов).', 'unavailable')
             result['methodFlow']['truncated'] = result['controlFlow']['truncated'] = True
-            return result
+            return content, None, result
         if item.type in CALLABLES:
             declarations.append(item)
+    return content, declarations, None
+
+
+def analyze(source: dict, node: dict, *, max_events: int) -> dict:
+    """Разбирает выбранное объявление JavaScript, включая его локальный поток управления."""
+    content, declarations, error = callable_declarations(source, line=node.get('line') or node.get('source_line'))
+    if error is not None:
+        return error
     declaration = select(declarations, node, content)
     if declaration is None:
         return unavailable('Выбранное JavaScript-объявление не найдено однозначно по имени, строке и владельцу.')
@@ -50,6 +72,7 @@ def analyze(source: dict, node: dict, *, max_events: int) -> dict:
     body = declaration.child_by_field_name('body')
     signature_end = body.start_byte if body is not None else declaration.end_byte
     result.update(sourceStatus='parsed', line=declaration.start_point.row + 1, endLine=declaration.end_point.row + 1,
+                  column=declaration.start_point.column + 1, endColumn=declaration.end_point.column + 1,
                   signature=content[declaration.start_byte:signature_end].decode('utf-8').strip()[:400],
                   parameters=parameters(declaration, content), documentation=documentation(declaration, content))
     if declaration.type == 'method_definition' and name_of(declaration, content) == 'constructor':

@@ -234,6 +234,7 @@ def tool_arguments():
     """Provide valid scoped arguments so binding failures reach the shared transport guard."""
     sid, identity = 'a'*32, 'b'*32
     return {'ensure_checkout_map': {'checkout': '/declared/checkout', 'ownerKey': 'test.task'},
+            'ensure_checkout_map_with_reclaim': {'checkout': '/declared/checkout', 'ownerKey': 'test.task'},
             'list_checkout_maps': {}, 'get_checkout_map': {'sessionId': sid},
             'rebuild_checkout_map': {'sessionId': sid}, 'finish_checkout_map': {'sessionId': sid},
             'search_checkout_nodes': {'sessionId': sid, 'snapshotId': 's'},
@@ -259,6 +260,34 @@ def test_mcp_rebuild_sends_empty_json_object_and_exposes_write_semantics():
     assert registry.annotations['rebuild_checkout_map'].readOnlyHint is False
     assert registry.annotations['finish_checkout_map'].destructiveHint is True
     assert registry.annotations['search_checkout_nodes'].readOnlyHint is True
+
+
+def test_reclaim_proxy_and_http_admit_the_same_task(private_api):
+    """The destructive MCP retry reclaims a full slot through the actual HTTP route."""
+    client, manager, clocks, source, canonical, old, _ = private_api
+    manager.capacity = 1
+    clocks.advance(1200)
+    registry = ToolRegistry()
+    payload = {'checkout': str(source), 'ownerKey': 'new.task', 'label': None}
+    overflow = client.post('/api/checkout-sessions', json=payload)
+    assert overflow.status_code == 429
+    assert 'ensure_checkout_map_with_reclaim' in overflow.json()['error']
+
+    async def request(method, path, body=None):
+        """Dispatch the proxy's fixed loopback request through TestClient."""
+        response = client.request(method, path, json=body)
+        assert response.is_success, response.text
+        return response.json()
+
+    register_checkout_tools(registry, request)
+    assert registry.annotations['ensure_checkout_map_with_reclaim'].destructiveHint is True
+    listing = asyncio.run(registry.tools['list_checkout_maps']())
+    assert listing['sessions'][0]['reclaim']['eligible']
+    result = asyncio.run(registry.tools['ensure_checkout_map_with_reclaim'](**payload))
+    assert result['reclaimed'] == {'sessionId': old, 'idleSeconds': 1200}
+    assert result['sessionId'] != old
+    assert client.get('/api/checkout-sessions/' + old).status_code == 410
+    assert canonical.read_text() == '{"preserve":"canonical registry"}'
 
 
 def test_mcp_catalog_pages_whole_identities_and_omits_large_build_diagnostics():

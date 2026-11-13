@@ -265,3 +265,54 @@ def test_literal_template_text_does_not_disable_preview_or_css(tmp_path):
     assert query_html(graph, 's', page['id'], 'button')['total'] == 1
     labels = [row['label'] for row in build_html_preview(graph, 's', page['id'])['rows']]
     assert 'Save' in labels and not any('literal' in label for label in labels)
+
+
+def test_inline_javascript_preserves_html_positions_and_direct_calls(tmp_path):
+    """Position lookup uses the real HTML hash, byte columns and separate script scopes."""
+    from atlas.position_context import PositionContextInput, build_position_context
+
+    text = ('<!doctype html>\r\n<p>мир</p><script type="module">function leaf() {}\r\n'
+            'function entry() { leaf(); }\r\n</script>\r\n'
+            '<script>function separate() { leaf(); }</script>\r\n'
+            '<script type="application/ld+json">{"fake":"function ignored() {}"}</script>\r\n'
+            '<script src="remote.js">function externalBody() {}</script>\r\n'
+            '<template><script>function inert() {}</script></template>')
+    graph, _ = html_graph(tmp_path, text)
+    functions = {node['label']: node for node in graph['nodes'] if node['kind'] == 'function'}
+    assert set(functions) == {'leaf()', 'entry()', 'separate()'}
+    assert functions['leaf()']['callableFacts']['column'] == len('<p>мир</p><script type="module">'.encode()) + 1
+    assert functions['entry()']['line'] == 3
+    assert graph['metadata']['htmlAnalysis']['inlineJavaScript']['parsed'] == 2
+    root = tmp_path / 'site'
+    body = PositionContextInput(snapshotId='s', file='index.html', line=3, depth=1)
+    result = build_position_context(root, graph, body)
+    assert result['status'] == 'resolved'
+    assert result['sourceProvenance']['status'] == 'match'
+    assert result['outgoing']['nodes'] == [functions['leaf()']['id']]
+    assert not any(edge['source'] == functions['separate()']['id'] and edge['relation'] == 'calls'
+                   for edge in graph['edges'])
+    (root / 'index.html').write_text(text + '\n')
+    assert build_position_context(root, graph, body)['status'] == 'unknown'
+
+
+def test_inline_javascript_large_script_and_shadowed_call(tmp_path):
+    """A script over the standalone flow budget is indexed without guessing shadowed calls."""
+    padding = 'void 1;\n' * 5500
+    script = ('<script>\nfunction leaf() {}\nfunction shadow(leaf) { leaf(); }\n'
+              + padding + 'function entry() { target(); }\nfunction target() {}\n</script>')
+    graph, _ = html_graph(tmp_path, script)
+    facts = graph['metadata']['htmlAnalysis']['inlineJavaScript']
+    assert facts['astNodes'] > 20000 and not facts['truncated']
+    functions = {node['label']: node for node in graph['nodes'] if node['kind'] == 'function'}
+    assert functions['entry()']['line'] == 5504
+    assert [(edge['source'], edge['target']) for edge in graph['edges'] if edge['relation'] == 'calls'] == [
+        (functions['entry()']['id'], functions['target()']['id'])]
+
+
+def test_inline_javascript_bad_script_marks_html_analysis_partial(tmp_path):
+    """Parse errors are visible and do not prevent other independent script blocks."""
+    graph, _ = html_graph(tmp_path, '<script>function broken(</script><script>function valid() {}</script>')
+    meta = graph['metadata']['htmlAnalysis']
+    assert meta['status'] == 'partial'
+    assert meta['inlineJavaScript']['warnings'][0]['reason'] == 'inline-javascript-parse-error'
+    assert [node['label'] for node in graph['nodes'] if node['kind'] == 'function'] == ['valid()']

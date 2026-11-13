@@ -35,8 +35,8 @@ def callable_node(node):
             or '(' in str(node.get('label', '')))
 
 
-def inventory(analysis, filename):
-    """Reuse already parsed C#/Python trees, retaining byte containment for same-line ambiguity.
+def inventory(analysis, filename, line):
+    """Reuse parsed C#, Python and JavaScript trees with byte containment for ambiguity.
 
     Class containers own their declaration line only; a blank gap between methods
     is not silently attributed to the surrounding class. Unknown grammars and
@@ -76,6 +76,17 @@ def inventory(analysis, filename):
                                'kind': 'class' if isinstance(item, ast.ClassDef) else 'method', 'name': item.name})
             pending.extend(ast.iter_child_nodes(item))
         return result
+    if isinstance(loaded, dict) and Path(filename).suffix.lower() in {'.js', '.jsx', '.mjs', '.cjs'}:
+        from ..flow_languages.javascript import callable_declarations
+        from ..flow_languages.javascript_support.declarations import anchor_lines, name_of
+        content, declarations, _ = callable_declarations(loaded, line=line)
+        if declarations is None:
+            return None
+        return [{'line': item.start_point.row + 1, 'endLine': item.end_point.row + 1,
+                 'start': item.start_byte, 'end': item.end_byte, 'kind': 'method',
+                 'columns': (item.start_point.column + 1, item.end_point.column + 1),
+                 'anchorLines': anchor_lines(item),
+                 'name': name_of(item, content)} for item in declarations]
     return None
 
 
@@ -105,6 +116,10 @@ def resolve(root, graph, body, nodes):
         if not file_nodes:
             raise PositionContextError('File is not represented in the selected graph', 404, 'position_file_unknown')
         candidates = [node for node in file_nodes if callable_node(node)]
+        if Path(filename).suffix.lower() in {'.html', '.htm'}:
+            # Inline JavaScript ranges belong to the HTML snapshot and are verified
+            # against its whole-file hash below. Unrelated functions cost no descriptions.
+            candidates = [node for node in candidates if captured_inline_range(node, body.line)]
         analysis = SourceAnalysis(root, body.snapshotId, 5, 1024 * 1024, 24)
         analysis.describe({'id': '__position_probe__', 'file': filename, 'line': body.line,
                            'label': '__position_probe__()', 'kind': 'function'})
@@ -114,12 +129,15 @@ def resolve(root, graph, body, nodes):
     current_hash = current.get('sourceByteHash')
     if body.expectedSourceHash and body.expectedSourceHash.lower() != current_hash:
         raise PositionContextError('Current source differs from expectedSourceHash', 409, 'position_source_changed')
-    ranges = inventory(analysis, filename)
+    ranges = inventory(analysis, filename, body.line)
     matches = [] if ranges is None else [item for item in ranges if item['line'] <= body.line <= item['endLine']
                                        and (item['kind'] != 'class' or body.line <= item.get('declarationLine', item['line']))]
     inner = [item for item in matches if not any(
         item['start'] <= other['start'] and item['end'] >= other['end']
         and (item['start'], item['end']) != (other['start'], other['end']) for other in matches)]
+    if ranges and 'anchorLines' in ranges[0]:
+        lines = {line for item in inner for line in item['anchorLines']}
+        candidates = [node for node in candidates if (node.get('line') or node.get('source_line')) in lines]
     descriptions, eligible = {}, []
     for node in candidates[:MAX_DESCRIPTIONS]:
         copy = dict(node, file=filename)
@@ -129,6 +147,7 @@ def resolve(root, graph, body, nodes):
         if ranges is not None:
             raw_name = (node.get('memberFacts') or {}).get('name') or str(node.get('label', '')).strip('.').split('(', 1)[0]
             selected = [item for item in inner if (description.get('line'), description.get('endLine')) == (item.get('declarationLine', item['line']), item['endLine'])
+                        and ('columns' not in item or (description.get('column'), description.get('endColumn')) == item['columns'])
                         and raw_name == item['name'] and description.get('sourceStatus') == 'parsed']
         else:
             # Only explicitly source-backed captured ranges may substitute for AST.
@@ -140,13 +159,18 @@ def resolve(root, graph, body, nodes):
                         and facts.get('sourceHash') == current_hash and type(start) is int and type(end) is int
                         and start <= body.line <= end):
                     selected.append({'line': start, 'endLine': end, 'start': start, 'end': end})
+                    if key == 'callableFacts' and facts.get('scriptNodeId'):
+                        selected[-1]['scriptRange'] = (facts['scriptNodeId'], facts.get('scriptStartByte'),
+                                                       facts.get('scriptEndByte'))
         if selected:
             eligible.append({'id': node['id'], 'line': selected[0]['line'], 'endLine': selected[0]['endLine'],
                              'rangeKind': 'current-ast' if ranges is not None else 'captured-range', 'sourceProvenance': provenance})
+            if 'scriptRange' in selected[0]:
+                eligible[-1]['scriptRange'] = selected[0]['scriptRange']
     if ranges is None:
-        eligible = [item for item in eligible if not any(
-            item['line'] <= other['line'] and item['endLine'] >= other['endLine']
-            and (item['line'], item['endLine']) != (other['line'], other['endLine']) for other in eligible)]
+        eligible = [item for item in eligible if not any(contains_range(item, other) for other in eligible)]
+        for item in eligible:
+            item.pop('scriptRange', None)
     limited = len(candidates) > MAX_DESCRIPTIONS
     if body.line > current.get('totalLines', body.line) or ranges is not None and not inner:
         eligible = []
@@ -170,6 +194,29 @@ def resolve(root, graph, body, nodes):
             '_analysis': analysis, '_descriptions': descriptions,
             'descriptionLimitReached': limited, 'astAvailable': ranges is not None,
             'analysisTruncation': analysis.truncation}
+
+
+def captured_inline_range(node, line):
+    """Select only complete AST ranges that can own this line in the HTML snapshot."""
+    facts = node.get('callableFacts') or {}
+    start, end = facts.get('line'), facts.get('endLine')
+    return (facts.get('sourceKind') == 'snapshot-captured-ast'
+            and type(start) is int and type(end) is int and start <= line <= end)
+
+
+def contains_range(outer, inner):
+    """Compare script-local byte offsets, or line ranges for other captured languages."""
+    first, second = outer.get('scriptRange'), inner.get('scriptRange')
+    if first or second:
+        if not first or not second or first[0] != second[0]:
+            return False
+        outer_bounds, inner_bounds = first[1:], second[1:]
+        if any(type(bound) is not int for bound in (*outer_bounds, *inner_bounds)):
+            return False
+    else:
+        outer_bounds = outer['line'], outer['endLine']
+        inner_bounds = inner['line'], inner['endLine']
+    return outer_bounds != inner_bounds and outer_bounds[0] <= inner_bounds[0] and outer_bounds[1] >= inner_bounds[1]
 
 
 def literal_nulls(analysis, filename, description):

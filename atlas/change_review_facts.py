@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from hashlib import sha256
 
 from .analysis_diagnostics import diagnostic_summary
+from .change_review_graph import capture_call_edges
 from .execution_path import ExecutionPathError, build_execution_path
 from .position_context.source import relative_name
 from .source_viewer import SourceError, _source_path, _read_regular_file
@@ -168,7 +169,8 @@ def capture_side(root, graph, snapshot_id, *, node_id=None, entry_identity=None)
     return {'snapshotId': snapshot_id, 'capturedAt': datetime.now(timezone.utc).isoformat(),
             'snapshotCreatedAt': metadata.get('graphUpdatedAt'),
             'coverage': coverage, 'entry': entry, 'path': path,
-            'functions': functions, 'ambiguous': ambiguous, 'failedFiles': sorted(failed_files)}
+            'functions': functions, 'ambiguous': ambiguous, 'failedFiles': sorted(failed_files),
+            'callEdges': capture_call_edges(graph, functions)}
 
 
 def compare_functions(before, after):

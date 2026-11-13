@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 TTL_SECONDS = 3600
+RECLAIM_IDLE_SECONDS = 20 * 60
 MAX_SESSIONS = 8
 SCHEMA = 'atlas-checkout-maps/v1'
 MARKER = '.atlas-checkout-map.json'

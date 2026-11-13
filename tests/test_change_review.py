@@ -119,6 +119,12 @@ def test_review_keeps_exact_before_and_after_after_checkout_is_removed(atlas_ser
                     assert any('new_handler' in step['label'] for step in paths['after']['steps'])
                     assert any('value < 0' in row['text'] for row in paths['before']['steps'][0]['events'])
                     assert any('value <= 0' in row['text'] for row in paths['after']['steps'][0]['events'])
+                    all_changes = (await client.get(f'/api/change-reviews/{review_id}')).json()['changes']
+                    for side, callee in (('before', 'old_handler()'), ('after', 'new_handler()')):
+                        links = payload['mapEdges'][side]['edges']
+                        labels = [(all_changes[source][side]['label'], all_changes[target][side]['label'])
+                                  for source, target, relation, _ in links if relation == 'calls']
+                        assert ('route()', callee) in labels
     asyncio.run(exercise())
 
 
@@ -189,3 +195,24 @@ def test_failed_file_does_not_look_like_a_removed_function():
     before = {'functions': {'entry': row}, 'ambiguous': []}
     after = {'functions': {}, 'ambiguous': [], 'failedFiles': ['handler.py']}
     assert compare_functions(before, after) == [{'kind': 'unconfirmed', 'before': row, 'after': None}]
+
+
+def test_changed_call_edges_include_disconnected_functions_and_keep_legacy_unknown(monkeypatch):
+    """Project only changed endpoints, including calls outside the saved entry path."""
+    from atlas import change_review_graph
+
+    functions = {name: {'identity': name, 'nodeId': name} for name in ('caller', 'callee', 'stable')}
+    graph = {'edges': [
+        {'source': 'caller', 'target': 'callee', 'relation': 'dispatches_to'},
+        {'source': 'caller', 'target': 'callee', 'relation': 'dispatches_to'},
+        {'source': 'caller', 'target': 'stable', 'relation': 'calls'},
+        {'source': 'callee', 'target': 'caller', 'relation': 'calls'},
+    ]}
+    monkeypatch.setattr(change_review_graph, 'MAX_CAPTURED_EDGES', 2)
+    changes = [{'after': functions[name]} for name in ('callee', 'caller')]
+    side = {'functions': functions}
+    assert change_review_graph.changed_call_edges(side, changes, 'after') is None
+    side['callEdges'] = change_review_graph.capture_call_edges(graph, functions)
+    assert change_review_graph.changed_call_edges(side, changes, 'after') == {
+        'edges': [(1, 0, 'dispatches_to', True)], 'truncated': True,
+    }

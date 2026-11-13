@@ -114,6 +114,11 @@ def register_checkout_routes(app: FastAPI, sessions) -> None:
         """Create or reuse only this owner/checkout's private map; never a permanent registration."""
         return sessions.ensure(body.checkout, body.ownerKey, body.label)
 
+    @app.post('/api/checkout-sessions/ensure-with-reclaim', status_code=202)
+    def ensure_with_reclaim(body: CheckoutEnsureInput):
+        """Admit this task and reclaim at most one eligible idle map if full."""
+        return sessions.ensure(body.checkout, body.ownerKey, body.label, reclaim_idle=True)
+
     @app.get('/api/checkout-sessions')
     def list_sessions():
         """List settings metadata without extending any lifetime."""

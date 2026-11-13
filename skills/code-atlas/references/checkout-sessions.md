@@ -32,9 +32,20 @@ ensure не продлевают его. Не создавай keepalive, heartb
 сразу запрещает новые обращения, но физическая очистка ждёт принятые readers и
 builder. `deleting`/`cleanup-failed` не выдавай за завершённое удаление.
 
+При HTTP 429 проверь `list_checkout_maps`, включая страницы по `nextOffset`.
+Если есть `reclaim.eligible=true`, повтори запрос через
+`ensure_checkout_map_with_reclaim` с теми же checkout и ownerKey. Atlas повторно
+проверяет кандидатов и при полном каталоге вытесняет одну временную карту с
+самым долгим простоем от 20 минут, пропуская карты с активным чтением или
+сборкой. Сохрани новый sessionId и опроси статус. Поле `reclaimed` сообщает ID
+и время простоя удалённой карты. Её временные результаты анализа удаляются.
+Если все карты заняты или использовались недавно, заверши свою ненужную сессию
+или дождись освобождения слота.
+
 Если новая MCP surface недоступна, проверь локальный HTTP Atlas с тем же origin,
 без proxy/redirect. `/api/checkout-sessions` принимает POST
 `{"checkout":"<absolute checkout>","ownerKey":"<stable task key>"}`.
+POST `/api/checkout-sessions/ensure-with-reclaim` принимает то же тело.
 GET `/{sessionId}` — статус; POST `/{sessionId}/rebuild` с JSON `{}` — перестроение;
 DELETE `/{sessionId}` — завершение. Поиск POST `/{sessionId}/search`
 с query/snapshotId/limit, описание POST `/{sessionId}/describe` с snapshotId/nodeId;

@@ -60,6 +60,63 @@ def test_csharp_literal_null_from_caller_and_no_sibling_fallback(tmp_path):
     assert query(tmp_path,g,3,file='code.cs')['status']=='not-found'
 
 
+def test_javascript_position_uses_current_ast_and_captured_hash(tmp_path):
+    source = ('function start() { beginRun(); }\n\n'
+              'function beginRun() {\n  leaf();\n}\n\n'
+              'function leaf() {}\n')
+    declarations = [('start', 'start', 1), ('run', 'beginRun', 3), ('leaf', 'leaf', 7)]
+    edges = [('start', 'run', 'calls', 1), ('run', 'leaf', 'calls', 4)]
+    graph, digest = fixture(tmp_path, source, declarations, filename='main.js', edges=edges)
+    run = graph['nodes'][1]
+    run.update(kind='symbol', callableFacts=run.pop('complexity'))
+
+    result = query(tmp_path, graph, 4, file='main.js', expectedSourceHash=digest)
+    assert result['status'] == 'resolved' and result['anchorId'] == 'run'
+    assert result['sourceProvenance']['capturedSourceHash'] == digest
+    assert result['incoming']['nodes'] == ['start']
+    assert result['outgoing']['nodes'] == ['leaf']
+    assert query(tmp_path, graph, 2, file='main.js')['status'] == 'not-found'
+
+    (tmp_path / 'main.js').write_text(source.replace('leaf();', 'leaf(1);'))
+    stale = query(tmp_path, graph, 4, file='main.js')
+    assert stale['status'] == 'unknown' and stale['sourceProvenance']['status'] == 'changed'
+
+
+def test_javascript_nested_unmapped_function_on_same_line(tmp_path):
+    source = 'function work() { function work() { return 1; } }'
+    graph, _ = fixture(tmp_path, source, [('outer', 'work', 1)], filename='main.js')
+    graph['nodes'][0]['column'] = 1
+    result = query(tmp_path, graph, 1, file='main.js')
+    assert result['status'] == 'unknown' and result['anchorId'] is None
+    assert result['astCandidates'] == [{'name': 'work', 'kind': 'method', 'line': 1, 'endLine': 1}]
+
+
+def test_javascript_large_file_resolves_early_and_late_declarations(tmp_path):
+    """Skip unrelated AST branches and graph candidates across a large source file."""
+    from atlas.flow_languages.javascript import MAX_AST_NODES
+    from tree_sitter import Language, Parser
+    import tree_sitter_javascript
+
+    padding = ''.join(f'function padding{i}() {{\n' + '  void 1;\n' * 45 + '}\n'
+                      for i in range(130))
+    first = 'function early() { late(); }\n'
+    source = first + padding + 'const late =\n  () => leaf();\nfunction leaf() {}\n'
+    late = (first + padding).count('\n') + 1
+    declarations = [(f'p{i}', f'padding{i}', 2 + 47 * i) for i in range(130)]
+    declarations += [('early', 'early', 1), ('late', 'late', late), ('leaf', 'leaf', late + 2)]
+    graph, digest = fixture(tmp_path, source, declarations, filename='large.js',
+                            edges=[('early', 'late', 'calls', 1), ('late', 'leaf', 'calls', late + 1)])
+    parser = Parser(Language(tree_sitter_javascript.language()))
+    assert parser.parse(source.encode()).root_node.descendant_count > MAX_AST_NODES
+
+    early = query(tmp_path, graph, 1, file='large.js', expectedSourceHash=digest)
+    assert early['status'] == 'resolved' and early['outgoing']['nodes'] == ['late', 'leaf']
+    result = query(tmp_path, graph, late + 1, file='large.js', expectedSourceHash=digest, depth=1)
+    assert result['status'] == 'resolved' and result['anchorId'] == 'late'
+    assert result['sourceEvidence']['sourceStatus'] == 'parsed'
+    assert result['incoming']['nodes'] == ['early'] and result['outgoing']['nodes'] == ['leaf']
+
+
 def test_nested_unmapped_declaration_never_falls_back_to_outer(tmp_path):
     text='def outer():\n    def inner():\n        leaf(None)\n    return inner()\n'
     g,_=fixture(tmp_path,text,[('outer','outer',1)])

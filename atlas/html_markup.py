@@ -27,6 +27,7 @@ class Element:
     text: bool = False
     tail: bool = False
     preview_text: str = ''
+    script_range: tuple[int, int] | None = None
 
 
 class MarkupParser:
@@ -117,6 +118,11 @@ class MarkupParser:
                 source.get('end'), source.get('endLine'), namespace=namespace,
                 range_status=source.get('rangeStatus', 'generated'), selector=selector,
                 text=bool(node.text), tail=bool(node.tail), preview_text=sketch_text)
+            if tag == 'script' and source.get('rangeStatus') == 'exact' and 'endTagStart' in source:
+                start, end = source['startTagEnd'], source['endTagStart']
+                # Require the source lexer and HTML5 raw-text parser to agree on the body.
+                if self.text[start:end].replace('\r\n', '\n').replace('\r', '\n') == (node.text or ''):
+                    item.script_range = (start, end)
             index = len(self.elements)
             self.elements.append(item)
             if parent is not None:

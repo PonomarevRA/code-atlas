@@ -33,6 +33,15 @@ def name_of(declaration, source):
     return text(declaration.child_by_field_name('name'), source).strip('\"\'')
 
 
+def anchor_lines(declaration):
+    """Include the binding line when a multiline expression starts below its name."""
+    lines = {declaration.start_point.row + 1}
+    parent = declaration.parent
+    if parent is not None and parent.type in {'variable_declarator', 'pair', 'field_definition', 'assignment_expression'}:
+        lines.add(parent.start_point.row + 1)
+    return lines
+
+
 def select(declarations, node, source):
     """Имя и точная строка/столбец/владелец исключают соседние и вложенные методы."""
     name = (node.get('memberFacts') or {}).get('name')
@@ -41,16 +50,7 @@ def select(declarations, node, source):
     matches = [item for item in declarations if name_of(item, source) == name]
     line = node.get('line') or node.get('source_line')
     if line is not None:
-        # A binding's line may precede its function expression in multiline declarations.
-        anchored = []
-        for item in matches:
-            lines = {item.start_point.row + 1}
-            parent = item.parent
-            if parent is not None and parent.type in {'variable_declarator', 'pair', 'field_definition', 'assignment_expression'}:
-                lines.add(parent.start_point.row + 1)
-            if line in lines:
-                anchored.append(item)
-        matches = anchored
+        matches = [item for item in matches if line in anchor_lines(item)]
     column = node.get('column')
     if column is not None:
         matches = [item for item in matches if item.start_point.column + 1 == column]

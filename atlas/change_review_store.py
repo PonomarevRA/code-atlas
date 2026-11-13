@@ -9,6 +9,7 @@ from threading import RLock
 from uuid import uuid4
 
 from .change_review_facts import compare_functions
+from .change_review_graph import changed_call_edges
 from .map_storage import checked_path, identifier
 from .source_viewer import SourceError, _read_regular_file
 from .store import StoreError
@@ -106,11 +107,14 @@ class ChangeReviews:
                 record['counts'] = dict(Counter(row['kind'] for row in changes))
                 record['changes'] = changes
                 record['after'] = after
+                record['mapEdges'] = {name: changed_call_edges(record[name], changes, name)
+                                      for name in ('before', 'after')}
                 # Completed records only need the comparison and visible evidence.
                 for side in (record['before'], after):
                     side.pop('functions')
                     side.pop('ambiguous')
                     side.pop('failedFiles', None)
+                    side.pop('callEdges', None)
                 self._write(record)
         return self.summary(record)
 
@@ -140,4 +144,6 @@ class ChangeReviews:
         if include_paths:
             result['paths'] = {name: record[name]['path'] if record[name] else None
                                for name in ('before', 'after')}
+            if 'mapEdges' in record:
+                result['mapEdges'] = record['mapEdges']
         return result

@@ -11,7 +11,8 @@ from .mcp_response_budget import json_bytes
 
 
 CHECKOUT_TOOLS = [
-    'ensure_checkout_map', 'list_checkout_maps', 'get_checkout_map', 'rebuild_checkout_map',
+    'ensure_checkout_map', 'ensure_checkout_map_with_reclaim', 'list_checkout_maps',
+    'get_checkout_map', 'rebuild_checkout_map',
     'finish_checkout_map', 'search_checkout_nodes', 'describe_checkout_node',
     'get_checkout_code_health', 'plan_checkout_code_changes', 'compare_checkout_code_health',
 ]
@@ -33,6 +34,7 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
     """
     read = ToolAnnotations(readOnlyHint=True, openWorldHint=False)
     write = ToolAnnotations(readOnlyHint=False, destructiveHint=False, openWorldHint=False)
+    destructive = ToolAnnotations(readOnlyHint=False, destructiveHint=True, openWorldHint=False)
 
     def path(session_id=None, suffix=''):
         """Check the existing connection scope before forming one fixed API path."""
@@ -66,6 +68,22 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
         """
         return await call('POST', body={'checkout': checkout, 'ownerKey': ownerKey, 'label': label})
 
+    @server.tool(annotations=destructive)
+    async def ensure_checkout_map_with_reclaim(
+        checkout: Annotated[str, Field(min_length=1, max_length=4096)],
+        ownerKey: Annotated[str, Field(pattern=r'^[A-Za-z0-9_.:-]{1,100}$')],
+        label: Annotated[str, Field(max_length=160)] | None = None,
+    ) -> dict:
+        """Retry a full checkout catalog by replacing at most one idle temporary map.
+
+        Retry with the same checkout and ownerKey. At capacity Atlas selects the
+        longest-idle map (at least 20 minutes), excluding current readers and builders.
+        The result reports reclaimed.sessionId and idleSeconds when a map was removed.
+        Its temporary analysis data is deleted. Permanent maps and sources are outside this operation.
+        """
+        return await call('POST', suffix='/ensure-with-reclaim',
+                          body={'checkout': checkout, 'ownerKey': ownerKey, 'label': label})
+
     @server.tool(annotations=read)
     async def list_checkout_maps(
         offset: Annotated[int, Field(strict=True, ge=0, le=8)] = 0,
@@ -75,7 +93,8 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
         Page temporary folders/expiry without renewing them; nextOffset continues the current list.
 
         This metadata catalog is not snapshot-pinned: concurrent creation/deletion may change
-        ordering. Use get_checkout_map for a selected session's complete build diagnostics.
+        ordering. reclaim reports current inactivity and eligibility when supported.
+        Use get_checkout_map for a selected session's complete build diagnostics.
         """
         catalog = await request('GET', path(), None)
         rows = catalog['sessions']
@@ -86,6 +105,8 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
                 'label', 'state', 'ttlSeconds', 'createdAt', 'expiresAt', 'activeLeases')
         for row in rows[offset:offset+limit]:
             item = {key: row[key] for key in keys}
+            if 'reclaim' in row:
+                item['reclaim'] = row['reclaim']
             project = row.get('project') or {}
             item['project'] = {key: project.get(key) for key in ('id', 'snapshotId', 'status')}
             selected.append(item)
@@ -107,7 +128,7 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
         """Explicitly rebuild only the private map after a completed series of source changes."""
         return await call('POST', sessionId, '/rebuild')
 
-    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, openWorldHint=False))
+    @server.tool(annotations=destructive)
     async def finish_checkout_map(sessionId: Session) -> dict:
         """Retire this private map; deletion waits for its owned readers/builders, never deletes source."""
         return await call('DELETE', sessionId)

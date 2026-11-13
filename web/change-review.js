@@ -1,9 +1,12 @@
+import {createReviewMap} from './change-review-map.js';
+
 const element = id => document.getElementById(id);
 const status = element('review-status');
 const more = element('review-more');
 const id = new URLSearchParams(location.search).get('id');
 const kinds = {added: 'Добавлена', removed: 'Удалена', modified: 'Изменена', unconfirmed: 'Не удалось сопоставить'};
 let nextOffset = null;
+let reviewMap = null;
 
 /** Create text-only UI nodes for data received from a local repository. */
 function text(tag, value, className) {
@@ -15,7 +18,7 @@ function text(tag, value, className) {
 
 /** Request one immutable page, with paths included only in the initial request. */
 async function read(offset, includePaths = false) {
-  const response = await fetch(`/api/change-reviews/${encodeURIComponent(id)}?offset=${offset}&includePaths=${includePaths}`);
+  const response = await fetch(`/api/change-reviews/${encodeURIComponent(id)}?offset=${offset}&limit=50&includePaths=${includePaths}`);
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || 'Не удалось открыть обзор изменений.');
   return result;
@@ -93,13 +96,11 @@ function renderSide(heading, side, path) {
   return pane;
 }
 
-/** Append stable comparison rows and return the first one for focus recovery. */
+/** Append comparison rows and return the first new map file control for focus recovery. */
 function appendFunctions(result) {
   const list = element('review-functions');
-  let first = null;
   for (const row of result.changes) {
     const item = document.createElement('li');
-    first ??= item;
     item.append(text('strong', `${kinds[row.kind]} · ${(row.after || row.before).label}`));
     const positions = document.createElement('div');
     positions.className = 'review-locations';
@@ -110,7 +111,7 @@ function appendFunctions(result) {
   }
   nextOffset = result.nextOffset;
   more.hidden = nextOffset === null;
-  return first;
+  return reviewMap?.append(result.changes);
 }
 
 /** Render the saved baseline or the complete review without consulting live source. */
@@ -136,18 +137,22 @@ function renderReview(result) {
     element('review-coverage').textContent =
       `Покрытие частичное. Сохранено функций до: ${result.before.coverage.functions}, после: ${result.after.coverage.functions}. Добавление и удаление относятся к содержимому этих снимков.`;
   }
+  if (result.totalChanges) {
+    const map = element('review-map');
+    reviewMap = createReviewMap(map, {text, kinds, locationText, result});
+    map.hidden = false;
+  }
   appendFunctions(result);
+  if (nextOffset !== null && result.totalChanges <= 100) loadMore(false);
 }
 
 /** Load another page without allowing duplicate requests from rapid activations. */
-async function loadMore() {
+async function loadMore(focusOnEnd = true) {
+  if (nextOffset === null || more.disabled) return;
   more.disabled = true;
   try {
     const first = appendFunctions(await read(nextOffset));
-    if (nextOffset === null && first) {
-      first.tabIndex = -1;
-      first.focus();
-    }
+    if (focusOnEnd && nextOffset === null) first?.focus();
     status.textContent = nextOffset === null ? 'Показаны все изменённые функции.' : 'Загружены следующие функции.';
   } catch (error) {
     status.textContent = error.message;
@@ -156,7 +161,7 @@ async function loadMore() {
   }
 }
 
-more.addEventListener('click', loadMore);
+more.addEventListener('click', () => loadMore());
 if (id === null) {
   element('review-start').hidden = false;
 } else if (!/^[a-f0-9]{32}$/.test(id)) {

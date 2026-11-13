@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import sys
 from threading import Event, RLock, Thread
 import time
 from uuid import uuid4
@@ -17,7 +18,7 @@ from ..code_health_service import CodeHealthService
 from ..integrations.graphify.runtime import GraphifyRuntime
 from ..store import ProjectStore
 from .errors import CheckoutMapError
-from .models import CheckoutEntry, MARKER, MAX_SESSIONS, SCHEMA, TTL_SECONDS
+from .models import CheckoutEntry, MARKER, MAX_SESSIONS, RECLAIM_IDLE_SECONDS, SCHEMA, TTL_SECONDS
 
 
 class _CapturedRuntime(GraphifyRuntime):
@@ -30,6 +31,15 @@ class _CapturedRuntime(GraphifyRuntime):
     def selected(self):
         """Build activation uses this fixed value rather than a mutable canonical config."""
         return self.selected_python
+
+
+def _checkout_clock():
+    """Count system sleep where the OS exposes a suspend-aware monotonic clock."""
+    if sys.platform == 'darwin':
+        return time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
+    if hasattr(time, 'CLOCK_BOOTTIME'):
+        return time.clock_gettime(time.CLOCK_BOOTTIME)
+    return time.monotonic()
 
 
 def _utc(value):
@@ -55,8 +65,8 @@ class CheckoutMaps:
     private builder to drain. Status/list/ensure reuse never renew a session.
     """
 
-    def __init__(self, data_dir, *, clock=time.monotonic, wall_clock=time.time,
-                 capacity=4, runtime_python=None, store_factory=ProjectStore):
+    def __init__(self, data_dir, *, clock=_checkout_clock, wall_clock=time.time,
+                 capacity=MAX_SESSIONS, runtime_python=None, store_factory=ProjectStore):
         """Restore marked sessions; provider selection is trusted host configuration.
 
         Injectable clocks/store factory support deterministic lifetime tests.
@@ -156,9 +166,15 @@ class CheckoutMaps:
             for record in value['sessions']:
                 if not isinstance(record, dict):
                     raise CheckoutMapError('Invalid temporary record', 503, 'checkout_map_storage')
-                path = self._checked_folder(record)
                 self._validate_record(record)
-                identifier = record['sessionId']
+                identifier = record.get('sessionId')
+                if (isinstance(identifier, str) and re.fullmatch('[a-f0-9]{32}', identifier)
+                        and record.get('state') == 'deleting' and record.get('retiredReason') == 'capacity'):
+                    path = self.root / identifier
+                    if not path.exists() and not path.is_symlink():
+                        # The previous process removed this folder before finalizing the index.
+                        continue
+                path = self._checked_folder(record)
                 if identifier in self.entries:
                     raise CheckoutMapError('Duplicate temporary identity', 503, 'checkout_map_storage')
                 remaining = min(TTL_SECONDS, record['expiresAtEpoch']-self.wall_clock())
@@ -207,9 +223,47 @@ class CheckoutMaps:
                 'createdAt': _utc(entry.record['createdAtEpoch']), 'expiresAt': _utc(entry.record['expiresAtEpoch']),
                 'project': project, 'activeJob': projects.get('activeJob'), 'activeLeases': entry.leases,
                 'cleanupError': entry.cleanup_error,
+                'reclaim': self._reclaim_status(entry, self.clock()),
                 'runtimeSelection': {'python': entry.record.get('runtimePython'),
                     'provenance': 'captured-host-selection; private store only',
                     'environmentOverrideApplies': bool(os.environ.get('ATLAS_GRAPHIFY_PYTHON'))}}
+
+    def _reclaim_status(self, entry, now):
+        """Describe inactivity since creation or the last successful useful read."""
+        idle = max(0, int(TTL_SECONDS - (entry.deadline - now)))
+        eligible = (
+            entry.state == 'active' and RECLAIM_IDLE_SECONDS <= idle < TTL_SECONDS
+            and not entry.leases and entry.store.active_job is None
+        )
+        return {'idleSeconds': idle, 'minIdleSeconds': RECLAIM_IDLE_SECONDS, 'eligible': eligible}
+
+    def _reclaim_idle_slot(self):
+        """Under the admission lock, remove at most the longest-idle eligible map."""
+        now = self.clock()
+        candidates = sorted(
+            (entry for entry in self.entries.values() if self._reclaim_status(entry, now)['eligible']),
+            key=lambda entry: entry.deadline,
+        )
+        for entry in candidates:
+            try:
+                path = self._deletion_path(entry)
+            except (CheckoutMapError, OSError):
+                continue
+            idle_seconds = self._reclaim_status(entry, now)['idleSeconds']
+            entry.state = 'deleting'
+            entry.record['retiredReason'] = 'capacity'
+            try:
+                self._write_index()
+            except BaseException:
+                entry.state = 'active'
+                entry.record.pop('retiredReason')
+                raise
+            self._remove_folder(entry, path)
+            self._write_index()
+            if entry.session_id not in self.entries:
+                return {'sessionId': entry.session_id, 'idleSeconds': idle_seconds}
+            break
+        return None
 
     def _retire_expired(self):
         """Monotonic expiry retires admissions even while a builder/read remains alive."""
@@ -218,21 +272,34 @@ class CheckoutMaps:
                 entry.state = 'deleting'
                 entry.record['retiredReason'] = 'expired'
 
+    def _deletion_path(self, entry):
+        """Verify the session marker and reject links anywhere in its private folder."""
+        path = self._checked_folder(entry.record)
+        for directory, folders, files in os.walk(path, followlinks=False):
+            if any((Path(directory) / name).is_symlink() for name in folders + files):
+                raise CheckoutMapError('Temporary folder contains a link', 403, 'checkout_map_storage')
+        return path
+
+    def _remove_folder(self, entry, path):
+        """Close the drained store and remove the previously verified folder."""
+        try:
+            entry.store.close()
+            shutil.rmtree(path)
+            self.entries.pop(entry.session_id)
+        except Exception:
+            entry.state, entry.cleanup_error = 'cleanup-failed', 'Owned map cleanup failed; folder retained for retry'
+
     def _collect(self):
         """Delete only drained known folders; cleanup errors remain visible for retry."""
-        for identifier, entry in list(self.entries.items()):
+        for entry in list(self.entries.values()):
             if entry.state == 'active' or entry.leases or entry.store.active_job is not None:
                 continue
             try:
-                path = self._checked_folder(entry.record)
-                for directory, folders, files in os.walk(path, followlinks=False):
-                    if any((Path(directory) / name).is_symlink() for name in folders+files):
-                        raise CheckoutMapError('Temporary folder contains a link', 403, 'checkout_map_storage')
-                entry.store.close()
-                shutil.rmtree(path)
-                self.entries.pop(identifier)
+                path = self._deletion_path(entry)
             except Exception:
                 entry.state, entry.cleanup_error = 'cleanup-failed', 'Owned map cleanup failed; folder retained for retry'
+                continue
+            self._remove_folder(entry, path)
 
     def sweep(self):
         """Expire admissions and collect drained folders; polling does not keep maps alive."""
@@ -250,8 +317,8 @@ class CheckoutMaps:
         self._checked_folder(entry.record)
         return entry
 
-    def ensure(self, checkout, owner_key, label=None):
-        """Reuse only this owner/checkout or start an actual independent private build."""
+    def ensure(self, checkout, owner_key, label=None, *, reclaim_idle=False):
+        """Start or reuse this task's map, optionally reclaiming one idle slot at capacity."""
         owner_key = _text(owner_key, 128, 'owner key')
         source = Path(checkout).expanduser() if isinstance(checkout, (str, Path)) else Path('.')
         if not source.is_absolute() or not source.is_dir():
@@ -264,13 +331,24 @@ class CheckoutMaps:
             if self.closed:
                 raise CheckoutMapError('Temporary maps are shutting down', 503)
             self._root_guard()
-            self._retire_expired(); self._collect()
+            self.sweep()
             for entry in self.entries.values():
                 if entry.state == 'active' and entry.record['ownerKey'] == owner_key and entry.record['checkout'] == str(source):
                     self._checked_folder(entry.record)
                     return self._metadata(entry)
+            reclaimed = None
+            if len(self.entries) >= self.capacity and reclaim_idle:
+                reclaimed = self._reclaim_idle_slot()
             if len(self.entries) >= self.capacity:
-                raise CheckoutMapError('Temporary map capacity reached; finish an existing session', 429, 'checkout_map_capacity')
+                recovery = (
+                    'No idle slot could be reclaimed.' if reclaim_idle else
+                    'Use ensure_checkout_map_with_reclaim to replace one eligible idle map.'
+                )
+                raise CheckoutMapError(
+                    f'Temporary checkout map limit reached ({self.capacity}). {recovery} '
+                    'Use list_checkout_maps to inspect inactivity and expiry.',
+                    429, 'checkout_map_capacity',
+                )
             identifier, token = uuid4().hex, uuid4().hex
             path = self.root / identifier
             path.mkdir()
@@ -286,7 +364,10 @@ class CheckoutMaps:
                 self.entries[identifier] = entry
                 self._write_index()
                 store.add(str(source))
-                return self._metadata(entry)
+                metadata = self._metadata(entry)
+                if reclaimed is not None:
+                    metadata['reclaimed'] = reclaimed
+                return metadata
             except BaseException:
                 if store is not None:
                     # Failed add may already have queued a builder. Retire its
