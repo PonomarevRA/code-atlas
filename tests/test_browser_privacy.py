@@ -198,6 +198,9 @@ def test_human_helper_cancellation_timeout_and_exact_arguments(monkeypatch):
     """Synthetic runner only: this test never opens a Touch ID/password prompt."""
     import subprocess
     from atlas import browser_human_auth as auth
+    if auth.sys.platform != 'darwin':
+        assert auth.confirm_privacy_change() is False
+        return
     calls=[]
     def cancel(arguments,**kwargs):
         calls.append(arguments);assert len(arguments)==1;assert kwargs['timeout']==22

@@ -59,7 +59,7 @@ def test_native_error_context_redaction_and_no_live_objects(journal):
             try:
                 raise ValueError('password=hidden Bearer secret-token')
             except ValueError:
-                logger.exception('Failed token=%s', 'other-secret', extra={'properties': {'durationMs': 12, 'password': 'hidden', 'body': 'private', 'safe': 'api_key=secret'}})
+                logger.exception('Failed token=%s', 'other-secret', extra={'properties': {'durationMs': 12, 'password': 'hidden', 'body': 'body-fixture-sentinel', 'safe': 'api_key=secret'}})
         assert journal.flush()
         event = journal.disk.read()[0]
         assert event['schemaVersion'] == 'technical-log/v1'
@@ -68,7 +68,7 @@ def test_native_error_context_redaction_and_no_live_objects(journal):
         assert event['exception']['type'] == 'ValueError'
         assert 'test_native_error_context' in event['exception']['stackTrace']
         raw = json.dumps(event)
-        assert all(secret not in raw for secret in ('hidden', 'other-secret', 'secret-token', 'private'))
+        assert all(secret not in raw for secret in ('hidden', 'other-secret', 'secret-token', 'body-fixture-sentinel'))
         assert event['properties']['durationMs'] == 12
         assert event['properties']['password'] == '[REDACTED]'
         assert from_record(record())['operationId'] is None

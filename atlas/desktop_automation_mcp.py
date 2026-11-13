@@ -9,6 +9,7 @@ from .desktop_automation import ACTIONS
 
 # The broker may inspect before and after a bounded native operation.
 _WINDOW_REQUEST_TIMEOUT = 70
+DESKTOP_TOOLS = ('inspect_desktop_window', 'execute_desktop_command', 'capture_desktop_window')
 
 
 def register_desktop_tools(server, request, selected_project, bound_project):

@@ -2,7 +2,6 @@
 import argparse
 import json
 from pathlib import Path
-import resource
 import sys
 from tempfile import TemporaryDirectory
 import time
@@ -10,6 +9,20 @@ import time
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
 from atlas.data_models import DataInput,DataQuery
 from atlas.data_store import DataMapStore
+
+
+def peak_rss_bytes():
+    """Read the peak resident memory of this process image in bytes."""
+    if sys.platform == 'linux':
+        for line in Path('/proc/self/status').read_text().splitlines():
+            if line.startswith('VmHWM:'):
+                return int(line.split()[1]) * 1024
+        raise RuntimeError('Linux did not report peak resident memory')
+    if sys.platform == 'win32':
+        import psutil
+        return psutil.Process().memory_info().peak_wset
+    import resource
+    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
 
 
 def benchmark(total_bytes):
@@ -45,8 +58,7 @@ def benchmark(total_bytes):
             collection=next(iter(state.snapshot(overview['id'])[1]['collections']))
             start=time.monotonic()
             result=state.query(overview['id'],'records',DataQuery(snapshotId=overview['snapshotId'],collectionId=collection,limit=20,fields=['/id']))
-            rss=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-            if sys.platform!='darwin':rss*=1024
+            rss=peak_rss_bytes()
             print(json.dumps({'inputBytes':input_bytes,'records':overview['records'],'importSeconds':round(elapsed,2),
                               'peakRssMiB':round(rss/1024/1024,1),'lookupMs':round((time.monotonic()-start)*1000,1),
                               'pageRecords':len(result['items']),'builtAt':result['builtAt']}),flush=True)

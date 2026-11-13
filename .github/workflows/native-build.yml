@@ -10,11 +10,14 @@ on:
     tags: ['v*']
 permissions:
   contents: read
+env:
+  PYTHONUTF8: '1'
 concurrency:
   group: native-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   build:
+    needs: source-audit
     strategy:
       fail-fast: false
       matrix:
@@ -49,9 +52,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Audit public checkout before freezing
-        if: github.event.repository.private == false
-        run: python tools/public_release.py audit --published
       - run: python -m pip install -r requirements.lock -r packaging/requirements-build.txt
       - name: Linux desktop system libraries
         if: runner.os == 'Linux'
@@ -86,6 +86,7 @@ jobs:
             releases/local/
           if-no-files-found: error
   windows-arm64:
+    needs: source-audit
     if: github.event_name == 'workflow_dispatch' && inputs.windows_arm64
     runs-on: windows-11-arm
     steps:
@@ -109,6 +110,17 @@ jobs:
           name: CodeAtlas-win32-arm64-experimental
           path: dist/
           if-no-files-found: error
+
+  source-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Audit public checkout before freezing
+        if: github.event.repository.private == false
+        run: python tools/public_release.py audit --published
 
   release:
     if: ${{ always() && !cancelled() && startsWith(github.ref, 'refs/tags/v') }}

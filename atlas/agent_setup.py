@@ -24,6 +24,7 @@ from .browser_mcp import BROWSER_TOOLS
 from .architecture_mcp import ARCHITECTURE_TOOLS
 from .document_mcp import DOCUMENT_TOOLS
 from .document_search_mcp import DOCUMENT_SEARCH_TOOLS
+from .desktop_automation_mcp import DESKTOP_TOOLS
 from .runtime_paths import worker_executable
 from .semantic_engine_discovery import settings_contract
 from .semantic_engine_mcp import ENGINE_TOOLS
@@ -60,7 +61,7 @@ TOOLS = ["list_projects", "search_nodes", "get_node", "get_neighbors", "describe
          "get_documentation_index", "create_view", "get_view", *DATA_TOOLS, *DOCUMENT_TOOLS,
          *DOCUMENT_SEARCH_TOOLS, *REFERENCE_TOOLS, *LIBRARY_TOOLS, *HEALTH_TOOLS, *TEST_DATA_TOOLS, *HTML_TOOLS, *BROWSER_TOOLS, *ARCHITECTURE_TOOLS,
          *PATTERN_TOOLS, *MODULE_ANALYSIS_TOOLS, *DEBUG_FEEDBACK_TOOLS, *CHECKOUT_TOOLS, *CHANGE_REVIEW_TOOLS, *MODULE_PROPOSAL_TOOLS,
-         *POSITION_CONTEXT_TOOLS]
+         *POSITION_CONTEXT_TOOLS, *DESKTOP_TOOLS]
 
 
 def agent_mcp_config(port: int, project_id: str | None = None) -> dict:
