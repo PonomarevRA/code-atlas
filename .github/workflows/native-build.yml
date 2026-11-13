@@ -55,7 +55,12 @@ jobs:
       - run: python -m pip install -r requirements.lock -r packaging/requirements-build.txt
       - name: Linux desktop system libraries
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y python3-tk xvfb libegl1 libgl1 libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1 libxcb-xinerama0 libxcb-image0 libnss3 libasound2t64
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-tk xvfb libegl1 libgl1 libxkbcommon-x11-0 \
+            libx11-xcb1 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1 libxcb-xinerama0 \
+            libxcb-image0 libxcb-randr0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 \
+            libxcb-xinput0 libxcb-xkb1 libnss3 libasound2t64
       - name: Static architecture boundaries (unknown fails)
         run: python -m atlas.architecture_cli check --root . --rules architecture-rules.json
       - run: python -m pytest -q
@@ -63,6 +68,7 @@ jobs:
         if: runner.os == 'Linux'
         env:
           QTWEBENGINE_CHROMIUM_FLAGS: --disable-gpu
+          QT_DEBUG_PLUGINS: '1'
         run: xvfb-run -a python scripts/smoke_desktop.py
       - run: python packaging/build.py --target ${{ matrix.target }}
       - name: Offline compiled document runtime (no Python on PATH)
