@@ -106,6 +106,22 @@ def _search_declarations(tree, source: bytes, language, query: str, limit: int) 
                          'declarationKinds': ['type', 'callable', 'constructor']}}
 
 
+def lexical_declarations(content, language, query, limit):
+    """Parse bounded UTF-8 bytes with the selected grammar and report recovery limits."""
+    try:
+        if b'\0' in content:
+            raise UnicodeError
+        source = content.decode('utf-8-sig').replace('\r\n', '\n').replace('\r', '\n').encode('utf-8')
+    except UnicodeError as error:
+        raise StoreError('Source must be UTF-8 text.', 415) from error
+    try:
+        module = import_module(language.module)
+        parser = Parser(Language(getattr(module, language.language_function)()))
+    except (ImportError, AttributeError, ValueError) as error:
+        raise StoreError('Declaration grammar is unavailable.', 503) from error
+    return _search_declarations(parser.parse(source), source, language, query, limit)
+
+
 def search_checkout_file(entry, path: str, query: str, limit: int) -> dict:
     """Read a leased session's source and return file-local evidence without a snapshot lookup."""
     root = Path(entry.record['checkout'])
@@ -117,19 +133,9 @@ def search_checkout_file(entry, path: str, query: str, limit: int) -> dict:
             raise SourceError('No declaration grammar is available for this source type.', 415)
         content = _read_regular_file(root, relative)
         read_at = datetime.now(timezone.utc).isoformat()
-        if b'\0' in content:
-            raise SourceError('Source must be UTF-8 text.', 415)
-        source = content.decode('utf-8-sig').replace('\r\n', '\n').replace('\r', '\n').encode('utf-8')
     except SourceError as error:
         raise StoreError(str(error), error.status) from error
-    except UnicodeDecodeError as error:
-        raise StoreError('Source must be UTF-8 text.', 415) from error
-    try:
-        module = import_module(language.module)
-        parser = Parser(Language(getattr(module, language.language_function)()))
-    except (ImportError, AttributeError, ValueError) as error:
-        raise StoreError('Declaration grammar is unavailable.', 503) from error
-    result = _search_declarations(parser.parse(source), source, language, query, limit)
+    result = lexical_declarations(content, language, query, limit)
     try:
         unchanged = _read_regular_file(root, relative) == content
     except SourceError:

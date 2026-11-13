@@ -16,6 +16,7 @@ from .execution_path import ExecutionPathError
 from .mcp_response_budget import json_bytes
 from .node_description import build_node_description
 from .store import StoreError
+from .worktree_overlays import WorktreeOverlays
 
 
 SessionId = Annotated[str, Path(pattern=r'^[a-f0-9]{32}$')]
@@ -61,6 +62,7 @@ class CheckoutEnsureInput(BaseModel):
     checkout: str = Field(min_length=1, max_length=4096)
     ownerKey: str = Field(pattern=r'^[A-Za-z0-9_.:-]{1,100}$')
     label: str | None = Field(default=None, max_length=160)
+    overlayBase: bool = Field(default=False, strict=True)
 
 
 class CheckoutSearchInput(BaseModel):
@@ -84,6 +86,22 @@ class CheckoutNodeInput(BaseModel):
     model_config = ConfigDict(extra='forbid')
     snapshotId: str = Field(min_length=1, max_length=128)
     nodeId: str = Field(min_length=1, max_length=4096)
+
+
+class WorktreeOpenInput(BaseModel):
+    """Pin one clean base and select a sibling linked checkout."""
+    model_config = ConfigDict(extra='forbid')
+    checkout: str = Field(min_length=1, max_length=4096)
+    baseSessionId: str = Field(pattern=r'^[a-f0-9]{32}$')
+    baseSnapshotId: str = Field(pattern=r'^[a-f0-9]{32}$')
+
+
+class WorktreeSearchInput(BaseModel):
+    """Bound overlay search separately from legacy snapshot queries."""
+    model_config = ConfigDict(extra='forbid')
+    query: str = Field(default='', max_length=500)
+    limit: int = Field(default=20, ge=1, le=40, strict=True)
+    overlayRevision: str | None = Field(default=None, pattern=r'^[a-f0-9]{64}$')
 
 
 def _bounded(session_id, result):
@@ -123,15 +141,33 @@ def register_checkout_routes(app: FastAPI, sessions) -> None:
             return JSONResponse(payload, status_code=error.status, headers={'Retry-After': '1'})
         return JSONResponse(payload, status_code=error.status)
 
+    overlays = WorktreeOverlays(sessions)
+
+    @app.post('/api/checkout-sessions/overlays')
+    def open_overlay(body: WorktreeOpenInput):
+        """Bind one worktree to a matching clean base without scheduling a build."""
+        return overlays.open(body.checkout, body.baseSessionId, body.baseSnapshotId)
+
+    @app.post('/api/checkout-sessions/overlays/{overlay_id}/refresh')
+    def refresh_overlay(overlay_id: SessionId):
+        """Capture one verified worktree revision for subsequent bounded searches."""
+        return overlays.refresh(overlay_id)
+
+    @app.post('/api/checkout-sessions/overlays/{overlay_id}/search')
+    def search_overlay(overlay_id: SessionId, body: WorktreeSearchInput):
+        """Search one captured revision, or refresh automatically when none is supplied."""
+        return overlays.search(overlay_id, body.query, body.limit, body.overlayRevision)
+
     @app.post('/api/checkout-sessions', status_code=202)
     def ensure(body: CheckoutEnsureInput):
         """Create or reuse only this owner/checkout's private map; never a permanent registration."""
-        return sessions.ensure(body.checkout, body.ownerKey, body.label)
+        return sessions.ensure(body.checkout, body.ownerKey, body.label, overlay_base=body.overlayBase)
 
     @app.post('/api/checkout-sessions/ensure-with-reclaim', status_code=202)
     def ensure_with_reclaim(body: CheckoutEnsureInput):
         """Admit this task and reclaim at most one eligible idle map if full."""
-        return sessions.ensure(body.checkout, body.ownerKey, body.label, reclaim_idle=True)
+        return sessions.ensure(body.checkout, body.ownerKey, body.label, reclaim_idle=True,
+                               overlay_base=body.overlayBase)
 
     @app.get('/api/checkout-sessions')
     def list_sessions():

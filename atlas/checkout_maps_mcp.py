@@ -14,6 +14,7 @@ from .mcp_transport import CheckoutBuildPending
 CHECKOUT_TOOLS = [
     'ensure_checkout_map', 'ensure_checkout_map_with_reclaim', 'list_checkout_maps',
     'get_checkout_map', 'rebuild_checkout_map',
+    'open_worktree_overlay', 'refresh_worktree_overlay', 'search_worktree_overlay',
     'finish_checkout_map', 'search_checkout_nodes', 'search_checkout_file', 'describe_checkout_node',
     'get_checkout_code_health', 'plan_checkout_code_changes', 'compare_checkout_code_health',
 ]
@@ -58,6 +59,7 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
         checkout: Annotated[str, Field(min_length=1, max_length=4096)],
         ownerKey: Annotated[str, Field(pattern=r'^[A-Za-z0-9_.:-]{1,100}$')],
         label: Annotated[str, Field(max_length=160)] | None = None,
+        overlayBase: Annotated[bool, Field(strict=True)] = False,
     ) -> dict:
         """
         Automatically create/reuse this task's private Atlas map for an absolute checkout.
@@ -67,8 +69,43 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
         hour after its last successful useful read. Poll get_checkout_map while building;
         polling, list and ensure reuse do not keep it alive. Use search_checkout_file for a
         known source path during the build. Never infer graph readiness from a handle.
+        Set overlayBase only to build a clean, exact Git root for the worktree pilot.
         """
-        return await call('POST', body={'checkout': checkout, 'ownerKey': ownerKey, 'label': label})
+        return await call('POST', body={'checkout': checkout, 'ownerKey': ownerKey,
+                                       'label': label, 'overlayBase': overlayBase})
+
+    @server.tool(annotations=write)
+    async def open_worktree_overlay(baseSessionId: Session, baseSnapshotId: Session,
+                                    checkout: Annotated[str, Field(min_length=1, max_length=4096)]) -> dict:
+        """Open an experimental overlay at the same commit in a sibling Git worktree.
+
+        Use a completed ensure_checkout_map(overlayBase=true) build from a clean Git root.
+        An overlay is a process-local handle and does not build or copy the base graph.
+        """
+        return await call('POST', suffix='/overlays', body={
+            'baseSessionId': baseSessionId, 'baseSnapshotId': baseSnapshotId, 'checkout': checkout,
+        })
+
+    @server.tool(annotations=write)
+    async def refresh_worktree_overlay(overlayId: Session) -> dict:
+        """Capture current raw source changes once and return a revision for parallel reads."""
+        return await call('POST', suffix=f'/overlays/{overlayId}/refresh')
+
+    @server.tool(annotations=read)
+    async def search_worktree_overlay(overlayId: Session,
+                                      query: Annotated[str, Field(max_length=500)] = '',
+                                      limit: Annotated[int, Field(strict=True, ge=1, le=40)] = 20,
+                                      overlayRevision: Annotated[str, Field(pattern=r'^[a-f0-9]{64}$')] | None = None) -> dict:
+        """Search shared baseline nodes and current changed-file declarations separately.
+
+        Baseline nodes retain base snapshot IDs. Current declarations have source hashes,
+        not graph IDs. Link facts require a full private checkout build.
+        Pass overlayRevision from open/refresh for fast reads of that captured state.
+        Omit it to refresh automatically after edits. An old pinned revision is rejected
+        after a different epoch has been captured.
+        """
+        return await call('POST', suffix=f'/overlays/{overlayId}/search',
+                          body={'query': query, 'limit': limit, 'overlayRevision': overlayRevision})
 
     @server.tool(annotations=destructive)
     async def ensure_checkout_map_with_reclaim(

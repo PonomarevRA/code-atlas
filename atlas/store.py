@@ -92,10 +92,13 @@ class ProjectStore:
         self._published_graph: OrderedDict[str, tuple[str, list[int], dict]] = OrderedDict()
         self._search_facts_key = None
         self._search_facts = None
+        self._search_file_ids = None
+        self._worktree_search_pages = OrderedDict()
         self.overview_lock = Lock()
         self._overview_cache = OrderedDict()
         self._overview_cache_bytes = 0
         self.on_snapshot_published = None
+        self.capture_build_provenance = None
         self.semantic_overlay = SemanticOverlayReader()
 
     def _load_projects(self) -> dict:
@@ -206,6 +209,8 @@ class ProjectStore:
             project_path = Path(project["path"])
         output = None
         try:
+            capture = self.capture_build_provenance
+            provenance = capture(project_path) if capture else None
             output = snapshot_directory(self.data_dir, project['id'], job_id)
             inventory = project_file_inventory(project_path)
             analysis_rules = active_analysis_rules(self.mods, inventory=inventory)
@@ -216,6 +221,10 @@ class ProjectStore:
                 observe(self.usage, 'rule_pass', mod['id'])
             graph = enrich_snapshot(graph, project_path, analysis_rules=analysis_rules, file_inventory=inventory)
             graph = enrich_graph(graph)
+            if capture:
+                if capture(project_path) != provenance:
+                    raise StoreError("Shared base source changed during the build.", 409)
+                graph["metadata"]["worktreeBase"] = provenance
             graph["metadata"]["snapshotId"] = job_id
             graph_path = output / "atlas-graph.json"
             mcp_path = output / "mcp-graph.json"
@@ -743,7 +752,8 @@ class ProjectStore:
 
     @map_operation
     def search_project_nodes(self, project_id: str, snapshot_id: str | None, query: str,
-                             limit: int = 120, exclude_kinds: list[str] | None = None) -> dict:
+                             limit: int = 120, exclude_kinds: list[str] | None = None,
+                             *, exclude_files: set[str] | None = None, cache_query=False) -> dict:
         """Ищет в закреплённом снимке, копируя только выбранные карточки, без полной копии графа.
 
         Блокировка сохраняет одну ревизию на время поиска. Внутренний кэш остаётся
@@ -762,8 +772,42 @@ class ProjectStore:
             if snapshot_id and snapshot_path.parent.name != snapshot_id:
                 raise StoreError("Карта обновилась во время поиска входов. Загрузите её заново.", 409)
             graph = self._published_snapshot(project_id, snapshot_path)
-            return deepcopy(search_nodes(graph, query, limit, exclude_kinds,
-                                          load_fact_index=lambda: self._fact_index(project_id, graph)))
+            key = None
+            if cache_query:
+                from .mcp_response_budget import json_bytes
+                cached_graph = self._published_graph.get(project_id)
+                if cached_graph is not None and cached_graph[2] is graph:
+                    key = (project_id, cached_graph[0], tuple(cached_graph[1]), query, limit,
+                           tuple(exclude_kinds or ()), frozenset(exclude_files or ()))
+                    page = self._worktree_search_pages.get(key)
+                    if page is not None:
+                        self._worktree_search_pages.move_to_end(key)
+                        return deepcopy(page)
+            excluded_ids = None
+            if exclude_files:
+                file_ids = self._snapshot_file_ids(project_id, graph, snapshot_path)
+                excluded_ids = {node_id for name in exclude_files for node_id in file_ids.get(name, ())}
+            page = search_nodes(graph, query, limit, exclude_kinds, exclude_ids=excluded_ids,
+                                load_fact_index=lambda: self._fact_index(project_id, graph))
+            if key is not None and json_bytes(page) <= 64_000:
+                self._worktree_search_pages[key] = page
+                if len(self._worktree_search_pages) > 32:
+                    self._worktree_search_pages.popitem(last=False)
+            return deepcopy(page)
+
+    def _snapshot_file_ids(self, project_id, graph, snapshot_path):
+        """Retain the file-to-node index for the last pinned graph with no graph references."""
+        from .git_compare import _node_files
+        root = Path(self._project(project_id)['path'])
+        cached_graph = self._published_graph.get(project_id)
+        stamp = cached_graph[1] if cached_graph else source_stamp(snapshot_path)
+        key = (project_id, snapshot_path, tuple(stamp),
+               graph.get('metadata', {}).get('semanticEnrichment', {}).get('revision'))
+        cached = self._search_file_ids
+        if cached is None or cached[0] != key:
+            cached = (key, _node_files(root, root, graph))
+            self._search_file_ids = cached
+        return cached[1]
 
     def _fact_index(self, project_id: str, graph: dict):
         """Lazily retain at most one bounded fact index, keyed by the published source and overlay stamp.

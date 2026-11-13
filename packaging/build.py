@@ -73,7 +73,7 @@ def main() -> None:
     native_resources = restore_native_resources(ROOT, target)
     installer = {'darwin': 'install-macos.sh', 'win32': 'install-windows.ps1'}.get(sys.platform, 'install-linux.sh')
     shutil.copy2(ROOT / 'packaging' / installer, ROOT / 'dist' / installer)
-    manifest = {'version': '0.1.8', 'platform': sys.platform, 'architecture': target.split('-', 1)[1],
+    manifest = {'version': '0.1.9', 'platform': sys.platform, 'architecture': target.split('-', 1)[1],
                 'processMachine': platform.machine(),
                 'python': platform.python_version(), 'format': 'onedir', 'dataSchemaVersion': 1,
                 'target': target, 'nativeResources': native_resources, 'targetPythonRequired': False, 'nativeDocuments': native_manifest,

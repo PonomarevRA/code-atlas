@@ -143,10 +143,13 @@ class CheckoutMaps:
             raise CheckoutMapError('Temporary map ownership marker differs', 403, 'checkout_map_storage')
         return path
 
-    def _new_store(self, path, runtime_python):
+    def _new_store(self, path, runtime_python, *, overlay_base=False):
         """Create one private extraction/health owner with no canonical store dependency."""
         store = self.store_factory(path)
         store.graphify_runtime = _CapturedRuntime(path, runtime_python)
+        if overlay_base:
+            from ..worktree_overlay_git import clean_stamp
+            store.capture_build_provenance = clean_stamp
         try:
             health = CodeHealthService(store)
         except BaseException:
@@ -179,7 +182,8 @@ class CheckoutMaps:
                     raise CheckoutMapError('Duplicate temporary identity', 503, 'checkout_map_storage')
                 remaining = min(TTL_SECONDS, record['expiresAtEpoch']-self.wall_clock())
                 state = record.get('state', 'active')
-                store, health = self._new_store(path, record.get('runtimePython'))
+                store, health = self._new_store(path, record.get('runtimePython'),
+                                                overlay_base=record.get('overlayBase', False))
                 entry = CheckoutEntry(identifier, path, record, self.clock()+max(0, remaining), store, health,
                                       state=state, cleanup_error=record.get('cleanupError'))
                 self.entries[identifier] = entry
@@ -209,6 +213,8 @@ class CheckoutMaps:
             # using the same conversion as metadata, before opening/restoring a
             # store or treating a malformed negative expiry as safe to collect.
             _utc(value)
+        if type(record.get('overlayBase', False)) is not bool:
+            raise CheckoutMapError('Invalid shared base mode', 503, 'checkout_map_storage')
         runtime = record.get('runtimePython')
         if runtime is not None and (not isinstance(runtime, str) or not Path(runtime).is_absolute()):
             raise CheckoutMapError('Invalid recorded runtime', 503, 'checkout_map_storage')
@@ -317,7 +323,7 @@ class CheckoutMaps:
         self._checked_folder(entry.record)
         return entry
 
-    def ensure(self, checkout, owner_key, label=None, *, reclaim_idle=False):
+    def ensure(self, checkout, owner_key, label=None, *, reclaim_idle=False, overlay_base=False):
         """Start or reuse this task's map, optionally reclaiming one idle slot at capacity."""
         owner_key = _text(owner_key, 128, 'owner key')
         source = Path(checkout).expanduser() if isinstance(checkout, (str, Path)) else Path('.')
@@ -335,6 +341,8 @@ class CheckoutMaps:
             for entry in self.entries.values():
                 if entry.state == 'active' and entry.record['ownerKey'] == owner_key and entry.record['checkout'] == str(source):
                     self._checked_folder(entry.record)
+                    if entry.record.get('overlayBase', False) != overlay_base:
+                        raise CheckoutMapError('Use a separate owner key for a shared base build.', 409)
                     return self._metadata(entry)
             reclaimed = None
             if len(self.entries) >= self.capacity and reclaim_idle:
@@ -357,9 +365,11 @@ class CheckoutMaps:
             record = {'sessionId': identifier, 'markerToken': token, 'ownerKey': owner_key,
                       'checkout': str(source), 'label': label, 'projectId': sha256(str(source).encode()).hexdigest()[:16],
                       'createdAtEpoch': now, 'expiresAtEpoch': now+TTL_SECONDS, 'runtimePython': self.runtime_python}
+            if overlay_base:
+                record['overlayBase'] = True
             store = None
             try:
-                store, health = self._new_store(path, self.runtime_python)
+                store, health = self._new_store(path, self.runtime_python, overlay_base=overlay_base)
                 entry = CheckoutEntry(identifier, path, record, self.clock()+TTL_SECONDS, store, health)
                 self.entries[identifier] = entry
                 self._write_index()

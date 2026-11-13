@@ -4,6 +4,16 @@ For each stable version, record one to five short user-facing changes in Russian
 
 Для каждой стабильной версии добавляйте от одного до пяти коротких пунктов на русском и английском. Опишите, что пользователь сможет сделать или что стало работать лучше. Инструкции по установке и внутренние изменения ведите отдельно.
 
+## [0.1.9]
+
+### Русский
+
+- Агенты в связанных Git worktree могут читать один базовый снимок и видеть свои изменения в отдельном слое. Режим экспериментальный. Актуальные связи подтверждаются после пересборки рабочего checkout.
+
+### English
+
+- Agents in linked Git worktrees can share a base snapshot and see their own changes in separate overlays. This experimental mode requires a checkout rebuild to confirm current links.
+
 ## [0.1.8]
 
 ### Русский
