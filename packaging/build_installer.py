@@ -159,6 +159,7 @@ def main():
         digest = hashlib.file_digest(handle, 'sha256').hexdigest()
     (output / (target.name + '.sha256')).write_text(f'{digest}  {target.name}\n')
     metadata = {'schemaVersion': 'ag-desktop/release-v1', 'appId': product['appId'], 'version': product['version'],
+                'edition': 'public' if (Path(__file__).resolve().parents[1] / 'PUBLIC_SOURCE_MANIFEST.json').is_file() else 'private',
                 'platform': sys.platform, 'architecture': platform.machine(), 'unsigned': True,
                 'signing': 'ad-hoc' if sys.platform == 'darwin' else 'unsigned', 'notarized': False,
                 'asset': target.name, 'sha256': digest, 'repository': product['repository']}

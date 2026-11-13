@@ -2,7 +2,7 @@
 
 [Русский](install.ru.md) · [English](install.en.md) · [Overview](../README.en.md) · [Installation by an agent](../INSTALL_AGENT.md#english)
 
-These instructions install the local browser application. A public native release is not assumed. The repository includes native build recipes, but a recipe is not a tested release for every platform.
+For a self-contained desktop installer, open this repository’s **Releases** tab and choose the download for your OS and CPU. Follow the release notes and verify the accompanying SHA-256. The instructions below install from source.
 
 ## 1. Choose a directory and Python
 

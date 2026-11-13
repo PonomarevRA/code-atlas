@@ -1,5 +1,24 @@
 # Подготовка репозиториев / Preparing repositories
 
+## GitHub Releases
+
+Опубликуйте исходники в каждой редакции и отправьте тег `v<version>`, где
+`version` совпадает с `packaging/desktop-product.json`. GitHub Actions собирает
+нативные установщики из исходников этого тега. Публичная сборка проходит аудит
+экспорта перед упаковкой.
+
+Для проверенной локальной сборки запустите из checkout соответствующего тега
+`python tools/publish_native_release.py --repo OWNER/REPO --tag v<version> --assets PATH`.
+Каталог должен содержать установщик, его `.sha256` и `.json` от
+`packaging/build_installer.py`. Флаг `--check` проверяет файлы без сети.
+Для публикации нужен авторизованный GitHub CLI. При повторном запуске скрипт
+добавляет отсутствующие платформы и сохраняет ранее опубликованные установщики.
+
+After pushing the source commit for each edition, push the matching `v<version>`
+tag to build native installers in GitHub Actions. Run the same publisher from
+the tagged checkout to add a verified local build. Use a new version and tag
+when releasing changes to the application.
+
 ## Русский
 
 Установка описана в [install.ru.md](install.ru.md); задание локальному агенту —
