@@ -34,6 +34,7 @@ from .browser_mcp import register_browser_tools
 from .document_mcp import register_document_tools
 from .document_search_mcp import register_document_search_tools
 from .semantic_engine_mcp import register_semantic_engine_tools
+from .release_update_mcp import register_release_update_tools
 
 
 def create_mcp(port: int = 8765, project_id: str | None = None, data_map_id: str | None = None) -> FastMCP:
@@ -79,6 +80,7 @@ def create_mcp(port: int = 8765, project_id: str | None = None, data_map_id: str
     request = transport.request
     register_architecture_tools(server, request, selected_project)
     register_semantic_engine_tools(server, request, selected_project, project_id)
+    register_release_update_tools(server, request)
 
     def summary(view: dict) -> dict:
         """Возвращает ссылки и компактные факты, не заполняя MCP-контекст полным raw-графом."""

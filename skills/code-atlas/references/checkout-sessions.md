@@ -10,9 +10,16 @@
 2. Сохрани `sessionId`, `path`, `expiresAt`, `projectId`. ID проекта может совпадать
    у двух сессий одного пути: каждая операция обязана передавать **sessionId**.
    ownerKey — заявленная область задачи, не аутентификация.
-3. Опроси `get_checkout_map` до `project.status=completed` и доступного snapshot.
-   failed/partial/queued различай. При source-change ошибке сначала закончи серию
-   правок, затем явно `rebuild_checkout_map`; не запускай rebuild после сохранений.
+3. Пока карта строится, `search_checkout_file(sessionId, path, query?, limit?)`
+   ищет типы и вызываемые объявления в одном известном UTF-8 файле до 1 МиБ.
+   Передай точный путь от корня checkout через `/`. Запрос ищет подстроку имени
+   с учётом лексического владельца без учёта регистра. Сохраняй `sourceHash`,
+   `previewRevision`, координаты и `coverage`. Пустой или частичный результат
+   относится к этому файлу. Если поиск по графу без `snapshotId` вернул
+   `state=building`, используй `nextCalls`. Проверяй `get_checkout_map` с тем же
+   `sessionId` после `retryAfterMs` до `project.status=completed` и доступного
+   снимка. При ошибке изменения исходников
+   закончи серию правок и явно вызови `rebuild_checkout_map`.
 4. Найди raw-узлы через `search_checkout_nodes`; закрепи snapshotId. Прочитай
    `describe_checkout_node`, проверь sourceProvenance/readabilityRecommendations.
    Empty/unavailable рекомендации не доказывают читаемость.
@@ -47,8 +54,11 @@ builder. `deleting`/`cleanup-failed` не выдавай за завершённ
 `{"checkout":"<absolute checkout>","ownerKey":"<stable task key>"}`.
 POST `/api/checkout-sessions/ensure-with-reclaim` принимает то же тело.
 GET `/{sessionId}` — статус; POST `/{sessionId}/rebuild` с JSON `{}` — перестроение;
-DELETE `/{sessionId}` — завершение. Поиск POST `/{sessionId}/search`
-с query/snapshotId/limit, описание POST `/{sessionId}/describe` с snapshotId/nodeId;
+DELETE `/{sessionId}` — завершение. Ранний поиск POST `/{sessionId}/file-search`
+с path/query/limit. Поиск по снимку POST `/{sessionId}/search` с query/snapshotId/limit.
+Пока первый снимок строится, поиск без snapshotId возвращает HTTP 409 с кодом
+`CHECKOUT_MAP_BUILDING`, `jobId` и `retryAfterMs`. В MCP это результат
+`state=building` без списка узлов. Описание POST `/{sessionId}/describe` с snapshotId/nodeId;
 health/plan/compare используют существующие Atlas HealthQuery/Plan/Compare DTO.
 Все POST требуют application/json. Не угадывай скрытые маршруты.
 

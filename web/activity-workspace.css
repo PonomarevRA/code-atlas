@@ -97,3 +97,9 @@ html.native-window-commands .activity-shell { --workspace-chrome-height: 22px; }
 .workspace-controls.ag-window-shell-host>.ag-window-toolbar{flex:1;border:0;padding:0;background:transparent}
 html.native-window-commands .workspace-controls.ag-window-shell-host{display:none}
 #workspace-left[hidden],#workspace-right[hidden]{width:0!important}.workspace .ag-panel-resizer{z-index:33}
+
+/* Keep map navigation readable at narrow widths and retain the current map while details load. */
+.progressive-map-controls { display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 14px; }
+.progressive-map-controls[hidden] { display:none; }
+.progressive-map-controls > button { min-height:32px; }
+.progressive-map-controls > span { min-width:0; overflow-wrap:anywhere; }

@@ -20,6 +20,7 @@ from .technical_logs.http_api import register_technical_routes
 from .technical_logs.metrics import register_diagnostics_routes
 from .map_payload import serialize_graph
 from .map_exports import register_map_export_routes
+from .progressive_map_api import register_progressive_map_routes
 from .api_models import ProjectInput, RemoteRepositoryInput, NodeInput, QueryInput, AgentViewInput, AgentSearchInput
 
 from .mcp_bridge import describe_node, query_graph
@@ -109,6 +110,8 @@ def create_app(data_dir: Path | None = None, *, module_generations=None, desktop
     checkout_maps = create_checkout_maps(store.data_dir, store.graphify_runtime.selected)
     activity = ActivityJournal(store.data_dir)
     technical_logs = TechnicalJournal(store.data_dir)
+    from .release_updates import ReleaseUpdates
+    release_updates = ReleaseUpdates(store.data_dir)
     data_maps = DataMapStore(store.data_dir, maintenance=store.maintenance)
     documents = DocumentService(store)
     semantic = SemanticService(store)
@@ -152,11 +155,13 @@ def create_app(data_dir: Path | None = None, *, module_generations=None, desktop
         browser_sessions.start()
         analysis_contexts.start()
         checkout_maps.start()
+        release_updates.start()
         try:
             await asyncio.to_thread(references.start_initial_indexing)
             yield
         finally:
             http_state.request_stop()
+            release_updates.close()
             failure = None
             shutdown_services = (("temporary checkout maps", checkout_maps), ("map cleanup", cleanup), ("temporary analysis contexts", analysis_contexts), ("temporary browser sessions", browser_sessions), ("optional semantic engines", engine_enrichment), ("agent activity", activity), ("health refresh", health_refresh), ("research workflows", research), ("remote repositories", remote_repositories),
                                   ("document search", document_search), ("documents", documents), ("project store", store), ("semantic index", semantic), ("data maps", data_maps),
@@ -210,6 +215,8 @@ def create_app(data_dir: Path | None = None, *, module_generations=None, desktop
     app.state.health_refresh = health_refresh
     register_code_health_routes(app, app.state.code_health)
     register_agent_setup_routes(app, store)
+    from .release_update_api import register_release_update_routes
+    register_release_update_routes(app, release_updates)
     app.state.data_maps = data_maps
     register_data_routes(app, store, data_maps)
     app.state.documents = documents
@@ -280,7 +287,8 @@ def create_app(data_dir: Path | None = None, *, module_generations=None, desktop
         payload = {"error": str(error)}
         if getattr(error, 'code', None):
             payload['code'] = error.code
-            payload['jobId'] = error.job_id
+            if hasattr(error, 'job_id'):
+                payload['jobId'] = error.job_id
         return JSONResponse(payload, status_code=error.status)
 
     @app.exception_handler(SemanticIndexError)
@@ -378,6 +386,8 @@ def create_app(data_dir: Path | None = None, *, module_generations=None, desktop
     def job(job_id: str):
         """Возвращает состояние фоновой задачи."""
         return store.get_job(job_id)
+
+    register_progressive_map_routes(app, store)
 
     @app.get("/api/projects/{project_id}/graph")
     def graph(project_id: str, algorithm: str = DEFAULT_ALGORITHM,

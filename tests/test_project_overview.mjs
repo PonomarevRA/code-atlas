@@ -102,3 +102,16 @@ console.log('Project overview literal evidence, source task actions, snapshot gu
   assert.deepEqual(h.actions[0],['reload',null,{projectId:'a',snapshotId:'a-snapshot'}]);h.controller.dispose();
 }
 assert.throws(()=>validateOverview(dto(),{projectId:'a',snapshotId:null}),'a formerly unbuilt registration cannot silently borrow a new snapshot');
+
+{
+  const h=harness();
+  h.controller.sync({project:{id:'a'},snapshotId:'a-snapshot'});
+  h.controller.sync({project:{id:'b'},snapshotId:'b-snapshot',lazy:true});
+  assert.equal(h.requests[0].signal.aborted,true);
+  assert.equal(h.requests.length,1,'compact map defers the closed narrative overview');
+  h.controller.setOpen(true);
+  assert.equal(h.requests.length,2,'cancelled older request does not block opening');
+  h.requests[1].resolve(dto('b'));await flush();
+  assert.equal(h.root.hidden,false);
+  h.controller.dispose();
+}

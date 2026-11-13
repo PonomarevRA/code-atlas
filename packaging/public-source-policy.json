@@ -24,6 +24,7 @@
     ".gitlab-ci.yml",
     "README.md",
     "README.en.md",
+    "CHANGELOG.md",
     "INSTALL_AGENT.md",
     "AGENTS.md",
     "CLAUDE.md",
@@ -44,6 +45,7 @@
     "requirements-research.in"
   ],
   "requiredFiles": [
+    "CHANGELOG.md",
     "docs/install.ru.md",
     "docs/install.en.md",
     "mcp-config.example.json",

@@ -114,6 +114,14 @@ function blockAddress(value) {
     label: typeof value.label === 'string' ? value.label.slice(0, 200) : '' };
 }
 
+/** Keep only validated navigation coordinates for a bounded saved-map page. */
+function mapPartAddress(value) {
+  if (!value || typeof value !== 'object') return null;
+  const offset = number => Number.isSafeInteger(number) && number >= 0 && number <= 100000 ? number : 0;
+  return { projectScope: identifier(value.projectScope), groupId: identifier(value.groupId),
+    groups: value.groups === true, offset: offset(value.offset), projectOffset: offset(value.projectOffset), groupOffset: offset(value.groupOffset) };
+}
+
 /** Компактная запись сохраняет адрес, раскрытия, фильтры и камеру; неизвестные поля отбрасываются. */
 export function navigationSnapshot(value = {}) {
   if (!value || typeof value !== 'object') value = {};
@@ -123,6 +131,7 @@ export function navigationSnapshot(value = {}) {
   const search = value.searchContext || {};
   return {
     codeAtlasNavigation: 1, route: normalizeRoute(value.route), snapshotId: identifier(value.snapshotId),
+    ...(value.mapPart ? {mapPart:mapPartAddress(value.mapPart)} : {}),
     camera: validCamera ? { x: camera.x, y: camera.y, scale: camera.scale } : null,
     reader: value.route?.reading === 'methods' ? normalizeReaderState(value.reader) : null,
     methodPlacements: normalizeProgressivePlacements(value.methodPlacements),

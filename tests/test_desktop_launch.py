@@ -248,7 +248,21 @@ def test_desktop_window_menu_storage_and_exports(monkeypatch, tmp_path, platform
         return window
 
     options = {}
-    webview = SimpleNamespace(settings={}, create_window=create, start=lambda **kwargs: options.update(kwargs))
+
+    def start(**kwargs):
+        """Record renderer menus and trigger native registration only while the window is live."""
+        options.update(kwargs)
+        for handler in window.events.loaded:
+            handler()
+
+    webview = SimpleNamespace(settings={}, create_window=create, start=start)
+    native_help = []
+    window.run_js = lambda _script: False
+    monkeypatch.setattr("atlas.native_menu.install_native_menu", lambda *args, **kwargs: native_help.extend(kwargs["help_actions"]))
+    monkeypatch.setattr("atlas.native_toolbar.bind_sidebar_presentation", lambda *args, **kwargs: SimpleNamespace(close=lambda: None))
+    monkeypatch.setattr("atlas.native_toolbar.install_native_toolbar", lambda *args, **kwargs: None)
+    monkeypatch.setattr("desktop_support.background.BackgroundHandle.updates", lambda self: calls.append("check"))
+    monkeypatch.setattr("desktop_support.background.BackgroundHandle.releases", lambda self: calls.append("releases"))
     monkeypatch.setattr(desktop_window, "open_browser", calls.append)
     desktop_window.show_window(webview, "http://127.0.0.1:9876", tmp_path)
     assert options["gui"] == renderer and options["private_mode"] is False
@@ -256,11 +270,18 @@ def test_desktop_window_menu_storage_and_exports(monkeypatch, tmp_path, platform
     assert webview.settings == {"ALLOW_DOWNLOADS": True, "OPEN_EXTERNAL_LINKS_IN_BROWSER": True}
     if platform == "darwin":
         assert options["menu"] == [] and window.events.loaded
-        return
-    options["menu"][0].items[0].function()
-    assert calls == [current_url]
-    options["menu"][0].items[-1].function()
-    assert calls[-1] == "close"
+        help_actions = native_help
+    else:
+        assert [menu.title for menu in options["menu"]] == ["Atlas", "Help"]
+        options["menu"][0].items[0].function()
+        assert calls == [current_url]
+        options["menu"][0].items[-1].function()
+        assert calls[-1] == "close"
+        help_actions = [(action.title, action.function) for action in options["menu"][1].items]
+    assert [label for label, _ in help_actions] == ["Atlas Wiki", "Check for Updates…", "GitHub Releases"]
+    for _, action in help_actions:
+        action()
+    assert calls[-3:] == ["http://127.0.0.1:9876/wiki.html?desktop=1", "check", "releases"]
 
 
 def test_native_url_preserves_route_query_fragment():

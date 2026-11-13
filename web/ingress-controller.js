@@ -16,9 +16,30 @@ export function mergeIngressCatalogs(captured, full) {
 /** Контроллер производных входов: запрос, пагинация и детали; state остаётся у приложения. */
 export function createIngressController({ state, view, draw, controls, filteredNodes, selectNode, analyzePath, describeNode, onReady,
   navigateNode = selectNode, onSource = () => {}, revealDetails = () => {}, request = requestJson }) {
-  const catalog = createIngressCatalog({ state, filteredNodes, selectNode, selectEvidence: selectIngress, retry: loadIngress, analyzePath, describeNode });
+  let active = null;
+  const catalog = createIngressCatalog({ state, filteredNodes, selectNode, selectEvidence: selectIngress,
+    load: () => loadIngress(), retry: () => loadIngress({ force: true }), analyzePath, describeNode });
+  /** Share a request for the same project generation and allow the full scan to follow saved entries. */
+  function loadIngress({ capturedOnly = false, force = false } = {}) {
+    const ingress = state.ingress;
+    if (!state.project?.id || !state.graph.metadata?.snapshotId) return Promise.resolve();
+    if (active?.revision === ingress.revision) {
+      const current = active;
+      if (capturedOnly || !active.capturedOnly) return active.promise;
+      return active.promise.then(() => {
+        if (current.revision === ingress.revision) return loadIngress({ force });
+      });
+    }
+    if (!force && (ingress.infrastructureStatus === 'ready' || (capturedOnly && ingress.status !== 'idle'))) return Promise.resolve();
+    const request = { capturedOnly, revision: ingress.revision + 1, promise: null };
+    active = request;
+    request.promise = fetchIngress(capturedOnly).finally(() => {
+      if (active === request) active = null;
+    });
+    return request.promise;
+  }
   /** Читает отдельный индекс входов; отказ не блокирует основную карту, устаревший ответ отбрасывается. */
-  async function loadIngress() {
+  async function fetchIngress(capturedOnly) {
     const projectId = state.project?.id;
     const snapshotId = state.graph.metadata?.snapshotId;
     if (!projectId || !snapshotId) return;
@@ -26,12 +47,13 @@ export function createIngressController({ state, view, draw, controls, filteredN
     const controller = new AbortController();
     state.ingress.controller = controller;
     const revision = ++state.ingress.revision;
-    state.ingress.status = 'loading';
+    let captured = state.ingress.data;
+    state.ingress.status = captured ? 'ready' : 'loading';
+    state.ingress.infrastructureStatus = 'pending';
     state.ingress.message = 'Ищем тест-кейсы, входящие API и сообщения…';
     catalog.render();
     const endpoint = `/api/projects/${encodeURIComponent(projectId)}/entrypoints?snapshotId=${encodeURIComponent(snapshotId)}`;
     const isCurrent = () => revision === state.ingress.revision && state.project?.id === projectId && state.graph.metadata?.snapshotId === snapshotId;
-    let captured = null;
     /** Publishing one successful stage keeps test discovery independent of infrastructure scans. */
     function publish(data, infrastructureStatus) {
       state.ingress.data = data;
@@ -40,13 +62,13 @@ export function createIngressController({ state, view, draw, controls, filteredN
       state.ingress.message = data.warning || 'Статические свидетельства; производитель сообщения может быть неизвестен.';
       if (infrastructureStatus === 'pending') state.ingress.message += ' Прочие протоколы ещё загружаются; их количество неизвестно.';
       if (data.coverage?.scope !== 'captured-only' && data.coverage) state.ingress.message += ` Проверено файлов: ${data.coverage.readFiles} из ${data.coverage.candidateFiles}${data.coverage.limited ? ' · достигнут лимит поиска' : ''}.`;
-      draw(true);
+      draw(false);
       catalog.render();
       onReady?.();
     }
     try {
       const hasCaptured = state.graph.metadata?.entrypointDiscovery || state.graph.metadata?.testDiscovery?.coverage?.testEntries > 0;
-      if (hasCaptured) {
+      if (hasCaptured && !captured) {
         try {
           const data = await request(`${endpoint}&capturedOnly=true`, { signal: controller.signal });
           if (!isCurrent()) return;
@@ -56,9 +78,17 @@ export function createIngressController({ state, view, draw, controls, filteredN
         } catch (error) {
           if (error.name === 'AbortError' || !isCurrent()) return;
           // A missing old-server capture endpoint must not remove the existing full catalogue.
-          state.ingress.message = `Сохранённые входы недоступны: ${error.message}. Читаем общий каталог…`;
+          state.ingress.message = `Сохранённые входы недоступны: ${error.message}.`;
           catalog.render();
         }
+      }
+      if (capturedOnly) {
+        if (!captured) {
+          state.ingress.status = 'idle';
+          state.ingress.infrastructureStatus = null;
+        }
+        catalog.render();
+        return;
       }
       const full = await request(endpoint, { signal: controller.signal });
       if (!isCurrent()) return;
@@ -82,6 +112,9 @@ export function createIngressController({ state, view, draw, controls, filteredN
   /** Рисует отдельные производные входы и список; факты/числа исходного графа не меняются. */
   function renderIngress(architecture) {
     if (!$('show-ingress').checked) return;
+    if (state.ingress.status === 'idle' || state.ingress.infrastructureStatus === 'pending') {
+      loadIngress();
+    }
     if (state.ingress.status !== 'ready') {
       $('ingress-count').textContent = state.ingress.status === 'loading' ? '· индекс загружается' : '· индекс недоступен';
       $('ingress-status').textContent = state.ingress.message;

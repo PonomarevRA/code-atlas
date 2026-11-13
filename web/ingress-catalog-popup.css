@@ -5,3 +5,23 @@
 @media(max-width:700px){.ingress-catalog-dialog{width:calc(100vw - 12px);height:calc(100dvh - 12px);max-height:calc(100dvh - 12px)}.ingress-catalog-dialog #ingress-catalog-list{grid-template-columns:minmax(0,1fr)}.ingress-catalog-heading{padding:12px}.ingress-catalog-query{padding:8px 12px}.ingress-catalog-dialog #ingress-catalog{padding:8px 12px}.ingress-catalog-heading h2{font-size:19px}}
 
 .ingress-catalog-dialog .ingress-entry-title{flex:1 1 200px;min-height:0;padding:0;border:0;background:transparent;font-size:13px;font-weight:650;text-align:left;overflow-wrap:anywhere;color:var(--atlas-text,#203330)}.ingress-catalog-dialog .ingress-entry-title[aria-pressed=true]{color:var(--atlas-accent,#19725b)}.ingress-catalog-dialog .ingress-catalog-card small:first-of-type{flex-basis:auto}.ingress-catalog-dialog .catalog-handler{flex:1 1 200px}
+.ingress-catalog-dialog .atlas-loading-card {
+  display: grid;
+  align-content: center;
+  gap: 0.65rem;
+  min-block-size: 7rem;
+}
+.atlas-loading-card > span {
+  display: block;
+  min-block-size: 0.65rem;
+  border-radius: 0.3rem;
+  background: var(--atlas-surfaceAlt, #edf3ef);
+}
+.atlas-loading-card .atlas-loading-card-heading { inline-size: 65%; min-block-size: 0.95rem; }
+.atlas-loading-card .atlas-loading-card-line { inline-size: 84%; }
+.atlas-loading-card .atlas-loading-card-actions { inline-size: 46%; min-block-size: 1.25rem; }
+.ingress-catalog-dialog .ingress-catalog-paging span { min-inline-size: 0; }
+@media (max-width: 400px) {
+  .ingress-catalog-dialog .ingress-catalog-heading { gap: 8px; flex-wrap: wrap; }
+  .ingress-catalog-dialog .ingress-catalog-card button { max-inline-size: 100%; overflow-wrap: anywhere; }
+}

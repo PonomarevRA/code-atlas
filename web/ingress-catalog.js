@@ -2,8 +2,22 @@ import { $, el } from './dom.js';
 import { createEntryMemory } from './ingress-catalog-memory.js';
 import { IngressCatalogPopup } from './ingress-catalog-popup.js';
 import { projectSearchAliases, discoveryTerms, discoveryText } from './discovery-text.js';
+import { appendLoadingCards } from './loading-cards.js';
+
+/** Index entry evidence even when the handler is missing from the map projection. */
+function searchableEntry(entry, nodes) {
+  const fields = [entry.kind, entry.label, entry.topic, entry.route, entry.httpMethod, entry.queue,
+    entry.operationName, entry.mcpType, entry.handler, entry.settingsKey, entry.configFile, entry.file,
+    ...(entry.evidence || []).map(item => item.file)];
+  if (entry.kind === 'test') fields.push(entry.framework, ...(entry.tags || []), JSON.stringify(entry.metadata || []));
+  for (const id of entry.handlerNodeIds || []) {
+    const node = nodes.get(id);
+    if (node) fields.push(discoveryText(node));
+  }
+  return fields.join(' ').toLocaleLowerCase();
+}
 /** Ищет входы всего репозитория; фильтры карты ограничивают действие, а не скрывают результаты. */
-export function projectIngressCatalog(entries, { kind = '', query = '', nodes = new Map(), projects = [], availableIds = new Set(), page = 0, pageSize = 6, aliases = new Map(), allowedIds = null, order = [] } = {}) {
+export function projectIngressCatalog(entries, { kind = '', query = '', nodes = new Map(), projects = [], availableIds = new Set(), page = 0, pageSize = 6, aliases = new Map(), allowedIds = null, order = [], searchIndex = null } = {}) {
   const counts = { http: 0, mcp: 0, kafka: 0, rabbit: 0, test: 0 }, matchingCounts = { http: 0, mcp: 0, kafka: 0, rabbit: 0, test: 0 };
   const owners = new Map(projects.map(project => [String(project.id), project.label]));
   const terms = discoveryTerms(query, aliases);
@@ -11,33 +25,40 @@ export function projectIngressCatalog(entries, { kind = '', query = '', nodes = 
   for (const entry of entries) {
     if (Object.hasOwn(counts, entry.kind)) counts[entry.kind]++;
     if (allowedIds && !allowedIds.has(entry.id)) continue;
-    const handlers = [];
-    for (const id of entry.handlerNodeIds || []) {
-      const node = nodes.get(id);
-      if (node) handlers.push({ node, available: availableIds.has(id) });
+    if (terms.length) {
+      let searchable = searchIndex?.get(entry);
+      if (searchable === undefined) {
+        searchable = searchableEntry(entry, nodes);
+        searchIndex?.set(entry, searchable);
+      }
+      if (!terms.every(choices => choices.some(term => searchable.includes(term)))) continue;
     }
-    let searchable = `${entry.label || ''} ${entry.topic || ''} ${entry.route || ''} ${entry.queue || ''} ${entry.operationName || ''} ${entry.mcpType || ''}`;
-    if (entry.kind === 'test') searchable += ` ${entry.framework || ''} ${(entry.tags || []).join(' ')} ${JSON.stringify(entry.metadata || [])} ${entry.file || ''}`;
-    for (const handler of handlers) searchable += ` ${discoveryText(handler.node)}`;
-    searchable = searchable.toLocaleLowerCase();
-    if (!terms.every(choices => choices.some(term => searchable.includes(term)))) continue;
     if (Object.hasOwn(matchingCounts, entry.kind)) matchingCounts[entry.kind]++;
     if (kind && entry.kind !== kind) continue;
-    results.push({ ...entry, handlers, projectLabel: owners.get(String(entry.codeProjectId)) || 'Без проекта' });
+    results.push(entry);
   }
   const ranks = new Map(order.map((id, index) => [id, index]));
   results.sort((a, b) => (ranks.get(a.id) ?? Infinity) - (ranks.get(b.id) ?? Infinity) || String(a.topic || a.route || a.queue || a.label).localeCompare(String(b.topic || b.route || b.queue || b.label)) || String(a.id).localeCompare(String(b.id)));
   const size = Math.max(1, Math.min(20, Math.trunc(pageSize) || 6));
   const pageCount = Math.max(1, Math.ceil(results.length / size));
   const currentPage = Math.max(0, Math.min(pageCount - 1, Math.trunc(page) || 0));
-  return { counts, matchingCounts, total: results.length, entries: results.slice(currentPage * size, (currentPage + 1) * size), page: currentPage, pageCount };
+  const pageEntries = results.slice(currentPage * size, (currentPage + 1) * size).map(entry => {
+    const handlers = [];
+    for (const id of entry.handlerNodeIds || []) {
+      const node = nodes.get(id);
+      if (node) handlers.push({ node, available: availableIds.has(id) });
+    }
+    return { ...entry, handlers, projectLabel: owners.get(String(entry.codeProjectId)) || 'Без проекта' };
+  });
+  return { counts, matchingCounts, total: results.length, entries: pageEntries, page: currentPage, pageCount };
 }
 /** Управляет независимым каталогом; не перерисовывает карту при поиске и пагинации. */
-export function createIngressCatalog({ state, filteredNodes, selectNode, selectEvidence, retry, analyzePath, describeNode, memory = createEntryMemory() }) {
+export function createIngressCatalog({ state, filteredNodes, selectNode, selectEvidence, load, retry, analyzePath, describeNode, memory = createEntryMemory() }) {
   let page = 0;
   let kind = '';
   let explicitKind = false, indexedProject = null;
   let indexedNodes = null, aliases = new Map(), listScope = null;
+  let searchIndex = new WeakMap();
   let preferences = memory.read(null);
   const popup = new IngressCatalogPopup($('ingress-catalog-dialog'), $('ingress-catalog-search'));
   /** Сохраняет только компактный выбор пользователя; граф и результаты не сериализуются. */
@@ -68,7 +89,9 @@ export function createIngressCatalog({ state, filteredNodes, selectNode, selectE
     } else if (preferences.selectedId && ready && state.ingress.infrastructureStatus !== 'pending') {
       $('ingress-catalog-last').append(el('span', 'Запомненный вход отсутствует в доступном каталоге этого снимка.', 'small muted'));
     }
-    $('ingress-catalog-summary').textContent = ready ? `${state.ingress.data.entries.length} входов · избранные и последние сохраняются для репозитория` : 'Индекс точек входа загружается…';
+    $('ingress-catalog-summary').textContent = ready
+      ? `${state.ingress.data.entries.length} входов · избранные и последние сохраняются для репозитория`
+      : state.ingress.status === 'loading' ? 'Индекс точек входа загружается…' : 'Входы доступны в каталоге репозитория.';
   }
   /** Показывает состояние загрузки явно: неизвестное количество никогда не выдаётся за ноль. */
   function render() {
@@ -81,14 +104,21 @@ export function createIngressCatalog({ state, filteredNodes, selectNode, selectE
       $('ingress-catalog-search').value = preferences.query;
     }
     if (ready && !explicitKind && state.ingress.data?.entries.some(entry => entry.kind === 'test')) kind = 'test';
-    if (indexedNodes !== state.nodes) { indexedNodes = state.nodes; aliases = projectSearchAliases(state.nodes.values()); }
+    if (ready && indexedNodes !== state.nodes) {
+      indexedNodes = state.nodes;
+      aliases = projectSearchAliases(state.nodes.values());
+      searchIndex = new WeakMap();
+    }
     const scopeIds = preferences.scope === 'favorites' ? preferences.favorites : preferences.scope === 'recent' ? preferences.recent : null;
-    const catalog = projectIngressCatalog(state.ingress.data?.entries || [], { pageSize: 20, allowedIds: scopeIds ? new Set(scopeIds) : null, order: preferences.scope === 'recent' ? preferences.recent : [], kind, aliases, query: $('ingress-catalog-search').value, nodes: state.nodes, projects: state.graph.codeProjects || [], availableIds: new Set(filteredNodes(false).map(node => node.id)), page });
+    const catalog = projectIngressCatalog(state.ingress.data?.entries || [], { pageSize: 20, allowedIds: scopeIds ? new Set(scopeIds) : null, order: preferences.scope === 'recent' ? preferences.recent : [], kind, aliases, searchIndex, query: $('ingress-catalog-search').value, nodes: state.nodes, projects: state.graph.codeProjects || [], availableIds: new Set(ready ? filteredNodes(false).map(node => node.id) : []), page });
     page = catalog.page;
+    const coverage = state.ingress.data?.infrastructureCoverage;
+    const partial = ready && coverage?.complete === false;
     $('ingress-catalog-types').replaceChildren();
     for (const [id, label] of kinds) {
       let count = ready ? id ? catalog.counts[id] : state.ingress.data.entries.length : '…';
       if (ready && ['pending', 'error'].includes(state.ingress.infrastructureStatus) && ['http', 'mcp', 'kafka', 'rabbit'].includes(id)) count = catalog.counts[id] ? `≥${catalog.counts[id]}` : '…';
+      if (partial && ['kafka', 'rabbit'].includes(id)) count = catalog.counts[id] ? `≥${catalog.counts[id]}` : 'не проверено полностью';
       const button = el('button', `${label} · ${count}`, id === kind ? 'selected' : '');
       button.setAttribute('aria-pressed', id === kind);
       button.addEventListener('click', () => { kind = id; explicitKind = true; page = 0; save(); render(); });
@@ -98,6 +128,11 @@ export function createIngressCatalog({ state, filteredNodes, selectNode, selectE
     const message = status === 'loading' ? 'Ищем входы во всём репозитории…' : status === 'error' ? state.ingress.message : !ready ? 'Выберите репозиторий и дождитесь индекса входов.' : `${catalog.total} результатов во всём репозитории · страница ${page + 1} из ${catalog.pageCount}. Каталог не ограничен текущей страницей карты; фильтры карты сохраняются.`;
     $('ingress-catalog-status').textContent = `${preferences.scope === 'all' ? '' : preferences.scope === 'favorites' ? 'Избранные · ' : 'Недавние · '}${message}`;
     if (ready && ['pending', 'error'].includes(state.ingress.infrastructureStatus)) $('ingress-catalog-status').textContent += ` ${state.ingress.message}`;
+    if (partial && (!kind || kind === 'kafka' || kind === 'rabbit')) $('ingress-catalog-status').textContent += ' Проверка подписок неполная.';
+    const publishSites = state.ingress.data?.kafkaPublishSites;
+    if (ready && kind === 'kafka' && !catalog.counts.kafka && publishSites > 0) {
+      $('ingress-catalog-status').textContent += ` Найдено мест отправки в Kafka: ${publishSites}. Здесь показаны подписки.`;
+    }
     const discovery = state.ingress.data?.testDiscovery;
     if (ready && kind === 'test' && discovery?.status === 'partial') {
       $('ingress-catalog-status').textContent += ` Обнаружение неполное: ${discovery.coverage?.unresolvedDeclarations ?? '?'} объявлений не сопоставлены с картой. Список не гарантирует все тесты.`;
@@ -113,11 +148,14 @@ export function createIngressCatalog({ state, filteredNodes, selectNode, selectE
     const scope = JSON.stringify([indexedProject, kind, preferences.scope, $('ingress-catalog-search').value, page]);
     if (scope !== listScope) { list.scrollTop = 0; listScope = scope; }
     list.replaceChildren();
+    const waiting = status === 'loading' || (state.ingress.infrastructureStatus === 'pending' && kind !== 'test' && !catalog.entries.length);
+    list.setAttribute('aria-busy', String(waiting));
+    if (waiting) appendLoadingCards(list, 4);
     if (!ready) return;
     if (kind === 'test' && catalog.total) list.append(el('p', 'С чего начать: выберите тест-кейс, изучите его данные и подготовку, затем откройте схему от теста.', 'test-study-hint'));
-    if (!catalog.entries.length) {
-      const incomplete = ['pending', 'error'].includes(state.ingress.infrastructureStatus) && kind !== 'test';
-      list.append(el('p', incomplete ? 'Общий поиск входов ещё не завершён. Отсутствие записей здесь не означает ноль входов.' : 'Подходящих входов в выбранном виде не найдено. Это не доказывает их отсутствие в программе.', 'small muted'));
+    if (!catalog.entries.length && !waiting) {
+      const incomplete = state.ingress.infrastructureStatus === 'error' && kind !== 'test';
+      list.append(el('p', incomplete ? 'Общий поиск входов недоступен.' : 'Подходящих входов в проверенных источниках не найдено.', 'small muted'));
       // Alternatives use this query's matches; changing protocol always requires an explicit action.
       for (const [id, label] of kinds) {
         if (!id || id === kind || !catalog.matchingCounts[id]) continue;
@@ -146,7 +184,7 @@ export function createIngressCatalog({ state, filteredNodes, selectNode, selectE
         card.append(el('small', 'Результат запуска неизвестен'));
       }
       if (entry.configFile) card.append(el('small', `Конфигурация: ${entry.configFile}`));
-      if (!entry.handlers.length) card.append(el('p', 'Обработчик не сопоставлен с символом графа.', 'small muted'));
+      if (!entry.handlers.length) card.append(el('p', entry.handler ? `${entry.handler} · символ не сопоставлен` : 'Обработчик не сопоставлен с символом графа.', 'small muted'));
       for (const handler of entry.handlers) {
         card.append(el('span', handler.node.label || handler.node.id, 'catalog-handler'));
         const button = el('button', 'Открыть обработчик');
@@ -183,10 +221,12 @@ export function createIngressCatalog({ state, filteredNodes, selectNode, selectE
   $('ingress-catalog-previous').addEventListener('click', () => { page--; save(); render(); });
   $('ingress-catalog-next').addEventListener('click', () => { page++; save(); render(); });
   $('ingress-catalog-retry').addEventListener('click', retry);
-  $('ingress-catalog-open').addEventListener('click', () => { render(); popup.open(); });
-  $('ingress-catalog-toolbar-open')?.addEventListener('click', () => { render(); popup.open(); });
+  /** Open with immediate focus and request the full catalog on demand. */
+  function open() { popup.open(); load?.(); render(); }
+  $('ingress-catalog-open').addEventListener('click', open);
+  $('ingress-catalog-toolbar-open')?.addEventListener('click', open);
   $('ingress-catalog-close').addEventListener('click', () => popup.close());
   /** Сбрасывает поисковую область при смене репозитория, сохраняя явный выбор вида входов. */
   function reset() { popup.close(); page = 0; explicitKind = false; indexedProject = null; $('ingress-catalog-search').value = ''; }
-  return { render, reset, open: () => { render(); popup.open(); }, close: () => popup.close() };
+  return { render, reset, open, close: () => popup.close() };
 }

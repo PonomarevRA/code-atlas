@@ -26,7 +26,7 @@ export function requestLoadingLabel(url, options = {}) {
       || /\/(?:code-health\/refresh|documentation-index|semantic-enrichment|health)$/.test(path)
       || /\/(?:agent-activity|usage)(?:\/|$)/.test(path))) return null;
   if (/wiki/.test(path)) return labels.wiki;
-  if (/\/(?:graph|architecture)(?:\/|$)/.test(path)) return labels.graph;
+  if (/\/(?:graph|architecture|map-overview|map-group)(?:\/|$)/.test(path)) return labels.graph;
   if (/\/(?:source|source-search)(?:\/|$)/.test(path)) return labels.source;
   if (/\/(?:node-description|node-facts|node-attributes|method-flow|ast)(?:\/|$)/.test(path)) return labels.node;
   if (/search|query/.test(path)) return labels.search;

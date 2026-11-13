@@ -6,7 +6,9 @@ from fastapi import FastAPI, Path
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
+from .checkout_file_search import search_checkout_file
 from .checkout_maps import CheckoutMapError, CheckoutMaps
+from .checkout_maps.errors import CheckoutMapBuilding
 from .code_health_comparison import compare_assessments
 from .code_health_models import HealthQuery, HealthPlanQuery, HealthCompareQuery
 from .code_health_planning import plan_changes
@@ -69,6 +71,14 @@ class CheckoutSearchInput(BaseModel):
     limit: int = Field(default=40, ge=1, le=120, strict=True)
 
 
+class CheckoutFileSearchInput(BaseModel):
+    """Search declarations in one exact relative source path before or after publication."""
+    model_config = ConfigDict(extra='forbid')
+    path: str = Field(min_length=1, max_length=4096)
+    query: str = Field(default='', max_length=500)
+    limit: int = Field(default=20, ge=1, le=40, strict=True)
+
+
 class CheckoutNodeInput(BaseModel):
     """Pin an existing raw node inside one private snapshot."""
     model_config = ConfigDict(extra='forbid')
@@ -107,7 +117,11 @@ def register_checkout_routes(app: FastAPI, sessions) -> None:
     @app.exception_handler(CheckoutMapError)
     async def checkout_error(request, error):
         """Expose the controlled checkout failure without a traceback."""
-        return JSONResponse({'error': str(error), 'code': error.code}, status_code=error.status)
+        payload = {'error': str(error), 'code': error.code}
+        if isinstance(error, CheckoutMapBuilding):
+            payload.update(error.details)
+            return JSONResponse(payload, status_code=error.status, headers={'Retry-After': '1'})
+        return JSONResponse(payload, status_code=error.status)
 
     @app.post('/api/checkout-sessions', status_code=202)
     def ensure(body: CheckoutEnsureInput):
@@ -143,10 +157,23 @@ def register_checkout_routes(app: FastAPI, sessions) -> None:
     def search(session_id: SessionId, body: CheckoutSearchInput):
         """Search one actual Atlas snapshot; only a successfully bounded read renews TTL."""
         with sessions.access(session_id) as entry:
+            if body.snapshotId is None:
+                state = entry.store.list_projects()
+                project = next(row for row in state['projects'] if row['id'] == entry.project_id)
+                job = state.get('activeJob')
+                if (job and not project.get('snapshotId')
+                        and project['status'] in {'queued', 'running'}):
+                    raise CheckoutMapBuilding(session_id, entry.project_id, project['status'], job['id'])
             result = entry.store.search_project_nodes(entry.project_id, body.snapshotId,
                                                       body.query, body.limit, None)
             entry.store.assert_snapshot(entry.project_id, result['snapshotId'])
             return _bounded(session_id, result)
+
+    @app.post('/api/checkout-sessions/{session_id}/file-search')
+    def file_search(session_id: SessionId, body: CheckoutFileSearchInput):
+        """Return current file declarations independently of the published graph."""
+        with sessions.access(session_id) as entry:
+            return _bounded(session_id, search_checkout_file(entry, body.path, body.query, body.limit))
 
     @app.post('/api/checkout-sessions/{session_id}/describe')
     def describe(session_id: SessionId, body: CheckoutNodeInput):

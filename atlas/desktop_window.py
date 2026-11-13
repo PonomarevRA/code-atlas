@@ -90,17 +90,28 @@ def show_window(webview, url: str, data_dir: Path, *, on_shutdown=None, automati
     ]
     if sys.platform == "darwin":
         items.insert(1, MenuAction("Выбрать папку проекта для чтения…", folder_access_action(window, webview, url)))
-    menu = [Menu("Atlas", items)]
     from desktop_support import bind_background
     from .runtime_paths import APP_VERSION
+    from .release_updates import edition_releases_url
     restore_shutdown = None
     background = bind_background(
         window, app_id="code-atlas", title="Code Atlas", origin=url,
         on_quit=lambda: restore_shutdown.request_quit() if restore_shutdown else window.destroy(),
         open_activity=open_agent_requests,
-        data_directory=data_dir, current_version=APP_VERSION,
+        data_directory=data_dir, current_version=APP_VERSION, releases_index=edition_releases_url(),
     )
     window._standalone_background = background
+
+    def open_wiki():
+        """Open the local wiki in the same native window."""
+        window.load_url(desktop_url(url + "/wiki.html"))
+
+    help_actions = (
+        ("Atlas Wiki", open_wiki),
+        ("Check for Updates…", background.updates),
+        ("GitHub Releases", background.releases),
+    )
+    menu = [Menu("Atlas", items), Menu("Help", [MenuAction(label, action) for label, action in help_actions])]
     presentation = None
     if sys.platform == "darwin":
         from .native_menu import install_native_menu
@@ -124,7 +135,7 @@ def show_window(webview, url: str, data_dir: Path, *, on_shutdown=None, automati
                 ("Code Maps", lambda: window.load_url(desktop_url(url + "/"))),
                 ("Language Documentation", lambda: window.load_url(desktop_url(url + "/language-docs.html"))),
                 ("Technical Page", lambda: window.load_url(desktop_url(url + "/technical.html"))),
-            ), help_actions=(("Atlas Wiki", lambda: window.load_url(desktop_url(url + "/wiki.html"))),))
+            ), help_actions=help_actions)
             from .native_toolbar import install_native_toolbar
             from .native_navigation import MapNavigation
             navigation = MapNavigation(window, presentation) if supported else None

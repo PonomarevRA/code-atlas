@@ -11,6 +11,37 @@ from .browser_errors import BrowserSessionError
 MAX_HTTP_RESPONSE_BYTES = 16 * 1024 * 1024
 
 
+class CheckoutBuildPending(ValueError):
+    """Bounded building metadata from an exact temporary graph-search request."""
+
+    def __init__(self, details):
+        """Preserve the server's session and build IDs for an actionable MCP result."""
+        super().__init__('The temporary checkout map is building.')
+        self.details = details
+
+
+def _checkout_build_pending(method, path, body, status, content):
+    """Recognize only an unpinned checkout-search conflict with the exact pending schema."""
+    parts = path.split('/')
+    if (status != 409 or method != 'POST' or not body or body.get('snapshotId') is not None
+            or len(parts) != 5 or parts[1:3] != ['api', 'checkout-sessions'] or parts[4] != 'search'):
+        return None
+    try:
+        payload = json.loads(content)
+    except ValueError:
+        return None
+    if (not isinstance(payload, dict) or payload.get('code') != 'CHECKOUT_MAP_BUILDING'
+            or payload.get('state') != 'building' or payload.get('checkoutSessionId') != parts[3]
+            or payload.get('buildStatus') not in ('queued', 'running')
+            or type(payload.get('retryAfterMs')) is not int or not 1 <= payload['retryAfterMs'] <= 30_000):
+        return None
+    for key in ('projectId', 'jobId'):
+        if not isinstance(payload.get(key), str) or not 1 <= len(payload[key]) <= 128:
+            return None
+    return {key: payload[key] for key in ('code', 'state', 'checkoutSessionId', 'projectId',
+                                          'buildStatus', 'jobId', 'retryAfterMs')}
+
+
 def _error_message(content: bytes) -> str:
     """Expose short field-level validation guidance without echoing rejected source/input values."""
     fallback = "проверьте снимок и выбранные узлы"
@@ -93,6 +124,9 @@ class LoopbackTransport:
                 if path.startswith('/api/browser-sessions'):
                     # Never parse page-dependent error text or reflect remote recovery fields.
                     raise BrowserSessionError('Browser request rejected by Atlas', response.status_code)
+                pending = _checkout_build_pending(method, path, body, response.status_code, content)
+                if pending is not None:
+                    raise CheckoutBuildPending(pending)
                 message = _error_message(content)
                 raise ValueError(f"Atlas отклонил запрос (HTTP {response.status_code}): {message}")
             try:

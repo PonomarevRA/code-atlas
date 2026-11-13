@@ -8,12 +8,13 @@ from pydantic import Field
 
 from .code_health_models import DraftFile, HealthCompareQuery, HealthPlanQuery, HealthProjection, HealthQuery
 from .mcp_response_budget import json_bytes
+from .mcp_transport import CheckoutBuildPending
 
 
 CHECKOUT_TOOLS = [
     'ensure_checkout_map', 'ensure_checkout_map_with_reclaim', 'list_checkout_maps',
     'get_checkout_map', 'rebuild_checkout_map',
-    'finish_checkout_map', 'search_checkout_nodes', 'describe_checkout_node',
+    'finish_checkout_map', 'search_checkout_nodes', 'search_checkout_file', 'describe_checkout_node',
     'get_checkout_code_health', 'plan_checkout_code_changes', 'compare_checkout_code_health',
 ]
 Session = Annotated[str, Field(pattern=r'^[a-f0-9]{32}$')]
@@ -64,7 +65,8 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
         Use a stable task-specific ownerKey. Different agents/tasks receive separate folders;
         permanent registrations/maps and checkout files stay unchanged. The map expires one
         hour after its last successful useful read. Poll get_checkout_map while building;
-        polling, list and ensure reuse do not keep it alive. Never infer readiness from a handle.
+        polling, list and ensure reuse do not keep it alive. Use search_checkout_file for a
+        known source path during the build. Never infer graph readiness from a handle.
         """
         return await call('POST', body={'checkout': checkout, 'ownerKey': ownerKey, 'label': label})
 
@@ -138,8 +140,36 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
                                     query: Annotated[str, Field(max_length=500)] = '',
                                     snapshotId: Identity | None = None,
                                     limit: Annotated[int, Field(strict=True, ge=1, le=120)] = 40) -> dict:
-        """Find actual raw nodes in the temporary Atlas map; save returned snapshotId for later reads."""
-        return await call('POST', sessionId, '/search', {'query': query, 'snapshotId': snapshotId, 'limit': limit})
+        """
+        Find actual raw nodes in the temporary Atlas map; save snapshotId for later reads.
+
+        Before the first snapshot, unpinned search may return state=building, retryAfterMs
+        and nextCalls. Continue with the same session; the response carries no search results.
+        """
+        try:
+            return await call('POST', sessionId, '/search', {'query': query, 'snapshotId': snapshotId, 'limit': limit})
+        except CheckoutBuildPending as pending:
+            return {**pending.details, 'temporary': True,
+                    'message': 'Atlas строит карту. Для известного файла можно искать объявления уже сейчас.',
+                    'nextCalls': [
+                        {'tool': 'get_checkout_map', 'arguments': {'sessionId': sessionId}},
+                        {'tool': 'search_checkout_file', 'arguments': {'sessionId': sessionId}, 'requires': ['path']},
+                    ]}
+
+    @server.tool(annotations=read)
+    async def search_checkout_file(sessionId: Session,
+                                   path: Annotated[str, Field(min_length=1, max_length=4096)],
+                                   query: Annotated[str, Field(max_length=500)] = '',
+                                   limit: Annotated[int, Field(strict=True, ge=1, le=40)] = 20) -> dict:
+        """
+        Search static declarations in one exact repository-relative file, even while a map builds.
+
+        Matches use a case-insensitive substring of the lexical name, optionally qualified by
+        its owner. Coordinates and sourceHash identify the working-tree bytes. Use get_checkout_map
+        and search_checkout_nodes for graph IDs and dependency work after snapshot publication.
+        A partial or empty result applies only to the requested file and reported coverage.
+        """
+        return await call('POST', sessionId, '/file-search', {'path': path, 'query': query, 'limit': limit})
 
     @server.tool(annotations=read)
     async def describe_checkout_node(sessionId: Session, snapshotId: Identity,

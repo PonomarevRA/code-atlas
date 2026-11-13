@@ -5,7 +5,9 @@
 Опубликуйте исходники в каждой редакции и отправьте тег `v<version>`, где
 `version` совпадает с `packaging/desktop-product.json`. GitHub Actions собирает
 нативные установщики из исходников этого тега. Публичная сборка проходит аудит
-экспорта перед упаковкой.
+экспорта перед упаковкой. Для тега добавьте в [CHANGELOG.md](../CHANGELOG.md)
+1–5 коротких изменений для пользователя на русском и английском. Скрипт
+проверяет раздел версии и публикует его вместе с инструкцией установки.
 
 Для проверенной локальной сборки запустите из checkout соответствующего тега
 `python tools/publish_native_release.py --repo OWNER/REPO --tag v<version> --assets PATH`.
@@ -17,7 +19,9 @@
 After pushing the source commit for each edition, push the matching `v<version>`
 tag to build native installers in GitHub Actions. Run the same publisher from
 the tagged checkout to add a verified local build. Use a new version and tag
-when releasing changes to the application.
+when releasing changes to the application. Record one to five user-facing
+changes in Russian and English in [CHANGELOG.md](../CHANGELOG.md). The
+publisher validates that section and includes it in the GitHub Release.
 
 ## Русский
 

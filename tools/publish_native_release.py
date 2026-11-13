@@ -9,6 +9,11 @@ import re
 import subprocess
 import tempfile
 
+if __package__:
+    from .release_changelog import release_changelog
+else:
+    from release_changelog import release_changelog
+
 
 REPOSITORY = 'PonomarevRA/code-atlas'
 TARGETS = {'darwin': ('macos', 'dmg'), 'linux': ('linux', 'tar.gz'), 'win32': ('windows', 'exe')}
@@ -116,6 +121,7 @@ def main():
     parser.add_argument('--tag', required=True)
     parser.add_argument('--assets', required=True, type=Path)
     parser.add_argument('--notes', default=Path('docs/native-release-notes.md'), type=Path)
+    parser.add_argument('--changelog', default=Path('CHANGELOG.md'), type=Path)
     parser.add_argument('--check', action='store_true', help='Validate assets without contacting GitHub')
     args = parser.parse_args()
     product = json.loads(Path('packaging/desktop-product.json').read_text())
@@ -125,6 +131,10 @@ def main():
     edition = 'public' if Path('PUBLIC_SOURCE_MANIFEST.json').is_file() else 'private'
     if args.repo != REPOSITORY + ('-private' if edition == 'private' else ''):
         parser.error('Checkout edition does not match the target repository')
+    try:
+        changelog = release_changelog(args.changelog, version)
+    except (OSError, ValueError) as error:
+        parser.error(str(error))
     groups = installer_groups(args.assets.resolve(), version, edition)
     if args.check:
         print(f'{len(groups)} verified {edition} installer group(s)')
@@ -135,7 +145,10 @@ def main():
     remote = json.loads(gh('api', f'repos/{args.repo}/commits/{args.tag}').stdout)['sha']
     if commit != remote:
         parser.error('GitHub tag does not resolve to this source commit')
-    publish(args.repo, args.tag, groups, args.notes)
+    with tempfile.TemporaryDirectory() as directory:
+        notes = Path(directory) / 'notes.md'
+        notes.write_text(changelog + '\n' + args.notes.read_text(encoding='utf-8'), encoding='utf-8')
+        publish(args.repo, args.tag, groups, notes)
 
 
 if __name__ == '__main__':

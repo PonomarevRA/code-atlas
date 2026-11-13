@@ -80,7 +80,7 @@ export function createMapBlocks({ state, view, filteredNodes, communityId, selec
   }
   /** Исходные координаты принадлежат области карты; раскрытия и выбор не меняют эту основу. */
   function prepare(items, overview, initialGeometry) {
-    if (isSystemMode() || state.pathOnGraph) { view.inlineSceneActive = false; return false; }
+    if (isSystemMode() || state.pathOnGraph || state.progressiveMap) { view.inlineSceneActive = false; return false; }
     const scope = JSON.stringify([state.graph.metadata?.snapshotId, state.algorithm, view.displayProvider,
       $('view-mode').value, $('relation').value, $('architecture-preset').value,
       $('project-blocks')?.checked, overview, items.map(item => String(item.id)).sort()]);

@@ -110,6 +110,7 @@ def _entry(item: dict, source: dict, handler_index: dict, topic: dict | None = N
     identifier = "entry-" + hashlib.sha256(json.dumps(identity, ensure_ascii=False).encode()).hexdigest()[:20]
     return {
         "id": identifier, "kind": kind, "label": label, "origin": origin,
+        "handler": item.get("handler"), "settingsKey": item.get("settingsKey"),
         "route": route, "topic": topic_name, "queue": queue, "httpMethod": item.get("httpMethod"),
         "handlerNodeIds": handlers, "codeProjectId": source["codeProjectId"],
         "evidence": evidence, "confidence": "unresolved" if unresolved else "static",
@@ -152,6 +153,10 @@ def build_entrypoints(project_path: Path, graph: dict, snapshot_id: str) -> dict
     from .infrastructure.index import infrastructure_index
     from .infrastructure.entrypoints import registered_entries
     infrastructure = infrastructure_index(project_path, graph, snapshot_id)
+    kafka_publish_sites = sum(
+        fact["kind"] == "kafka" and fact["operation"] == "publishes"
+        for facts in infrastructure.facts.values() for fact in facts
+    )
     for entry in registered_entries(infrastructure, nodes):
         entries[entry['id']] = entry
     captured_tests = graph.get('metadata', {}).get('testDiscovery', {})
@@ -163,6 +168,7 @@ def build_entrypoints(project_path: Path, graph: dict, snapshot_id: str) -> dict
         "warning": "Тесты — объявления сохранённого снимка; API и сообщения — статический поиск в текущих файлах. Счётчик проверенных файлов относится к текущему поиску API и сообщений. Условия компиляции, окружение и выполнение не вычисляются. Отсутствие найденной точки не доказывает её отсутствие.",
         "coverage": coverage,
         "infrastructureCoverage": infrastructure.coverage,
+        "kafkaPublishSites": kafka_publish_sites,
         "testDiscovery": {key: value for key, value in captured_tests.items() if key != 'entries'},
         "analysisMods": graph.get('metadata', {}).get('analysisMods', {}),
     }

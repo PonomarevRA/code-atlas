@@ -35,6 +35,8 @@ for package in ['html5lib', 'cssselect2', 'tinycss2', 'webencodings']:
     hiddenimports += collect_submodules(package)
 datas = [(str(root / 'web'), 'web'), (str(root / 'skills'), 'skills'),
          (str(root / 'packaging' / 'assets'), 'packaging/assets')]
+if (root / 'PUBLIC_SOURCE_MANIFEST.json').is_file():
+    datas.append((str(root / 'PUBLIC_SOURCE_MANIFEST.json'), '.'))
 from browser_privacy_pack import privacy_pack_data
 datas += privacy_pack_data(root)
 roslyn_directory = os.environ.get('ATLAS_ROSLYN_WORKER_ROOT')
@@ -117,6 +119,6 @@ if sys.platform == 'win32':
 collection = COLLECT(*executables, analysis.binaries, analysis.datas, name='CodeAtlas')
 if sys.platform == 'darwin':
     bundle = BUNDLE(collection, name='Code Atlas.app', icon=str(icon) if icon.is_file() else None,
-                    bundle_identifier='local.code-atlas.desktop', version='0.1.6',
+                    bundle_identifier='local.code-atlas.desktop', version='0.1.7',
                     info_plist={'CFBundleDisplayName': 'Code Atlas', 'NSHighResolutionCapable': True,
                                 'NSDocumentsFolderUsageDescription': 'Code Atlas читает выбранные вами локальные репозитории для построения карт и просмотра исходников.'})

@@ -30,6 +30,7 @@ from .graph_context import read_graph_node, read_graph_neighbors
 from .project_storage import snapshot_directory, temporary_extraction_cache
 from .semantic_overlay import SemanticOverlayReader
 from .snapshot_objects import write_snapshot, read_snapshot
+from .progressive_map import publish_progressive_map
 from .map_maintenance import MapMaintenance, guard_executor, map_operation
 
 
@@ -221,6 +222,7 @@ class ProjectStore:
             # The canonical graph contains every fact. Graphify's larger compatible
             # projection is derived only when an actual Graphify client requests it.
             write_snapshot(graph_path, encode_health_payloads(graph))
+            publish_progressive_map(self.data_dir, graph_path, graph)
             with self.lock:
                 # Неуспешная сборка сюда не попадает и не сбрасывает прошлый разбор.
                 assert_analysis_rules_current(self.mods, analysis_rules, inventory=inventory)

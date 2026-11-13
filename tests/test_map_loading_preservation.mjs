@@ -2,11 +2,16 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {beginLoading, loadingSnapshot} from '../web/loading-state.js';
+import {mapOverviewGraph, mapPartPath} from '../web/progressive-map.js';
 
 const source = await readFile(new URL('../web/app.js', import.meta.url), 'utf8');
 // app.js boots the browser immediately. Extract its owning function block,
 // rather than replacing the implementation with a second test-only loader.
 const mapCode = source.slice(source.indexOf('function commitProjectContext('), source.indexOf('/** Строит checklist'));
+const drawCode = source.slice(source.indexOf('function draw('),source.indexOf('/** Переходит по архитектуре'));
+assert.match(drawCode, /const progressive = system \? null : state\.progressiveMap;/,
+  'draw preserves the loaded map object rather than converting it to a truthy flag');
+assert.match(drawCode, /progressiveMap\.render\(progressive,/);
 const jobCode = source.slice(source.indexOf('async function watchJob('), source.indexOf("$('project-form').addEventListener"));
 assert(mapCode.includes('async function openProject('));
 assert(jobCode.includes('await monitorJob('));
@@ -46,7 +51,8 @@ function harness({empty = false} = {}) {
     else if(state.project) assert.equal(state.graph.metadata?.snapshotId,undefined,name);
     effects.push(name);
   }
-  const host = {state, $, mapLoadRevision: 0, AbortController,
+  const host = {state, $, mapLoadRevision: 0, AbortController, mapOverviewGraph, mapPartPath,
+    progressiveMap:{hide:()=>{}},
     model: {setGraph: () => effect('model')},
     healthRefresh: {watch: () => effect('health')}, navigationHistory: {checkpoint: () => effect('checkpoint'), commit: () => effect('history')},
     wikiViewer: {close: () => effect('wiki.close')}, mapBlocks: {reset: () => effect('blocks.reset')},
@@ -276,4 +282,26 @@ console.log('Map loading: same/cross-project retention, failure, cancellation, s
   assert.equal(result,true);assert.equal(h.state.project,target);assert.equal(h.$('projects').value,'b');
   assert.equal(h.state.graph.metadata?.snapshotId,undefined);assert.deepEqual(h.state.graph.nodes,[]);
   assert.equal(h.requests.length,0,'opening a failed registration is read-only and does not auto-rebuild');
+}
+
+{
+  const h = harness(), before = committed(h);
+  const loading = h.openProject('b', false, {algorithm:'graphistry'});
+  unchanged(h,before);
+  assert.match(h.requests[0].path, /\/b\/map-overview\?snapshotId=b-snapshot&algorithm=graphistry/);
+  h.requests[0].resolve({snapshotId:'b-snapshot',communities:[],communityEdges:[],codeProjects:[],groupProjects:{},
+    metadata:{snapshotId:'b-snapshot',groupingAlgorithm:'graphistry',nodeCount:123,edgeCount:456}});
+  assert.equal(await loading,true);
+  assert.equal(h.requests.length,1,'compact overview never triggers full graph loading');
+  assert.equal(h.state.graph.nodes.length,0);
+  assert.equal(h.state.progressiveMap.projectId,'b');
+  assert(!h.effects.includes('ingress.load'),'catalog capture does not block the compact map');
+}
+
+{
+  const h = harness(), loading = h.openProject('b', false, {algorithm:'graphistry',full:true});
+  assert.match(h.requests[0].path, /\/b\/graph\?algorithm=graphistry/);
+  h.requests[0].resolve(graph('b','graphistry'));
+  assert.equal(await loading,true);
+  assert.equal(h.state.progressiveMap,null);
 }

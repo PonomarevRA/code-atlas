@@ -3,17 +3,21 @@ import { isSystemMode } from './view-modes.js';
 import { navigationSnapshot, pathDetailToken, inlineDetailToken, resolveNavigation } from './navigation-history.js';
 import { requestJson } from './bounded-request.js';
 import { PATH_NODE_LIMIT } from './execution-path-limits.js';
+import { needsFullMap } from './progressive-map.js';
 
 /** Восстанавливает адресуемый workspace; owns порядок перехода и отмену, но не хранение history или графа. */
 export function createWorkspaceNavigation({ state, view, viewers, search, actions, request = requestJson }) {
   const { wikiViewer, pathViewer, factsPopup, documentationViewer, systemView, mapBlocks, methodWorkbench, projectOverview } = viewers;
   const { searchNavigation, navigationSearch, semanticSearch } = search;
   const { updateDisplayProvider, updateDiscovery, openProject, draw, filteredNodes, displayedAggregate,
-    renderCodeProjects, renderSelection, loadIngress, paintPathGraph, controls, status, closeTransientStudy } = actions;
+    renderCodeProjects, renderSelection, loadIngress, paintPathGraph, controls, status, closeTransientStudy, restoreProgressive } = actions;
   /** Адрес карты отделён от исходника и popup; browser state содержит только небольшие настройки просмотра. */
   function captureNavigation() {
     const system = isSystemMode($('view-mode').value);
+    const map = !system && !state.pathOnGraph ? state.progressiveMap : null;
+    const mapPart = map ? {...map.section, groupId:map.page?.groupId, groupOffset:map.page?.offset} : null;
     return navigationSnapshot({
+      mapPart,
       route: {
         overview: projectOverview?.isOpen() ? 'open' : 'closed',
         task: state.discoveryTask?.kind==='impact'?'impact':null,
@@ -90,9 +94,12 @@ export function createWorkspaceNavigation({ state, view, viewers, search, action
     const notices = initial.messages;
     const desired = requested.filters.algorithm;
     const algorithm = state.algorithms.some(item => item.id === desired) ? desired : state.algorithm;
-    const needsGraph = !isSystemMode(requested.route.view) && !state.graph.nodes.length && Boolean(state.project?.snapshotId);
-    if (state.project?.id !== repo || state.loading || needsGraph || algorithm !== state.algorithm) {
-      const accepted = await openProject(repo, false, {signal, isCurrent, algorithm, viewMode: requested.route.view});
+    const full = !requested.mapPart && needsFullMap(requested);
+    const needsGraph = !isSystemMode(requested.route.view) && Boolean(state.project?.snapshotId)
+      && ((!state.progressiveMap && !state.graph.nodes.length) || (full && state.progressiveMap));
+    const needsOverview = requested.mapPart && !state.progressiveMap;
+    if (state.project?.id !== repo || state.loading || needsGraph || needsOverview || algorithm !== state.algorithm) {
+      const accepted = await openProject(repo, false, {signal, isCurrent, algorithm, viewMode: requested.route.view, full});
       if (accepted === false || !isCurrent()) return;
     }
     if (!isCurrent()) return;
@@ -112,7 +119,7 @@ export function createWorkspaceNavigation({ state, view, viewers, search, action
       if (notices.length) status(notices.join(' '), true);
       return;
     }
-    const checked = resolveNavigation(requested, { projects: state.projects, nodes: state.graph.nodes, snapshotId: state.graph.metadata?.snapshotId });
+    const checked = resolveNavigation(requested, { projects: state.projects, nodes: state.progressiveMap ? null : state.graph.nodes, snapshotId: state.graph.metadata?.snapshotId });
     const snapshot = checked.snapshot;
     const route = snapshot.route;
     notices.push(...checked.messages);
@@ -122,7 +129,7 @@ export function createWorkspaceNavigation({ state, view, viewers, search, action
     renderCodeProjects();
     state.architecture = { level: route.level, projectId: route.project, file: route.file, page: route.page };
     state.community = route.group;
-    state.selected = route.view === 'system' ? null : route.node;
+    state.selected = route.view === 'system' || state.progressiveMap ? null : route.node;
     state.expandedId = route.context;
     state.focused = snapshot.focused;
     state.isolatedRoot = route.isolate;
@@ -154,6 +161,9 @@ export function createWorkspaceNavigation({ state, view, viewers, search, action
       draw(false);
       if (route.node && systemView.projection?.nodes.some(node => node.id === route.node)) systemView.select(route.node);
       else if (route.node) notices.push('Системный объект из адреса не найден. Открыт обзор систем.');
+    } else if (state.progressiveMap && restoreProgressive) {
+      await restoreProgressive(snapshot, {signal, isCurrent});
+      if (!isCurrent()) return;
     } else if (route.path) {
       const restored = await restorePathNavigation(snapshot, { signal, isCurrent, notices });
       if (!isCurrent()) return;
@@ -181,7 +191,7 @@ export function createWorkspaceNavigation({ state, view, viewers, search, action
   async function restorePathNavigation(snapshot, { signal, isCurrent, notices }) {
     const route = snapshot.route;
     try {
-      if (route.entry && !state.ingress.data) await loadIngress();
+      if (route.entry && !state.ingress.data?.entries?.some(entry => entry.id === route.entry)) await loadIngress();
       if (!isCurrent()) return;
       pathViewer.entry = (state.ingress.data?.entries || []).find(entry => entry.id === route.entry) || null;
       if (route.entry && !pathViewer.entry) notices.push('Вход из адреса не найден. Путь показан от метода.');

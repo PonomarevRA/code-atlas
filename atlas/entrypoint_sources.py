@@ -47,7 +47,7 @@ def read_sources(project_path: Path, nodes: list[dict], projects: list[dict], sn
             coverage["skippedFiles"] += len(candidates) - index
             break
         try:
-            source = read_node_source(project_path, node, snapshot_id)
+            source = read_node_source(project_path, node, snapshot_id, include_syntax=False)
         except SourceError:
             coverage["skippedFiles"] += 1
             continue

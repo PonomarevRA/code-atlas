@@ -238,6 +238,7 @@ def tool_arguments():
             'list_checkout_maps': {}, 'get_checkout_map': {'sessionId': sid},
             'rebuild_checkout_map': {'sessionId': sid}, 'finish_checkout_map': {'sessionId': sid},
             'search_checkout_nodes': {'sessionId': sid, 'snapshotId': 's'},
+            'search_checkout_file': {'sessionId': sid, 'path': 'service.py'},
             'describe_checkout_node': {'sessionId': sid, 'snapshotId': 's', 'nodeId': 'n'},
             'get_checkout_code_health': {'sessionId': sid, 'snapshotId': 's'},
             'plan_checkout_code_changes': {'sessionId': sid, 'baselineAssessmentId': identity,

@@ -7,12 +7,12 @@ from threading import Lock, Thread
 import webbrowser
 
 from .settings import read_installation
-from .updates import check_release
+from .updates import check_release, releases_url, version_tuple
 
 
 class BackgroundHandle:
     """Hide only after native registration succeeds; explicit Quit bypasses this policy."""
-    def __init__(self, window, app_id, title, origin, on_quit, open_activity, data_directory, current_version):
+    def __init__(self, window, app_id, title, origin, on_quit, open_activity, data_directory, current_version, releases_index=None):
         """Retain native objects and callbacks for exactly one desktop owner."""
         self.window, self.app_id, self.title = window, app_id, title
         self.origin, self.on_quit, self.open_activity = origin, on_quit, open_activity
@@ -21,6 +21,8 @@ class BackgroundHandle:
         self.settings = read_installation(app_id, data_directory or Path.home() / '.local/share' / app_id)
         self.data_directory = Path(data_directory) if data_directory is not None else self.settings.data_directory
         self.current_version = current_version
+        self.public_releases = releases_url(app_id)
+        self.releases_index = releases_index or self.public_releases
         self.update_lock = Lock()
         self.installing = False
         self.dispatch = lambda callback: callback()
@@ -58,23 +60,58 @@ class BackgroundHandle:
         message = f'Artifacts: {self.data_directory}\nBackups: {self.settings.backup_directory}'
         self.window.create_confirmation_dialog(self.title + ' — Storage', message)
 
+    def releases(self):
+        """Open the pinned release listing without requesting metadata or starting an installer."""
+        if not self.closed:
+            webbrowser.open(self.releases_index)
+
     def updates(self):
-        """Fetch metadata off the GUI thread and ask before opening an official installer page."""
-        if not self.update_lock.acquire(blocking=False):
+        """Start one manual update worker without blocking the native menu callback."""
+        if self.closed or not self.update_lock.acquire(blocking=False):
             return
-        def check():
-            """One update worker owns the confirmation until completion or failure."""
+        try:
+            Thread(target=self._check_updates, name='desktop-update-check', daemon=True).start()
+        except BaseException:
+            self.update_lock.release()
+            raise
+
+    def _check_updates(self):
+        """Fetch a bounded release summary and open its page only after confirmation."""
+        try:
             try:
                 result = check_release(self.app_id, self.current_version)
-                message = ('New release ' if result['available'] else 'Latest release: ') + result['version']
-                if self.window.create_confirmation_dialog(self.title + ' — Updates', message + '\nOpen official download page?'):
-                    webbrowser.open(result['url'])
+                message = self._update_message(result)
+                url = result['url'] if self.releases_index == self.public_releases else self.releases_index
             except Exception:
                 logging.getLogger(__name__).exception('Update check failed')
-                self.window.create_confirmation_dialog(self.title + ' — Updates', 'Update check unavailable. Your data and application were not changed.')
-            finally:
-                self.update_lock.release()
-        Thread(target=check, name='desktop-update-check', daemon=True).start()
+                message = f'Installed version: {self.current_version}\nCould not check for updates.'
+                url = self.releases_index
+            if not self.closed and self.window.create_confirmation_dialog(
+                self.title + ' — Updates', message + '\n\nOpen GitHub Releases?'
+            ) and not self.closed:
+                webbrowser.open(url)
+        except Exception:
+            logging.getLogger(__name__).exception('Native update result could not be displayed')
+        finally:
+            self.update_lock.release()
+
+    def _update_message(self, result):
+        """Format installed/latest versions and plain-text release highlights for the dialog."""
+        lines = [f'Installed version: {self.current_version}']
+        if self.releases_index != self.public_releases:
+            lines.extend((f'Latest public release: {result["version"]}', 'Open GitHub Releases to check this edition.'))
+        else:
+            lines.append(f'Latest release: {result["version"]}')
+            if result['available']:
+                lines.append('A native update is available.')
+            elif version_tuple(result['version']) > version_tuple(self.current_version):
+                lines.append('A newer release exists. A native installer is not available for this platform yet.')
+            else:
+                lines.append('The installed version is up to date.')
+        notes = result.get('notes') or ()
+        if notes:
+            lines.extend(('', 'What’s new', *(f'• {note}' for note in notes[:4])))
+        return '\n'.join(lines)
 
     def hide_on_close(self):
         """Return true only when an accessible registered tray can restore the window."""
@@ -97,6 +134,8 @@ class BackgroundHandle:
             self.dispatch(self.native.close)
 
 
-def bind_background(window, *, app_id, title, origin, on_quit, open_activity=None, data_directory=None, current_version="0.1.0"):
+def bind_background(window, *, app_id, title, origin, on_quit, open_activity=None, data_directory=None,
+                    current_version="0.1.0", releases_index=None):
     """Return an immediately usable lifecycle hook; native readiness follows the shown event."""
-    return BackgroundHandle(window, app_id, title, origin, on_quit, open_activity, data_directory, current_version)
+    return BackgroundHandle(window, app_id, title, origin, on_quit, open_activity, data_directory,
+                            current_version, releases_index)

@@ -66,10 +66,13 @@ import { projectCommunityId } from './project-blocks.js';
 import { RegexSearch } from './regex-search.js';
 import { markChangedNodes, markChangedCommunities } from './changes.js';
 import { codeProjectId } from './filters.js';
+import { mapOverviewGraph, mapPartPath } from './progressive-map.js';
+import { createProgressiveMapView } from './progressive-map-view.js';
 mountLoadingStatus(document);
 const activityLayout = mountWorkspaceLayout(document);
 const state = { projects: [], project: null, graph: { nodes: [], edges: [] }, nodes: new Map(), community: null, selected: null, focused: false, listLimit: 100, revision: 0, answerRevision: 0, job: null, submitting: false, loading: false, algorithm: 'graphistry', algorithms: [], codeProjectIds: null, comparison: null, compareRevision: 0, comparing: false, regexIds: [], regexScope: null };
 state.pendingMapLoad = null;
+state.progressiveMap = null;
 state.requestedProjectId = null;
 state.loadedAlgorithm = state.algorithm;
 let mapLoadRevision = 0;
@@ -78,6 +81,7 @@ let jobLoadingRevision = 0;
 window.addEventListener('pagehide', event => {
   if (event.persisted) return;
   state.pendingMapLoad?.controller.abort();
+  progressiveMap.hide();
   jobLoadingRevision++;
   jobLoadingRelease?.();
 });
@@ -321,6 +325,7 @@ function syncMethodPresentation() {
 }
 const view = new GraphView($('graph'), selectNode, id => {
   if (isSystemMode($('view-mode').value)) systemView.select(id);
+  else if (state.progressiveMap) progressiveMap.openCard(id);
   else mapBlocks.select(id);
 });
 const agentActivity = new AgentActivity({ view,
@@ -404,10 +409,13 @@ const systemView = new SystemArchitectureView({ state, view, controls, getRelate
     await refreshProjects();
     if (state.revision !== originalRevision) return;
     $('view-mode').value = 'architecture';
-    const loading = openProject(repositoryId);
-    const expectedRevision = state.revision;
-    await loading;
-    if (state.revision !== expectedRevision || state.project?.id !== repositoryId || !state.graph.metadata?.snapshotId) return;
+    const accepted = await openProject(repositoryId,false,{full:true});
+    if (!accepted || state.project?.id !== repositoryId || !state.graph.metadata?.snapshotId) return;
+  } else if (state.progressiveMap || !state.graph.nodes.length) {
+    const context = selectedContext();
+    try { await ensureSearchGraph(context); }
+    catch (error) { status(error.message,true); return; }
+    if (state.project?.id !== repositoryId || state.graph.metadata?.snapshotId !== context.snapshotId) return;
   }
   $('view-mode').value = 'architecture';
   navigateArchitecture({ level: 'files', projectId, file: null, page: 0 });
@@ -499,13 +507,20 @@ function updateDiscovery(load = false) {
   if (mode !== 'entries' || !state.project) ingressController.catalog.close();
   discoveryShell.syncMode(mode);
   if (load) discoveryShell.openForMode();
-  if (load && mode === 'entries' && state.project) ensureSearchGraph(selectedContext()).then(loadIngress).catch(error => status(error.message, true));
+  if (mode === 'meaning') semanticSearch.sync();
+  if (load && mode === 'entries' && state.project) ensureSearchGraph(selectedContext()).catch(error => status(error.message, true));
 }
 $('discovery-mode').addEventListener('change', () => { updateDiscovery(true); if ($('discovery-mode').value === 'entries' && state.project) ingressController.catalog.open(); });
 updateDiscovery();
 /** «Системы» загружают полный граф только когда пользователю понадобился поиск символов. */
 $('navigation-search').addEventListener('input', () => {
-  if (!state.graph.nodes.length && state.project && !state.loading) ensureSearchGraph(selectedContext()).then(() => navigationSearch.refresh()).catch(error => status(error.message, true));
+  if ((!state.graph.nodes.length || state.progressiveMap) && state.project && !state.loading) {
+    const context = selectedContext();
+    ensureSearchGraph(context).then(() => {
+      if (state.project?.id !== context.projectId || state.graph.metadata?.snapshotId !== context.snapshotId) return;
+      navigationSearch.refresh();
+    }).catch(error => { if (error.name !== 'AbortError') status(error.message,true); });
+  }
 });
 /** Обзор использует тот же выбранный проект; отдельная запись/каталог/чат не создаются. */
 const projectOverview = createProjectOverview($('project-overview'), {
@@ -537,7 +552,7 @@ window.addEventListener('pagehide', event => { if (!event.persisted) projectOver
  * @returns {void} Поиск/источники остаются привязаны к committed project/snapshot.
  */
 function syncProjectOverview() {
-  projectOverview.sync({project:state.project,snapshotId:state.graph.metadata?.snapshotId});
+  projectOverview.sync({project:state.project,snapshotId:state.graph.metadata?.snapshotId,lazy:Boolean(state.progressiveMap)});
   $('project-overview-open').hidden=!state.project;
   const projectLabel=(state.graph.codeProjects||[]).find(item=>String(item.id)===state.architecture.projectId)?.label;
   const scopeLabel=projectScopeLabel({project:state.project,snapshotId:state.graph.metadata?.snapshotId,
@@ -558,13 +573,14 @@ function syncProjectOverview() {
   const failedWithSnapshot=Boolean(state.graph.metadata?.snapshotId) && (matches ? overviewState.state==='build_failed_with_snapshot' : state.project?.status==='failed');
   const refreshing=matches && overviewState.state==='refreshing_with_snapshot';
   const diagnostics=analysisDiagnosticsState(matches?overviewState.diagnostics:state.graph.metadata?.analysisDiagnostics);
-  banner.hidden=!state.mapLoadError && !state.pendingMapLoad && !failedWithSnapshot && !refreshing && !diagnostics.partial;
+  const partial = diagnostics.partial || state.graph.metadata?.analysisStatus === 'partial';
+  banner.hidden=!state.mapLoadError && !state.pendingMapLoad && !failedWithSnapshot && !refreshing && !partial;
   if(state.mapLoadError)banner.textContent='Не удалось открыть запрошенную карту: '+state.mapLoadError+(state.graph.metadata?.snapshotId?' Открытая карта и её контекст сохранены.':'');
   else if(state.pendingMapLoad)banner.textContent='Открываем «'+(state.pendingMapLoad.project?.name||'проект')+'»…'+(state.graph.metadata?.snapshotId?' Можно продолжать работу с открытой картой.':'');
   else if(failedWithSnapshot)banner.textContent='Последнее обновление не удалось. Показан последний доступный снимок; его можно исследовать. Обновить карту можно явной командой слева.';
   else if(refreshing)banner.textContent='Карта обновляется. Последний доступный снимок остаётся интерактивным.';
   else banner.textContent='';
-  if(diagnostics.partial)banner.textContent+=(banner.textContent?' ':'')+'Карта частична'+(diagnostics.errorCount>0?' · проблем: '+diagnostics.errorCount:'')+'. Подробности в обзоре.';
+  if(partial)banner.textContent+=(banner.textContent?' ':'')+'Карта частична'+(diagnostics.errorCount>0?' · проблем: '+diagnostics.errorCount:'')+'. Подробности в обзоре.';
 }
 
 /**
@@ -651,6 +667,9 @@ async function startProjectTask(action,payload,overview) {
 }
 const codeNavigation = createCodeNavigation({ state, view, model, filteredNodes, renderIngress, renderContextExpansion, refreshRegexSearch, selectNode, selectBlock: mapBlocks.select, resetBlocks: mapBlocks.reset, draw, controls, onDocumentation: node => documentationViewer.select(node) });
 const remoteRepository = new RemoteRepositoryPanel({ state, controls, refreshProjects, openProject });
+const progressiveMap = createProgressiveMapView({view, api, getMap:() => state.progressiveMap,
+  commitPage:commitProgressivePage, selectNode, openFull:openFullMap,
+  onNavigate:() => navigationHistory?.commit()});
 /** Отправляет только same-origin API-запросы и преобразует ошибки в понятный текст. */
 async function api(path, body, {signal} = {}) {
   const options = body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) };
@@ -670,11 +689,11 @@ function coverageCallable(node) {
 function controls() {
   syncProjectOverview();
   const systemMode = isSystemMode($('view-mode').value);
-  renderMapEmptyState($('empty'), {hasGraph:Boolean(state.graph.nodes.length), loading:state.loading || Boolean(state.job), project:state.project, error:state.mapLoadError,
+  renderMapEmptyState($('empty'), {hasGraph:Boolean(state.progressiveMap || state.graph.nodes.length), loading:state.loading || Boolean(state.job), project:state.project, error:state.mapLoadError,
     systemContext:systemMode && Boolean(state.graph.metadata?.snapshotId)});
   queueMicrotask(() => mapFind.refresh());
   const hasRawSelection = !systemMode && Boolean(state.selected);
-  const hasCodeSelection = !systemMode && Boolean(state.selected || state.selectedBlock);
+  const hasCodeSelection = !systemMode && Boolean(state.selected || state.selectedBlock) && !state.progressiveMap;
   $('isolate-node').hidden = !(systemMode ? systemView.selectedNodeId : hasCodeSelection);
   document.querySelector('.selected-node-actions').hidden = !hasRawSelection;
   const coverageNode = state.nodes.get(state.selected);
@@ -706,7 +725,7 @@ function controls() {
     $('expansion-toolbar').hidden = true;
     updateRegexHighlight();
   }
-  $('expand-node').disabled = !state.selected;
+  $('expand-node').disabled = !state.selected || Boolean(state.progressiveMap);
   $('open-node-file').disabled = !state.selected;
   $('source-open').disabled = !state.selected || state.loading;
   sourceViewer.sync();
@@ -722,8 +741,8 @@ function controls() {
   $('all-code-projects').disabled = state.loading;
   $('no-code-projects').disabled = state.loading;
   $('describe').disabled = !state.selected;
-  $('focus').disabled = !state.selected;
-  $('isolate-node').disabled = state.loading || !(isSystemMode($('view-mode').value) ? systemView.selectedNodeId : state.selected || state.selectedBlock);
+  $('focus').disabled = !state.selected || Boolean(state.progressiveMap);
+  $('isolate-node').disabled = state.loading || !(systemMode ? systemView.selectedNodeId : hasCodeSelection);
   $('isolate-node').textContent = state.isolatedRoot ? 'Изолировать от выбранного узла' : 'Изолировать цепочку';
   $('compare-submit').disabled = !state.project || state.loading || state.comparing || Boolean(state.job);
   $('compare-clear').disabled = !state.comparison && !state.comparing;
@@ -772,6 +791,7 @@ function commitProjectContext(project, preserveFilters) {
   state.ingress.page = 0;
   state.ingress.message = '';
   state.ingress.status = 'idle';
+  state.ingress.infrastructureStatus = null;
   ingressController.catalog.reset();
   if (!preserveFilters) $('navigation-search').value = '';
   if (!preserveFilters) state.architecture = { level: 'projects', projectId: null, file: null, page: 0 };
@@ -802,6 +822,12 @@ function commitProjectContext(project, preserveFilters) {
  * @returns {void} Заменяет committed scope и рисует принятый граф синхронно.
  */
 function commitMapLoad(request, graph, preserveFilters) {
+  progressiveMap.hide();
+  state.progressiveMap = request.progressive ? {
+    projectId: request.project.id, snapshotId: graph.metadata.snapshotId, algorithm:request.algorithm,
+    data:graph, section:{projectScope:null,groups:false,offset:0}, page:null, detail:null, cards:new Map(),
+  } : null;
+  state.searchGraphLoad?.controller.abort();
   const nodeIndex = new Map(graph.nodes.map(node => [node.id, node]));
   // Publish the complete raw scope before callbacks can observe the new project.
   state.revision++;
@@ -819,8 +845,10 @@ function commitMapLoad(request, graph, preserveFilters) {
   state.mapLoadError = null;
   if (state.comparison && state.comparison.snapshotId !== graph.metadata?.snapshotId) clearComparison(false);
   if (request.project && graph.metadata?.snapshotId && !request.systemOnly) {
-    healthRefresh.watch({ projectId: request.project.id, snapshotId: graph.metadata?.snapshotId });
-    loadIngress();
+    if (!request.progressive) {
+      healthRefresh.watch({ projectId: request.project.id, snapshotId: graph.metadata?.snapshotId });
+      loadIngress({ capturedOnly: true });
+    }
     for (const field of ['kind', 'relation']) {
       const previous = $(field).value;
       $(field).replaceChildren(new Option(field === 'kind' ? 'Все типы' : 'Все связи', ''));
@@ -832,7 +860,8 @@ function commitMapLoad(request, graph, preserveFilters) {
   const definition = state.algorithms.find(item => item.id === request.algorithm);
   $('grouping-info').textContent = definition?.description || graph.metadata?.groupingAlgorithm || request.algorithm;
   status(!graph.metadata?.snapshotId && request.project ? 'Проект выбран. Доступного снимка пока нет; состояние показано в обзоре.' : request.systemOnly ? 'Системная карта открыта по snapshotId без загрузки полного графа кода.'
-    : `Карта загружена: ${graph.nodes.length.toLocaleString('ru-RU')} узлов · ${definition?.label || request.algorithm}.`);
+    : request.progressive ? 'Обзор карты открыт. Выберите группу для загрузки деталей.'
+      : `Карта загружена: ${graph.nodes.length.toLocaleString('ru-RU')} узлов · ${definition?.label || request.algorithm}.`);
   draw(true);
 }
 
@@ -890,7 +919,19 @@ async function openProject(id, preserveFilters = false, options = {}) {
       return true;
     }
     if (request.systemOnly) graph = {nodes: [], edges: [], metadata: {snapshotId: project.snapshotId}, codeProjects: []};
-    else if (project) graph = await api(`/projects/${encodeURIComponent(project.id)}/graph?algorithm=${encodeURIComponent(request.algorithm)}&projection=map`, undefined, {signal: controller.signal});
+    else if (project) {
+      const scope = {projectId:project.id, snapshotId:project.snapshotId, algorithm:request.algorithm};
+      if (request.algorithm === 'graphistry' && !options.full && project.snapshotAvailable !== false && !isSystemMode(request.viewMode)) {
+        try {
+          graph = mapOverviewGraph(await api(mapPartPath(scope, 'map-overview'), undefined, {signal:controller.signal}), scope);
+          request.progressive = true;
+        } catch (error) {
+          // Old servers and unavailable previews can still serve the full map.
+          if (error.code !== 'MAP_PREVIEW_UNAVAILABLE' && (error.status !== 404 || error.code)) throw error;
+        }
+      }
+      if (!request.progressive) graph = await api(`/projects/${encodeURIComponent(project.id)}/graph?algorithm=${encodeURIComponent(request.algorithm)}&projection=map`, undefined, {signal:controller.signal});
+    }
     if (!current()) return false;
     if (!graph || !Array.isArray(graph.nodes) || !Array.isArray(graph.edges)
         || graph.nodes.some(node => !node || typeof node.id !== 'string')
@@ -937,6 +978,58 @@ async function openProject(id, preserveFilters = false, options = {}) {
     }
   }
 }
+/** Publish one bounded page without resetting the selected repository, project or snapshot. */
+function commitProgressivePage(page, detail) {
+  const map = state.progressiveMap;
+  map.page = page;
+  map.detail = detail;
+  state.graph = {...map.data, nodes:detail?.nodes || [], edges:detail?.edges || []};
+  state.nodes = new Map(state.graph.nodes.map(node => [node.id,node]));
+  model.setGraph(state.graph);
+  state.selected = null;
+  state.focused = false;
+  state.answerRevision++;
+  documentationViewer.select(null);
+  $('selection').replaceChildren(el('h2', 'Код'), el('p', 'Выберите узел для просмотра исходника и деталей.', 'muted'));
+  $('answer').replaceChildren();
+  draw(true);
+  controls();
+}
+
+/** Open the existing full graph only for actions that require repository-wide details. */
+async function openFullMap() {
+  const map = state.progressiveMap;
+  if (!map) return;
+  const context = selectedContext();
+  try {
+    await ensureSearchGraph(context);
+    if (state.project?.id !== map.projectId || state.graph.metadata?.snapshotId !== map.snapshotId) return;
+    draw(true);
+    controls();
+    status('Полная карта загружена. Доступны фильтры, связи и навигация по файлам.');
+  } catch (error) { if (state.progressiveMap === map) status(error.message, true); }
+}
+
+/** Restore bounded navigation from browser history without loading the full graph. */
+async function restoreProgressive(snapshot, {signal, isCurrent}) {
+  const part = snapshot.mapPart;
+  const map = state.progressiveMap;
+  if (!map) return;
+  if (!part || (snapshot.snapshotId && snapshot.snapshotId !== map.snapshotId)) {
+    progressiveMap.showOverview();
+    return;
+  }
+  progressiveMap.showOverview(part);
+  if (!part.groupId) return;
+  const cancel = () => { if (state.progressiveMap === map) progressiveMap.cancel(); };
+  if (signal.aborted) return;
+  signal.addEventListener('abort', cancel, {once:true});
+  try {
+    const loaded = await progressiveMap.read({groupId:part.groupId,projectScope:part.projectScope,offset:part.groupOffset});
+    if (loaded && isCurrent() && snapshot.route.node) selectNode(snapshot.route.node, false, false, null, {restoring:true});
+  } finally { signal.removeEventListener('abort', cancel); }
+}
+
 /** Строит checklist внутренних проектов; null сохраняет режим «все», пустой список — «ни одного». */
 function renderCodeProjects() {
   const projects = [...(state.graph.codeProjects || [])];
@@ -980,6 +1073,14 @@ function filteredNodes(scopedNeighbors = true) {
 }
 /** Пересчитывает карту после фильтра; скрытый выбор не возвращается в SVG принудительно. */
 function applyFilters() {
+  if (state.progressiveMap) {
+    const map = state.progressiveMap;
+    const context = selectedContext();
+    ensureSearchGraph(context).then(() => {
+      if (!state.progressiveMap && state.project?.id === context.projectId && state.graph.metadata?.snapshotId === context.snapshotId) applyFilters();
+    }).catch(error => { if (state.progressiveMap === map) status(error.message,true); });
+    return;
+  }
   state.expandedId = null;
   state.inlineExpanded.clear(); state.selectedBlock = null;
   state.architecture.page = 0;
@@ -1027,7 +1128,7 @@ function draw(fit = false) {
   queueMicrotask(() => navigationHistory?.commit());
   factsPopup.sync(state.project?.id, state.graph.metadata?.snapshotId);
   implementationList.sync(state.project?.id, state.graph.metadata?.snapshotId);
-  semanticSearch.sync();
+  semanticSearch.sync({ defer: Boolean(state.progressiveMap) && $('discovery-mode').value !== 'meaning' });
   if (!state.pathOnGraph) pathToolbar.hide();
   syncMethodPresentation();
   updateIsolationToolbar();
@@ -1035,28 +1136,30 @@ function draw(fit = false) {
   const architecture = $('view-mode').value === 'architecture';
   const system = isSystemMode($('view-mode').value);
   $('system-options').hidden = !system;
-  const hasGraph = Boolean(state.graph.nodes?.length);
+  const progressive = system ? null : state.progressiveMap;
+  const hasGraph = Boolean(progressive || state.graph.nodes?.length);
   $('semantic-legend-panel').hidden = !hasGraph || system;
   renderMapEmptyState($('empty'), {hasGraph, loading:state.loading, project:state.project, error:state.mapLoadError,
     systemContext:system && Boolean(state.graph.metadata?.snapshotId)});
   document.querySelector('.graph-options').hidden = !hasGraph;
   document.querySelector('.view-navigation').hidden = !hasGraph;
-  $('architecture-navigation').hidden = !architecture || !hasGraph;
+  $('architecture-navigation').hidden = !architecture || !hasGraph || Boolean(progressive);
   $('back-overview').textContent = architecture ? (state.architecture.level === 'symbols' ? '← Файлы проекта' : '← Все проекты') : '← Все группы';
-  $('ingress-panel').hidden = !architecture || !$('show-ingress').checked;
+  $('ingress-panel').hidden = !architecture || !$('show-ingress').checked || Boolean(progressive);
   $('view-instruction').textContent = 'Нажмите блок для выбора · → войти внутрь · + раскрыть внутренние блоки здесь';
   $('reset').textContent = architecture ? 'Обзор проектов' : 'Обзор групп';
-  $('architecture-preset').disabled = !architecture;
-  $('communities').disabled = architecture || system || Boolean(state.isolatedRoot);
+  $('architecture-preset').disabled = !architecture || Boolean(progressive);
+  $('communities').disabled = architecture || system || Boolean(state.isolatedRoot || progressive);
   presentViewMode($('view-mode').value);
   if (!hasGraph) {
     document.querySelector('.graph-options').hidden = true;
     document.querySelector('.view-navigation').hidden = true;
   }
   updateDiscovery();
-  if (system) { systemView.render(fit); updateIsolationToolbar(); return; }
+  if (system) { progressiveMap.hide(); systemView.render(fit); updateIsolationToolbar(); return; }
   systemView.suspend();
   if (state.pathOnGraph) {
+    progressiveMap.hide();
     $('back-overview').hidden = false;
     $('back-overview').textContent = '← Карта кода';
     $('view-title').textContent = pathReadingTitle(state.pathOnGraph, pathViewer.entry);
@@ -1064,6 +1167,15 @@ function draw(fit = false) {
     paintPathGraph(state.pathOnGraph);
     return;
   }
+  if (progressive) {
+    if (view.pathAnalysisData) {
+      view.pathAnalysisData = null; view.readableFocusTrail = []; view.onReadableFocusChange(null);
+    }
+    view.colorProjects = state.graph.codeProjects || [];
+    progressiveMap.render(progressive, fit, state.selected, architecture);
+    return;
+  }
+  progressiveMap.hide();
   if (state.isolatedRoot || state.isolatedBlock) { drawIsolatedCalls(fit); return; }
   if (view.pathAnalysisData) {
     view.pathAnalysisData = null; view.readableFocusTrail = []; view.onReadableFocusChange(null);
@@ -1174,7 +1286,7 @@ $('view-mode').addEventListener('change', () => {
   pathViewer.close();
   state.focused = false;
   if (isSystemMode($('view-mode').value)) { documentationViewer.select(null); relatedRepositories.refresh(); state.selected = null; state.answerRevision++; $('answer').replaceChildren(); $('selection').replaceChildren(el('h2', 'Системная архитектура'), el('p', 'Выберите проект, систему или стрелку для фактов конфигурации.', 'muted')); }
-  else if (state.project && !(state.graph.nodes || []).length) {
+  else if (state.project && !state.progressiveMap && !(state.graph.nodes || []).length) {
     openProject(state.project.id, true);
     return;
   }
@@ -1203,7 +1315,10 @@ function updateRegexHighlight() {
   const visible = view.setSearchMatches(state.regexIds, counts);
   $('regex-count').textContent = $('regex-search').value ? `Совпадений в фильтре: ${state.regexIds.length} · представлены на карте: ${visible}` : '';
 }
-$('regex-search').addEventListener('input', () => refreshRegexSearch());
+$('regex-search').addEventListener('input', () => {
+  if (state.progressiveMap && $('regex-search').value.trim()) { void openFullMap(); return; }
+  refreshRegexSearch();
+});
 $('project-blocks').addEventListener('change', () => {
   try { localStorage.setItem('code-atlas-project-blocks', String($('project-blocks').checked)); } catch { /* Режим доступен без localStorage. */ }
   openCommunity(null);
@@ -1219,22 +1334,28 @@ function selectSemanticNode(id, { signal } = {}) {
 }
 /** Лениво загружает граф для поиска, не меняя системную карту и её выбранные элементы. */
 async function ensureSearchGraph(scope) {
-  if (state.graph.nodes.length) return;
+  if (state.graph.nodes.length && !state.progressiveMap) return;
   const revision = state.revision, algorithm = state.algorithm;
   const key = JSON.stringify([scope.projectId, scope.snapshotId, revision, algorithm]);
   if (state.searchGraphLoad?.key === key) return state.searchGraphLoad.promise;
-  const promise = loadSearchGraph(scope, revision, algorithm);
-  state.searchGraphLoad = { key, promise };
+  state.searchGraphLoad?.controller.abort();
+  const controller = new AbortController();
+  const promise = loadSearchGraph(scope, revision, algorithm, controller.signal);
+  state.searchGraphLoad = { key, promise, controller };
   try { await promise; } finally { if (state.searchGraphLoad?.key === key) state.searchGraphLoad = null; }
 }
 /** Одна загрузка принадлежит одному поколению карты, результат другого проекта отбрасывается. */
-async function loadSearchGraph(scope, revision, algorithm) {
-  const graph = await api(`/projects/${encodeURIComponent(scope.projectId)}/graph?algorithm=${encodeURIComponent(algorithm)}&projection=map`);
-  if (revision !== state.revision || scope.projectId !== state.project?.id || scope.snapshotId !== state.graph.metadata?.snapshotId) return;
+async function loadSearchGraph(scope, revision, algorithm, signal) {
+  const graph = await api(`/projects/${encodeURIComponent(scope.projectId)}/graph?algorithm=${encodeURIComponent(algorithm)}&projection=map`, undefined, {signal});
+  if (signal.aborted || revision !== state.revision || scope.projectId !== state.project?.id || scope.snapshotId !== state.graph.metadata?.snapshotId) return;
   if (graph.metadata?.snapshotId !== scope.snapshotId) throw new Error('Снимок изменился. Обновите карту перед переходом к коду.');
+  const wasProgressive = Boolean(state.progressiveMap);
+  progressiveMap.hide();
+  state.progressiveMap = null;
   state.graph = graph; state.nodes = new Map(graph.nodes.map(node => [node.id, node])); model.setGraph(graph);
   for (const field of ['kind', 'relation']) populateFilter(field, field === 'kind' ? graph.nodes : graph.edges, field);
-  renderCodeProjects(); loadIngress(); navigationSearch.refresh();
+  renderCodeProjects(); ingressController.catalog.render(); navigationSearch.refresh();
+  if (wasProgressive) { draw(true); controls(); }
 }
 /** Открывает найденный код во всём репозитории; Back возвращает прежние фильтры и камеру. */
 function navigateSearchNode(node) {
@@ -1251,7 +1372,7 @@ function navigateSearchNode(node) {
   status('Открыт код во всём репозитории. «Назад» в браузере вернёт прежний вид и фильтры.');
 }
 /** Выбирает символ фильтра или уже показанной схемы, сохраняя раскладку и область изоляции. */
-function selectNode(id, revealInspector = true, fromSequence = false, occurrenceId = null) {
+function selectNode(id, revealInspector = true, fromSequence = false, occurrenceId = null, {restoring=false} = {}) {
   if (String(id).startsWith('path-entry:')) return;
   const node = model.nodes.get(id);
   if (!node) return;
@@ -1260,7 +1381,7 @@ function selectNode(id, revealInspector = true, fromSequence = false, occurrence
   const scope = isolationScope();
   if (scope && !scope.allNodeIds.has(id)) return;
   if (!scope && !state.pathOnGraph && !visibleSequenceSymbol && !model.nodeIds(filteredNodes(false)).has(id)) return;
-  navigationHistory?.checkpoint();
+  if (!restoring) navigationHistory?.checkpoint();
   state.selectedBlock = null;
   for (const item of view.communityElements.values()) { item.group.classList.toggle('selected', false); item.group.setAttribute('aria-pressed', 'false'); }
   state.selected = id;
@@ -1276,7 +1397,7 @@ function selectNode(id, revealInspector = true, fromSequence = false, occurrence
   $('answer').replaceChildren();
   renderSelection(); controls(); view.setSelected(id, fromSequence ? occurrenceId : null);
   for (const button of $('results').querySelectorAll('.result')) setResultSelected(button, button.dataset.nodeId === id);
-  navigationHistory?.commit();
+  if (!restoring) navigationHistory?.commit();
 }
 /** Разворачивает ограниченное окружение рядом с обзором, сохраняя агрегацию и фильтры. */
 function renderContextExpansion() {
@@ -1307,7 +1428,13 @@ $('expand-node').addEventListener('click', () => {
   draw(true);
 });
 /** Явный переход к файлу остаётся отдельным от выбора символа в общей карте. */
-$('open-node-file').addEventListener('click', () => {
+$('open-node-file').addEventListener('click', async () => {
+  const selected = state.selected;
+  if (state.progressiveMap) {
+    try { await ensureSearchGraph(selectedContext()); }
+    catch (error) { status(error.message, true); return; }
+    if (state.selected !== selected || state.progressiveMap || !state.nodes.has(selected)) return;
+  }
   const node = state.nodes.get(state.selected);
   if (!node) return;
   state.expandedId = null;
@@ -1636,12 +1763,14 @@ $('empty-focus-path').addEventListener('click', () => {
   $('project-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 $('reset').addEventListener('click', () => {
+  if (state.progressiveMap && !state.pathOnGraph && !isSystemMode($('view-mode').value)) { progressiveMap.showOverview(); return; }
   if (state.isolatedRoot || state.isolatedBlock) { clearIsolation(); return; }
   if (state.pathOnGraph) { state.pathOnGraph = null; pathViewer.close(); draw(true); return; }
   if ($('view-mode').value === 'groups' && $('display-provider').value === 'flow') { groupNavigation.open(); return; }
   isSystemMode($('view-mode').value) ? systemView.render(true) : $('view-mode').value === 'architecture' ? navigateArchitecture({ level: 'projects', projectId: null, file: null, page: 0 }) : openCommunity(null);
 });
 $('back-overview').addEventListener('click', () => {
+  if (state.progressiveMap && !state.pathOnGraph && !isSystemMode($('view-mode').value)) { progressiveMap.back(); return; }
   if (state.isolatedRoot || state.isolatedBlock) { clearIsolation(); return; }
   if (state.pathOnGraph) { state.pathOnGraph = null; pathViewer.close(); draw(true); return; }
   if ($('view-mode').value === 'groups' && $('display-provider').value === 'flow' && !state.community) { groupNavigation.open(); return; }
@@ -1665,7 +1794,7 @@ const workspaceNavigation = createWorkspaceNavigation({ state, view,
   viewers: { wikiViewer, pathViewer, factsPopup, documentationViewer, systemView, mapBlocks, methodWorkbench, projectOverview },
   search: { searchNavigation, navigationSearch, semanticSearch },
   actions: { updateDisplayProvider, updateDiscovery, openProject, draw, filteredNodes, displayedAggregate,
-    renderCodeProjects, renderSelection, loadIngress, paintPathGraph, controls, status, closeTransientStudy },
+    renderCodeProjects, renderSelection, loadIngress, paintPathGraph, controls, status, closeTransientStudy, restoreProgressive },
 });
 navigationHistory = new NavigationHistory({ getSnapshot: workspaceNavigation.capture, restore: workspaceNavigation.restore, onError: error => status(error.message, true),
   onChange: ({ canBack, canForward }) => {

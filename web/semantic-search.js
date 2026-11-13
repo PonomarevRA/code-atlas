@@ -32,11 +32,18 @@ export class SemanticSearchPanel {
   }
 
   /** Смена проекта/ревизии отменяет запросы и опрос предыдущей задачи. */
-  sync() {
+  sync({ defer = false } = {}) {
     const scope = this.getScope();
     const key = scope.projectId && scope.snapshotId ? `${scope.projectId}:${scope.snapshotId}` : '';
-    if (key === this.key) return;
+    if (key === this.key) {
+      if (key && this.deferredStatus && !defer) {
+        this.deferredStatus = false;
+        this.loadStatus();
+      }
+      return;
+    }
     this.key = key;
+    this.deferredStatus = Boolean(key && defer);
     this.revision++;
     clearTimeout(this.deferredTimer);
     this.controller?.abort();
@@ -46,8 +53,8 @@ export class SemanticSearchPanel {
     this.modelAvailable = false;
     this.fields.results.replaceChildren();
     this.controls();
-    if (key) this.loadStatus();
-    else this.fields.status.textContent = 'Откройте карту проекта.';
+    if (key && !defer) this.loadStatus();
+    else this.fields.status.textContent = key ? 'Статус индекса будет проверен при открытии поиска.' : 'Откройте карту проекта.';
   }
 
   /** Редактирование ввода отменяет только поиск, не фоновую индексацию на сервере. */

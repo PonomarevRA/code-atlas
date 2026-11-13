@@ -161,14 +161,14 @@ export function createProjectOverview(root,{request=requestJson,onAction=()=>{},
      * @param {object} context project — выбранная регистрация либо null; snapshotId — принятая ревизия либо null.
      * @returns {void} Запускает отменяемое чтение без ожидания и без изменения карты.
      */
-    sync({project,snapshotId}){
-      const next=project?JSON.stringify([project.id,snapshotId||null,project.status,project.error]):'';
+    sync({project,snapshotId,lazy=false}){
+      const next=project?JSON.stringify([project.id,snapshotId||null,project.status,project.error,lazy]):'';
       if(next===signature)return;signature=next;
       const nextKey=project?JSON.stringify([project.id,snapshotId||null]):'';
-      controller?.abort();generation++;
+      controller?.abort();generation++;loading=false;
       if(nextKey!==key){data=null;error='';stale=false;setOpen(false);details.open=false;issues.open=false;}
       key=nextKey;scope=project?{projectId:project.id,snapshotId:snapshotId||null,name:project.name||project.id}:null;
-      if(scope)void refresh();else render();
+      if(scope&&(!lazy||panelOpen))void refresh();else render();
     },
     refresh,
     isOpen:()=>panelOpen,
@@ -182,5 +182,6 @@ export function createProjectOverview(root,{request=requestJson,onAction=()=>{},
     panelOpen=open;
     root.hidden=!scope||!open;
     onLayout();
+    if(open&&scope&&!data&&!loading)void refresh();
   }
 }

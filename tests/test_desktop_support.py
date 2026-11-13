@@ -103,3 +103,116 @@ def test_stable_versions_only():
     assert version_tuple('v1.10.0') > version_tuple('1.9.9')
     with pytest.raises(ValueError):
         version_tuple('v1.10.0-preview')
+
+
+def test_manual_update_worker_and_independent_release_action(monkeypatch, tmp_path):
+    """Help can open the official listing immediately or wait for one explicit background check."""
+    from threading import Event as Signal, current_thread, main_thread
+
+    monkeypatch.setattr('desktop_support.background.read_installation', lambda *args: SimpleNamespace(close_to_tray=True))
+    entered = Signal()
+    proceed = Signal()
+    opened = Signal()
+    messages = []
+    urls = []
+    checks = []
+    release = 'https://github.com/PonomarevRA/code-atlas/releases/tag/v1.2.4'
+    listing = 'https://github.com/PonomarevRA/code-atlas/releases'
+
+    def check(app_id, installed):
+        """Hold the fixture request until the native entry point has returned."""
+        checks.append((app_id, installed, current_thread()))
+        entered.set()
+        assert proceed.wait(3)
+        return {'version': 'v1.2.4', 'available': True, 'url': release, 'notes': ['Open map groups faster.']}
+
+    def display(title, message):
+        """Capture the native dialog arguments and choose to open the release."""
+        messages.append((title, message))
+        return True
+
+    def open_url(url):
+        """Capture browser URLs without launching the actual browser."""
+        urls.append(url)
+        if url == release:
+            opened.set()
+
+    monkeypatch.setattr('desktop_support.background.check_release', check)
+    monkeypatch.setattr('desktop_support.background.webbrowser.open', open_url)
+    window = SimpleNamespace(events=SimpleNamespace(shown=Event()), create_confirmation_dialog=display)
+    handle = BackgroundHandle(window, 'code-atlas', 'Atlas', 'http://127.0.0.1:8765', lambda: None, None, tmp_path, '1.2.3')
+    try:
+        handle.releases()
+        assert urls == [listing] and not checks
+        handle.updates()
+        assert entered.wait(3)
+        assert checks[0][:2] == ('code-atlas', '1.2.3') and checks[0][2] is not main_thread()
+        handle.updates()
+        assert len(checks) == 1 and not messages
+        proceed.set()
+        assert opened.wait(3)
+        assert urls == [listing, release]
+        title, message = messages[0]
+        assert title == 'Atlas — Updates'
+        assert 'Installed version: 1.2.3' in message and 'Latest release: v1.2.4' in message
+        assert 'Open map groups faster.' in message and 'A native update is available.' in message
+    finally:
+        proceed.set()
+        handle.close()
+
+
+def test_manual_update_handles_unavailable_platform_and_offline_listing(monkeypatch, tmp_path):
+    """The dialog distinguishes platform availability and retains a release link offline."""
+    monkeypatch.setattr('desktop_support.background.read_installation', lambda *args: SimpleNamespace(close_to_tray=True))
+    messages = []
+    urls = []
+
+    def display(_title, message):
+        """Confirm the official fallback after capturing native copy."""
+        messages.append(message)
+        return True
+
+    def offline(*_args):
+        """Simulate unavailable GitHub metadata."""
+        raise OSError('offline fixture')
+
+    monkeypatch.setattr('desktop_support.background.check_release', offline)
+    monkeypatch.setattr('desktop_support.background.webbrowser.open', urls.append)
+    window = SimpleNamespace(events=SimpleNamespace(shown=Event()), create_confirmation_dialog=display)
+    handle = BackgroundHandle(window, 'code-atlas', 'Atlas', 'http://127.0.0.1:8765', lambda: None, None, tmp_path, '1.2.3')
+    assert 'not available for this platform' in handle._update_message({'version': '1.2.4', 'available': False})
+    assert 'up to date' in handle._update_message({'version': '1.2.3', 'available': False})
+    assert handle.update_lock.acquire(blocking=False)
+    handle._check_updates()
+    assert messages and 'Installed version: 1.2.3' in messages[0]
+    assert urls == ['https://github.com/PonomarevRA/code-atlas/releases']
+    assert not handle.update_lock.locked()
+    handle.close()
+
+
+def test_private_manual_update_describes_public_feed_and_opens_private_listing(monkeypatch, tmp_path):
+    """Private editions use public notes as context and open their own official release index."""
+    monkeypatch.setattr('desktop_support.background.read_installation', lambda *args: SimpleNamespace(close_to_tray=True))
+    messages, urls = [], []
+    private_listing = 'https://github.com/PonomarevRA/code-atlas-private/releases'
+
+    def display(_title, message):
+        """Capture the private update dialog and approve its link."""
+        messages.append(message)
+        return True
+
+    monkeypatch.setattr('desktop_support.background.check_release', lambda *_args: {
+        'version': 'v1.2.4', 'available': True, 'url': 'https://github.com/PonomarevRA/code-atlas/releases/tag/v1.2.4',
+        'notes': ['Open map groups faster.'],
+    })
+    monkeypatch.setattr('desktop_support.background.webbrowser.open', urls.append)
+    window = SimpleNamespace(events=SimpleNamespace(shown=Event()), create_confirmation_dialog=display)
+    handle = BackgroundHandle(window, 'code-atlas', 'Atlas', 'http://127.0.0.1:8765', lambda: None, None, tmp_path,
+                              '1.2.3', private_listing)
+    handle.releases()
+    assert handle.update_lock.acquire(blocking=False)
+    handle._check_updates()
+    assert 'Latest public release: v1.2.4' in messages[0] and 'Open map groups faster.' in messages[0]
+    assert 'A native update is available' not in messages[0]
+    assert urls == [private_listing, private_listing]
+    handle.close()

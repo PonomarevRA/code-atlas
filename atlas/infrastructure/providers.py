@@ -5,6 +5,7 @@ from .syntax import arguments, literal
 VERSION = 'infrastructure-v1'
 LIBRARIES = {'kafka': ('confluent.kafka', 'kafka', 'rdkafka', 'kafkajs', 'sarama'),
              'rabbit': ('rabbitmq', 'pika', 'amqplib', 'amqp', 'masstransit'),
+             'masstransit': ('masstransit',),
              'database': ('entityframework', 'npgsql', 'sqlalchemy', 'sqlite', 'psycopg', 'jdbc', 'database/sql', 'sqlx', 'dapper', 'prisma')}
 SQL_TABLE = re.compile(r'\b(FROM|JOIN|INTO|UPDATE)\s+([\w.]+|"[\w]+"(?:\."[\w]+")?)', re.I)
 SQL_IGNORED = re.compile(r"'(?:''|[^'])*'|--[^\n]*|/\*[\s\S]*?\*/|\$(?P<tag>\w*)\$[\s\S]*?\$(?P=tag)\$")
@@ -38,12 +39,16 @@ def detect_calls(syntax):
         kind, resource, operation, expression = None, None, None, None
         # Ambiguous Send/Consume spellings need a messaging receiver as well as an import.
         kafka_receiver = bool(re.search(r'kafka|producer|consumer|template|writer|futurerecord', hint))
-        if ('kafka' in hints and (name not in {'send', 'consume'} or kafka_receiver)) or 'kafka' in hint or 'futurerecord::to' in hint:
+        registration = syntax.language == 'csharp' and name == 'topicendpoint' and 'masstransit' in hints
+        if registration:
+            kind, resource, operation, expression = 'kafka', 'topic', 'consumes', named.get('topic') or first
+        elif ('kafka' in hints and (name not in {'send', 'consume'} or kafka_receiver)) or 'kafka' in hint or 'futurerecord::to' in hint:
             if name in {'produceasync', 'produce', 'send', 'writemessages', 'futurerecord::to', 'totopic'}:
                 kind, resource, operation = 'kafka', 'topic', 'publishes'
                 expression = named.get('topic') or _envelope(values, 'topic') or first
             elif name in {'subscribe', 'consume', 'readmessage'}:
                 kind, resource, operation, expression = 'kafka', 'topic', 'consumes', named.get('topic') or first
+                registration = name == 'subscribe' and 'kafka' in hints and bool(re.search(r'kafka|consumer', hint))
         if 'rabbit' in hints or 'rabbit' in hint:
             if name in {'basicconsume', 'basic_consume', 'consume', 'addfintechjsonconsumer', 'addfintechjsonbatchconsumer', 'receiveendpoint', 'consumefrom'}:
                 kind, resource, operation, expression = 'rabbit', 'queue', 'consumes', named.get('queue') or first
@@ -55,7 +60,8 @@ def detect_calls(syntax):
             yield {'kind': kind, 'resourceKind': resource, 'operation': operation, 'expression': expression,
                    'line': node.start_point.row + 1, 'column': node.start_point.column + 1,
                    **({'handlerType': handler[1]} if handler else {}), 'callee': callee, 'language': syntax.language,
-                   'provider': VERSION, 'basis': 'library-call' if kind in hints else 'receiver-name-call'}
+                   'provider': VERSION, 'basis': ('consumer-registration' if registration else
+                                                  'library-call' if kind in hints else 'receiver-name-call')}
         if 'database' in hints and name in {'query', 'queryasync', 'querysingleasync', 'execute', 'executeasync', 'executereaderasync', 'exec', 'querycontext'}:
             sql = literal(first or '')
             if sql is None:
