@@ -1,0 +1,102 @@
+name: Recover v0.1.8 Apple Silicon installer
+on:
+  push:
+    branches: ['codex/recover-v018-macos-arm64']
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 1d17a653206c0227dee7712bade68b83fbd7184e
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          architecture: arm64
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements.lock -r packaging/requirements-build.txt
+      - run: python packaging/build.py --target darwin-arm64
+      - name: Offline compiled document runtime (no Python on PATH)
+        run: python packaging/check_native.py
+      - name: Build native request widgets
+        if: runner.os == 'macOS'
+        run: python packaging/widgets/macos/build.py
+      - name: Build macOS setup with request widgets
+        if: runner.os == 'macOS'
+        run: |
+          python - <<'PYCI'
+          from pathlib import Path
+          p = Path('packaging/build_installer.py')
+          s = p.read_text()
+          needle = "'create', '-quiet', '-volname'"
+          assert s.count(needle) == 1
+          p.write_text(s.replace(needle, "'create', '-volname'"))
+          PYCI
+          python packaging/build_installer.py --manifest packaging/desktop-product.json --source "dist/Code Atlas.app" --output releases/local --widgets-source "packaging/widgets/macos/build/AG Requests Widgets.app"
+      - name: Verify disk image
+        run: |
+          hdiutil verify releases/local/code-atlas-0.1.8-macos-arm64.dmg
+          git restore packaging/build_installer.py
+          git diff --exit-code
+      - name: Upload verified installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CodeAtlas-darwin-arm64-installer
+          path: releases/local/
+          if-no-files-found: error
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 1d17a653206c0227dee7712bade68b83fbd7184e
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@v4
+        with:
+          name: CodeAtlas-darwin-arm64-installer
+          path: release-assets
+      - name: Verify complete replacement before clearing prior partial upload
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python tools/publish_native_release.py --repo "$GITHUB_REPOSITORY" --tag v0.1.8 --assets release-assets --check
+          python - <<'PYCI'
+          import json
+          import os
+          import subprocess
+
+          repo = os.environ['GITHUB_REPOSITORY']
+          release = json.loads(subprocess.check_output(
+              ['gh', 'api', f'repos/{repo}/releases/tags/v0.1.8'], text=True))
+          assets = {item['name']: item for item in release['assets']}
+          name = 'code-atlas-0.1.8-macos-arm64.dmg'
+          known = {
+              name + '.json': 'sha256:21423abfb3d3e62f2fa95a5453968554c18cf7efe37174df82fbb2d2c6812bb2',
+              name + '.sha256': 'sha256:21843eb1496f386f5a3b964dcd386b1dd44f4223390b8130e79195aa0f9a2ad5',
+          }
+          if name not in assets:
+              for key, expected in known.items():
+                  if key in assets and assets[key]['digest'] != expected:
+                      raise ValueError(f'Unexpected existing asset {key}')
+              for key in known.keys() & assets.keys():
+                  asset_id = assets[key]['id']
+                  subprocess.run(['gh', 'api', '--method', 'DELETE',
+                                  f'repos/{repo}/releases/assets/{asset_id}'], check=True)
+          PYCI
+      - name: Publish and verify Apple Silicon assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tools/publish_native_release.py --repo "$GITHUB_REPOSITORY" --tag v0.1.8 --assets release-assets
