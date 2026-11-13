@@ -119,6 +119,6 @@ if sys.platform == 'win32':
 collection = COLLECT(*executables, analysis.binaries, analysis.datas, name='CodeAtlas')
 if sys.platform == 'darwin':
     bundle = BUNDLE(collection, name='Code Atlas.app', icon=str(icon) if icon.is_file() else None,
-                    bundle_identifier='local.code-atlas.desktop', version='0.1.7',
+                    bundle_identifier='local.code-atlas.desktop', version='0.1.8',
                     info_plist={'CFBundleDisplayName': 'Code Atlas', 'NSHighResolutionCapable': True,
                                 'NSDocumentsFolderUsageDescription': 'Code Atlas читает выбранные вами локальные репозитории для построения карт и просмотра исходников.'})

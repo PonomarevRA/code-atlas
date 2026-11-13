@@ -14,7 +14,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 from .process_lock import ProcessLock
 from .backup_retention import checked_backup_directory, prune_automatic_backups
 
-APP_VERSION = "0.1.7"
+APP_VERSION = "0.1.8"
 DATA_SCHEMA_VERSION = 1
 
 

@@ -17,21 +17,32 @@ export function mergeIngressCatalogs(captured, full) {
 export function createIngressController({ state, view, draw, controls, filteredNodes, selectNode, analyzePath, describeNode, onReady,
   navigateNode = selectNode, onSource = () => {}, revealDetails = () => {}, request = requestJson }) {
   let active = null;
+  let loadedScope = null;
   const catalog = createIngressCatalog({ state, filteredNodes, selectNode, selectEvidence: selectIngress,
     load: () => loadIngress(), retry: () => loadIngress({ force: true }), analyzePath, describeNode });
   /** Share a request for the same project generation and allow the full scan to follow saved entries. */
   function loadIngress({ capturedOnly = false, force = false } = {}) {
     const ingress = state.ingress;
-    if (!state.project?.id || !state.graph.metadata?.snapshotId) return Promise.resolve();
-    if (active?.revision === ingress.revision) {
+    const projectId = state.project?.id;
+    const snapshotId = state.graph.metadata?.snapshotId;
+    if (!projectId || !snapshotId) return Promise.resolve();
+    const scope = JSON.stringify([projectId, snapshotId]);
+    if (loadedScope !== scope) {
+      ingress.controller?.abort();
+      ingress.data = null;
+      ingress.status = 'idle';
+      ingress.infrastructureStatus = null;
+      loadedScope = scope;
+    }
+    if (active?.scope === scope && active.revision === ingress.revision) {
       const current = active;
       if (capturedOnly || !active.capturedOnly) return active.promise;
       return active.promise.then(() => {
-        if (current.revision === ingress.revision) return loadIngress({ force });
+        if (loadedScope === scope && current.revision === ingress.revision) return loadIngress({ force });
       });
     }
     if (!force && (ingress.infrastructureStatus === 'ready' || (capturedOnly && ingress.status !== 'idle'))) return Promise.resolve();
-    const request = { capturedOnly, revision: ingress.revision + 1, promise: null };
+    const request = { scope, capturedOnly, revision: ingress.revision + 1, promise: null };
     active = request;
     request.promise = fetchIngress(capturedOnly).finally(() => {
       if (active === request) active = null;

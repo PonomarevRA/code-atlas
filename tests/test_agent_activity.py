@@ -171,6 +171,26 @@ def test_service_settings_and_invalid_config_are_explicit(tmp_path):
 
 def test_history_filters_and_observer_capture_actual_mcp_only(journal):
     """Обычный UI не создаёт агентов; MCP сохраняет фактический query и пару phases."""
+    class ReliableTestQueueLock:
+        """Keep this observer test independent of the journal's intentional contention drops."""
+
+        def __init__(self, lock):
+            self.lock = lock
+
+        def acquire(self, blocking=True):
+            return self.lock.acquire()
+
+        def release(self):
+            self.lock.release()
+
+        def __enter__(self):
+            self.acquire()
+            return self
+
+        def __exit__(self, *_error):
+            self.release()
+
+    journal.queue_lock = ReliableTestQueueLock(journal.queue_lock)
     with client_for(journal) as client:
         assert client.post("/api/projects/p1/search-nodes", json={"query": "UI"}).status_code == 200
         assert journal.flush()

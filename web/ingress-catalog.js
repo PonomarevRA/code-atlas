@@ -148,7 +148,7 @@ export function createIngressCatalog({ state, filteredNodes, selectNode, selectE
     const scope = JSON.stringify([indexedProject, kind, preferences.scope, $('ingress-catalog-search').value, page]);
     if (scope !== listScope) { list.scrollTop = 0; listScope = scope; }
     list.replaceChildren();
-    const waiting = status === 'loading' || (state.ingress.infrastructureStatus === 'pending' && kind !== 'test' && !catalog.entries.length);
+    const waiting = status === 'loading' || (ready && state.ingress.infrastructureStatus === 'pending' && kind !== 'test' && !catalog.entries.length);
     list.setAttribute('aria-busy', String(waiting));
     if (waiting) appendLoadingCards(list, 4);
     if (!ready) return;
