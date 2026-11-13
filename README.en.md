@@ -57,7 +57,7 @@ To ask a local agent to perform and verify the installation, use the [copyable E
 
 Install `packaging/requirements-desktop.txt` in the prepared environment and run its Python with `-m atlas.cli --desktop`. macOS uses WKWebView, Windows needs WebView2 Runtime, and Linux needs QtWebEngine, system GUI libraries and a graphical session. Browser mode avoids that optional GUI stack. [Desktop/build requirements](packaging/README.md).
 
-If a native package has actually been supplied, it contains its Python runtime and base parsers. Use the package matching your OS/CPU and keep its complete onedir directory. No public release download is implied here. Native macOS checks exist; Windows/Linux build recipes and CI configuration do not establish a tested release for every target. [Native target boundaries](packaging/BUILD-TARGETS.md) · [Native installation/update](packaging/UPDATING.md).
+Open this repository’s **Releases** tab and choose the installer for your OS and CPU. The package includes its Python runtime and base parsers. If your target has no installer, use the source instructions above. [Native target boundaries](packaging/BUILD-TARGETS.md) · [Native installation/update](packaging/UPDATING.md).
 
 ## Using Atlas
 
