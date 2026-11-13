@@ -1,0 +1,35 @@
+name: Publish verified v0.1.8 installers
+on:
+  push:
+    branches: ['codex/publish-v018-installers']
+permissions:
+  actions: read
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 1d17a653206c0227dee7712bade68b83fbd7184e
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@v4
+        with:
+          name: CodeAtlas-darwin-x86_64-installer
+          run-id: 43433468469
+          github-token: ${{ github.token }}
+          path: release-assets
+      - uses: actions/download-artifact@v4
+        with:
+          name: CodeAtlas-linux-x86_64-installer
+          run-id: 43433468469
+          github-token: ${{ github.token }}
+          path: release-assets
+      - name: Verify and publish existing native installers
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tools/publish_native_release.py --repo "$GITHUB_REPOSITORY" --tag v0.1.8 --assets release-assets
