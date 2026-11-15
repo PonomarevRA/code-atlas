@@ -7,6 +7,7 @@ import networkx as nx
 from .organization_policy import VERSION, score_organization
 from .code_health_calls import confirmed_call_edge
 from .organization_coverage import file_coverage, folder_coverage, coverage_summary, coverage_fact
+from .organization_decomposition import decomposition_candidates, review_decomposition, summarize_decomposition
 
 
 def source_file(node: dict) -> str:
@@ -113,6 +114,8 @@ def organization_profiles(nodes: list[dict], edges: list[dict], dependencies: di
     records, by_id = _declaration_index(nodes)
     source_nodes = {node['id']: node for node in nodes}
     selected = {name for name, facts in files.items() if not facts.get('empty')} if files is not None else set(records)
+    candidates = decomposition_candidates({name: records[name] for name in selected}, edges,
+                                          by_id, source_nodes, confirmed_call)
     file_graph, folder_graph, parent_by_file, uncertain_sources = _dependency_topology(by_id, selected, edges, source_nodes)
     file_cycles, folder_cycles = cycle_members(file_graph), cycle_members(folder_graph)
     inventory, folders = {}, {}
@@ -179,7 +182,11 @@ def organization_profiles(nodes: list[dict], edges: list[dict], dependencies: di
         metrics['connectedTinyFiles'] = connected_tiny.get(filename, 0)
         folder = folders[parent_by_file[filename]]
         reliable = folder['complete'] and all(fact['status'] == 'complete' for fact in coverage.values())
-        result[filename] = score_organization(filename, metrics, folder, reliable, coverage=coverage)
+        profile = score_organization(filename, metrics, folder, reliable, coverage=coverage)
+        review = review_decomposition(candidates.get(filename), coverage)
+        if review is not None:
+            profile['decompositionReview'] = review
+        result[filename] = profile
     return result
 
 
@@ -191,7 +198,7 @@ def organization_summary(profiles: dict) -> dict:
     for row in rows:
         folders[row['folder']] = row['folderMetrics']
     ranked = sorted(rows, key=lambda row: (not bool(row['findings']), row['score'] if row['score'] is not None else -1, row['file']))
-    return {'version': VERSION, 'status': 'complete' if rows and len(known) == len(rows) else 'partial' if rows else 'unavailable',
+    summary = {'version': VERSION, 'status': 'complete' if rows and len(known) == len(rows) else 'partial' if rows else 'unavailable',
             'score': round(sum(known) / len(known), 1) if rows and len(known) == len(rows) else None,
             'coverage': coverage_summary(rows),
             'fileCount': len(rows), 'folderCount': len(folders), 'assessedFiles': len(known),
@@ -200,3 +207,7 @@ def organization_summary(profiles: dict) -> dict:
             'files': [{key: row[key] for key in ('file', 'folder', 'score', 'status', 'metrics', 'coverage') if key in row} for row in ranked[:5]],
             'folders': [{'path': name, **metrics} for name, metrics in sorted(folders.items(), key=lambda pair: (-pair[1]['files'], pair[0]))[:5]],
             'hotspotsTruncated': len(rows) > 5 or len(folders) > 5}
+    decomposition = summarize_decomposition(rows)
+    if decomposition is not None:
+        summary['decompositionReview'] = decomposition
+    return summary

@@ -227,11 +227,14 @@ def register_checkout_routes(app: FastAPI, sessions) -> None:
             return _bounded(session_id, result)
 
     @app.post('/api/checkout-sessions/{session_id}/health')
-    def health(session_id: SessionId, body: HealthQuery):
+    def health(session_id: SessionId, body: HealthQuery, summaryOnly: bool = False):
         """Capture actual health in the private store; working-tree mode reads but never writes checkout."""
         with sessions.access(session_id) as entry:
             result = entry.health.assess(entry.project_id, body)
             entry.store.assert_snapshot(entry.project_id, result['snapshotId'])
+            if summaryOnly:
+                result = {key: value for key, value in result.items() if key != 'nodes'}
+                result['responseMode'] = 'summary'
             return _bounded(session_id, result)
 
     @app.post('/api/checkout-sessions/{session_id}/plan')

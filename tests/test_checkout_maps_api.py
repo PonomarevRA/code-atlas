@@ -215,6 +215,23 @@ def test_private_health_forecast_and_comparison_never_write_draft_into_checkout(
     assert canonical.read_bytes() == before_registry
 
 
+def test_private_health_summary_keeps_full_scope_and_record(private_api):
+    """Dropping response rows preserves the complete measured baseline for comparisons."""
+    client, manager, _, _, _, sid, snapshot = private_api
+    path = '/api/checkout-sessions/' + sid + '/health'
+    body = {'snapshotId': snapshot, 'sourceMode': 'working-tree', 'files': ['service.py'], 'maxMethods': 120}
+    detailed = client.post(path, json=body)
+    compact = client.post(path + '?summaryOnly=true', json=body)
+    assert detailed.status_code == compact.status_code == 200
+    value = compact.json()
+    assert value['responseMode'] == 'summary' and 'nodes' not in value
+    assert value['summary'] == detailed.json()['summary']
+    assert value['sourceHashes'] == detailed.json()['sourceHashes']
+    entry = manager.entries[sid]
+    stored = entry.health.records.read(entry.project_id, value['assessmentId'])
+    assert stored['nodes'] and stored['summary'] == value['summary']
+
+
 class ToolRegistry:
     """Capture actual MCP proxy bodies; SDK/schema/stdio proof is separate root evidence."""
 

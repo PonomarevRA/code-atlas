@@ -219,16 +219,19 @@ def register_checkout_tools(server, request, project_id=None, data_map_id=None):
                                        sourceMode: Literal['snapshot', 'working-tree'] = 'working-tree',
                                        files: Annotated[list[str], Field(max_length=20)] | None = None,
                                        nodeIds: Annotated[list[str], Field(max_length=120)] | None = None,
-                                       maxMethods: Annotated[int, Field(strict=True, ge=1, le=120)] = 40) -> dict:
+                                       maxMethods: Annotated[int, Field(strict=True, ge=1, le=120)] = 40,
+                                       summaryOnly: bool = False) -> dict:
         """
         Capture a private immutable baseline before edits, using affected checkout files.
 
         Source is read but never modified; health is advisory and unknowns remain explicit.
-        Reduce files/maxMethods if the result exceeds the response budget.
+        Use summaryOnly=true and maxMethods=120 to inspect complete selected-file
+        organization without returning method rows. Look for decompositionReview.
         """
         body = HealthQuery(snapshotId=snapshotId, sourceMode=sourceMode, files=files or [],
                            nodeIds=nodeIds or [], maxMethods=maxMethods)
-        return await call('POST', sessionId, '/health', body.model_dump())
+        suffix = '/health?summaryOnly=true' if summaryOnly else '/health'
+        return await call('POST', sessionId, suffix, body.model_dump())
 
     @server.tool(annotations=write)
     async def plan_checkout_code_changes(sessionId: Session, baselineAssessmentId: Session,

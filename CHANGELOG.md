@@ -4,6 +4,18 @@ For each stable version, record one to five short user-facing changes in Russian
 
 Для каждой стабильной версии добавляйте от одного до пяти коротких пунктов на русском и английском. Опишите, что пользователь сможет сделать или что стало работать лучше. Инструкции по установке и внутренние изменения ведите отдельно.
 
+## [0.1.10]
+
+### Русский
+
+- Atlas помогает находить в крупных файлах группы связанных методов, чтобы агент мог предложить, какую логику вынести в отдельный модуль.
+- Агенты могут запросить компактную сводку здоровья рабочего дерева с этими группами через MCP.
+
+### English
+
+- Atlas identifies groups of related methods in large files to help agents suggest which logic to move into a separate module.
+- Agents can request a compact working-tree health summary with these groups through MCP.
+
 ## [0.1.9]
 
 ### Русский

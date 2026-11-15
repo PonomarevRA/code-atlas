@@ -46,6 +46,9 @@ def register_health_tools(server, request, selected_project):
 
         Returns health, transparency, documentation, file/folder organization, dependencies and source evidence.
         Organization counts cover the explicit selected files, not a whole filesystem. Unknowns stay null.
+        Check summary.organization.decompositionReview for observed groups in substantial files.
+        When adding a responsibility, name its owner and check existing folders before choosing a destination.
+        A candidate is a starting point for source and dependency review, not a required move.
         Snapshot reads can be stale; inspect dates, never rebuild repeatedly while editing. No source mutation.
         Inspect documentationHealth.parameterCoverage and missing names; maintain meaningful input descriptions.
         Documentation has a capped small contribution and cannot compensate for structural findings or unknowns.

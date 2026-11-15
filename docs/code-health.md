@@ -99,6 +99,24 @@ only five hotspots per level are delivered, with an explicit truncation flag.
 Each method retains its own file/folder context in health records and MCP.
 Do not compare aggregate scores from different file scopes.
 
+### Review extraction opportunities
+
+The health response can include `summary.organization.decompositionReview`
+and the corresponding `health.organization.decompositionReview` for a file.
+The advisory looks at files with at least 80 measured statements and complete
+local evidence. It lists a candidate when observed intra-file calls form at
+least two groups of three declarations and 12 statements each. For the 12
+largest eligible files, a bounded graph partition can also suggest dense groups
+with limited crossing calls inside a connected file. That pass considers up to
+120 declarations and 600 unique call pairs per file. The response shows examples
+with source lines, internal and crossing pairs, and call coverage. Partial
+coverage can hide shared dependencies. This guidance does not change scores or
+verdicts.
+
+Check shared state, exports and tests before moving a candidate group.
+Place it alongside code that serves the same responsibility. Create a folder
+when related files need a shared feature boundary.
+
 Full draft plans combine drafts with hash-verified unchanged baseline files,
 then recalculate organization for the entire selected scope. A moved/removed file
 must be included as an empty draft, alongside complete new file drafts; no real

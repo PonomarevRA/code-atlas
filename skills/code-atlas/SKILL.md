@@ -657,6 +657,12 @@ verification separate. A forecast is estimated even with a single-number range;
 unknown dependencies stay visible. Do not split code or add boilerplate comments
 to game health. Refresh the map once after the completed change series.
 
+Before placing new logic, check the existing folder structure and name the
+module that owns the responsibility. If a change adds a distinct responsibility
+to a growing file, inspect `summary.organization.decompositionReview` when
+available. Choose a destination by responsibility, dependencies and tests.
+A small cohesive project can stay flat.
+
 ## Локальные движки: самоанализ и обратимая настройка
 
 При запросе пользователя настроить движки сначала прочитай

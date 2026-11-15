@@ -122,6 +122,23 @@ connected tiny-file components are review signals. Depth is descriptive, not a
 penalty. These are selected-scope counts, never a whole-filesystem census or
 proof of semantic cohesion. Unknown coupling/source facts keep scores null.
 
+Before adding a capability to an existing large file, check which responsibility
+owns it and which existing package or feature folder already serves that
+responsibility. In a new small project start with its entry point and actual
+responsibilities. Add a separate file or feature folder when a boundary has a
+clear purpose and a small interface. Keep the public entry point stable.
+
+For a large file in a temporary checkout, use `get_checkout_code_health` with
+`summaryOnly=true` and enough `maxMethods` to cover the file. Inspect
+`summary.organization.decompositionReview` and, for a selected file,
+`health.organization.decompositionReview`. Its groups list declarations and
+source lines connected by observed calls in that file. Review a candidate in
+source for shared state, exports, imports, callers and tests. Prefer an existing
+module. Propose a new folder for a named feature if multiple related files need
+one. For a one-off helper, keeping it with its owner may be the clearest choice.
+These hints leave numeric scores unchanged. Missing candidates do not certify
+the structure, and partial call coverage can hide links between groups.
+
 Use complete drafts across the baseline scope to forecast structural moves.
 Include the old file as an empty draft and the complete new file; Atlas never
 writes these drafts. Unchanged baseline sources are hash-checked before reuse.

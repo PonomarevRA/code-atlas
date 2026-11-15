@@ -40,6 +40,64 @@ def test_logic_concentration_is_per_file_not_average_method_size():
     assert profiles(nodes + [deepcopy(nodes[0])]) == result
 
 
+def test_decomposition_review_surfaces_independent_groups_with_partial_calls():
+    """Groups survive unresolved calls without turning missing topology into a score."""
+    nodes = [declaration(str(i), 'app/main.py', 15) for i in range(6)]
+    dependencies = {node['id']: {'status': 'partial' if node['id'] == '0' else 'complete'} for node in nodes}
+    edges = [{'source': a, 'target': b, 'relation': 'calls'}
+             for a, b in [('0', '1'), ('1', '2'), ('3', '4'), ('4', '5')]]
+    edges.append({'source': '2', 'target': '3', 'relation': 'calls', 'confidence': 'INFERRED'})
+    result = organization_profiles(nodes, edges, dependencies)
+    profile = result['app/main.py']
+    review = profile['decompositionReview']
+    assert profile['score'] is None
+    assert review['callCoverage'] == 'partial'
+    assert [[item['label'] for item in group['examples']] for group in review['groups']] == [
+        ['0', '1', '2'], ['3', '4', '5']]
+    assert organization_summary(result)['decompositionReview']['files'][0]['file'] == 'app/main.py'
+
+
+def test_decomposition_review_uses_parser_and_tracks_a_directory_move(health_store):
+    """A flat two-feature file is reviewable; the same code split by feature loses the signal."""
+    state, _, _, _ = health_store
+    service = CodeHealthService(state)
+    graph = {'nodes': [], 'edges': []}
+
+    def feature(prefix):
+        """Build a local chain with enough measured statements for the advisory."""
+        body = '\n'.join(f'    value += {i}' for i in range(14))
+        return '\n\n'.join(f'def {prefix}_{i}(value):\n{body}\n    return ' +
+                           (f'{prefix}_{i + 1}(value)' if i < 2 else 'value') for i in range(3))
+
+    cart, listing = feature('cart'), feature('listing')
+    flat = service.evaluate_contents(graph, {'app.py': (cart + '\n\n' + listing).encode()})
+    response = bounded_health(flat)
+    review = response['summary']['organization']['decompositionReview']
+    assert review['candidateFileCount'] == 1
+    assert {group['examples'][0]['label'] for group in review['files'][0]['groups']} == {
+        'cart_0()', 'listing_0()'}
+    assert all(group['examples'][0]['line'] > 0 for group in review['files'][0]['groups'])
+    split = service.evaluate_contents(graph, {'cart/flow.py': cart.encode(), 'listing/flow.py': listing.encode()})
+    assert 'decompositionReview' not in split['summary']['organization']
+    cohesive = service.evaluate_contents(graph, {'app.py': (cart.replace('return value',
+        'return listing_0(value)') + '\n\n' + listing).encode()})
+    assert 'decompositionReview' not in cohesive['summary']['organization']
+
+
+def test_connected_file_can_offer_dense_groups_with_explicit_crossing_calls():
+    """The bounded partition needs dense groups; each group reports its observed crossing calls."""
+    nodes = [declaration(str(i), 'app/main.py', 15) for i in range(6)]
+    pairs = [('0', '1'), ('1', '2'), ('2', '0'), ('3', '4'), ('4', '5'), ('5', '3'), ('2', '3')]
+    result = profiles(nodes, pairs)['app/main.py']
+    review = result['decompositionReview']
+    assert review['kind'] == 'low-crossing-call-groups'
+    assert result['score'] == 100
+    assert [(group['internalPairs'], group['crossingPairs']) for group in review['groups']] == [(3, 1), (3, 1)]
+    assert profiles(nodes, list(reversed(pairs)))['app/main.py']['decompositionReview'] == review
+    chain = [(str(i), str(i + 1)) for i in range(5)]
+    assert 'decompositionReview' not in profiles(nodes, chain)['app/main.py']
+
+
 def test_repeated_declarations_reuse_paths_and_keep_cross_scope_targets(monkeypatch):
     """Large files resolve paths once while external selected-scope targets stay in coupling counts."""
     import atlas.code_organization as organization
